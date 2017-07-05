@@ -22,6 +22,65 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 ```
 
 ***
+#### 面试题JS
+```
+var z=10
+function foo(){
+  console.log(z)
+}
+(function(funArg){
+  var z=20
+  funArg()
+})(foo)//10
+-------------------
+
+var data=[]
+for(var k=0;k<3;k++){
+  data[k]=function(){
+   console.log(k)
+  }
+}
+data[0]()//3
+data[1]()//3
+data[2]()//3
+
+
+```
+
+***
+#### JS常见内存泄漏的原因
+
+```
+全局变量引起的内存泄漏
+
+闭包引起的内存泄漏
+
+dom清空或删除时，事件未清除导致的内存泄漏
+
+子元素存在引用引起的内存泄漏
+
+
+http://www.cnblogs.com/libin-1/p/6013490.html
+```
+
+***
+#### javascript中new Date()的浏览器兼容性问题
+```
+IOS端，火狐有问题
+endTime=endTime.replace(/-/g,'/')
+endTime=endTime?(new Date(endTime)).getTime():new Date().getTime()
+http://blog.csdn.net/blueheart20/article/details/44902747
+
+```
+
+***
+#### table JQuery点击table获取点击行的数据
+```
+click事件中
+$(this).parents().find("td").eq(1).html();  
+
+```
+***
 #### Linux下 crontab实现秒级定时任务的两种方案
 ```
 1、执行的脚本内实现，如循环之类的
@@ -97,6 +156,19 @@ useradd bajian
 passwd bajian
 
 
+配置相关示例：
+# check phpMyAdmin
+if [[ $PHP_version =~ ^[1-5]$ ]] || [ -e "$php_install_dir/bin/phpize" ];then
+    while :; do echo
+        read -p "Do you want to install phpMyAdmin? [y/n]: " phpMyAdmin_yn
+        if [[ ! $phpMyAdmin_yn =~ ^[y,n]$ ]];then
+            echo "${CWARNING}input error! Please only input 'y' or 'n'${CEND}"
+        else
+            [ "$phpMyAdmin_yn" == 'y' -a -d "$wwwroot_dir/default/phpMyAdmin" ] && { echo "${CWARNING}phpMyAdmin already installed! ${CEND}"; phpMyAdmin_yn=Other; }
+            break
+        fi
+    done
+fi
 ..
 
 ```
@@ -146,6 +218,7 @@ sed是一个很好的文件处理工具，本身是一个管道命令，主要�
      [root@localhost ruby] # sed -n '$p' ab           #显示最后一行
      [root@localhost ruby] # sed -n '1,2p' ab        #显示第一行到第二行
      [root@localhost ruby] # sed -n '2,$p' ab        #显示第二行到最后一行
+     [p本人理解為 print，d delete]
      http://www.cnblogs.com/dong008259/archive/2011/12/07/2279897.html
 ```
 
@@ -1202,6 +1275,20 @@ DB::connection()->enableQueryLog();
     DB::getQueryLog()
 ```
 ***
+####mysql 多字段搜索中文 报错 Illegal mix of collations for operation 'like'
+```
+原因datetime等日期型 不支持中文搜索
+解决方法：判断是中文搜索就去掉日期
+if (!empty($search)){
+            $pattern = '/[^\x00-\x80]/';
+            if(preg_match($pattern,$search))
+                $searchArr=["user_id","content"];
+            $sumSqlWhere =" and ".join(" LIKE '%".$search."%'|| ",$searchArr);
+            $sumSqlWhere.=" LIKE '%".$search."%'";
+        }
+
+```
+***
 ####laravel 数据库锁
 ```
 首先，laravel事务有两种写法
@@ -1260,6 +1347,20 @@ $pagination = $query->with('address')->paginate($perPage);
         'per_page' => request()->per_page
     ]);
 ```
+
+***
+####Laravel 5 : MassAssignmentException in Model.php
+```
+原因，model中使用了create方法，该Model类中必须制定$fillable
+protected $fillable = ['user_id','sign_code_id'];
+
+
+    public static function createRecord(array $data = [])
+    {
+        return self::create($data);
+    }
+```
+
 ***
 ####laravel 配置相关、缓存配置
 ```
@@ -1781,9 +1882,11 @@ $query = app(User::class)->newQuery();
         }]);
 
 用户--》关联商户--》关联地区
-                --》关联设备数withCount，（Merchant模型需要public function car(){
+                --》关联设备数withCount，（Merchant模型需要
+    public function car(){
         return $this->belongsTo('App\Car','id','merchant_id');
-    }）
+    }
+    ）
 $query = app(User::class)->newQuery();
         $query->whereNotNull('merchant_id')->with(['merchant'=>function ($queryx){
             $queryx->with('province')->with('city')->with('county')->withCount('car');

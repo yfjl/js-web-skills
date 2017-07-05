@@ -6,4 +6,5 @@ cd ${GIT_WORK_TREE}
 git add . -A && git stash
 git pull origin master
 
+composer dump-autoload --optimize
 echo "done!"

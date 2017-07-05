@@ -1,0 +1,49 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, 
+initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  
+    <meta http-equiv=”X-UA-Compatible” content=”IE=edge,chrome=1″/>  
+    <link rel="stylesheet" href="http://v3.faqrobot.org/hvb/com/css/reset.css?dev=1">  
+  
+  <script src="http://7xkaou.com2.z0.glb.qiniucdn.com/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="http://v3.faqrobot.org/hvb/com/js/base.js?dev=1"></script>  
+    <title>video</title>  
+  
+    <style>  
+        body, html {  
+            width: 100%;  
+            height: 100%;  
+        }  
+  
+    </style>  
+</head>  
+<body>  
+    <canvas width="400" height="300"></canvas>  
+    <img>  
+
+    //总结：单纯的img标签是不需要设置跨域的，canvas的toDataURL就需要跨域，客户端，服务器都需要设置
+<script>  
+    ;$(function() {  
+        var cav = $('canvas')[0],  
+            ctx = cav.getContext('2d');  
+  
+        var img = new Image();  
+        img.src = 'https://avatars2.githubusercontent.com/u/10176364?v=3&s=460';  //成功。设置了Access-Control-Allow-Origin: *
+        // img.src = 'http://mhfm9.tel.cdndm5.com/35/34919/20170124202018_130x174_14.jpg';  //失败Image from origin 'http://mhfm9.tel.cdndm5.com' has been blocked from loading by Cross-Origin Resource Sharing policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'null' is therefore not allowed access.
+
+        img.crossOrigin = 'Anonymous';//解决跨域问题，需在服务器端运行，也可为 anonymous   
+        img.onload = function() {  
+            ctx.drawImage(img, 0, 0);//img转换为canvas  
+            ctx.fillRect(0, 0, 50, 50);  
+            var base64 = cav.toDataURL('images/png');//注意是canvas元素才有 toDataURL 方法  
+            console.log(base64);  
+            $('img')[0].src = base64;//canvas 转换为 img  
+        }  
+    });  
+    
+
+</script>  
+</body>  
+</html> 
