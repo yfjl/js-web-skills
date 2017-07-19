@@ -23,7 +23,9 @@ output_hooks () {
 
 if [ -z "$1" ]; then 
     echo "args1 is empty,useage: ./create_git.sh repository_name" 
+    #可以在这里else，下面只是练手才有的
 fi
+#可以 if  [ $sting ] 
 if [ -n "$1" ]; then 
 	echo ${DIR_GITREP}
     mkdir ${DIR_GITREP}

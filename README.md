@@ -11,7 +11,7 @@ js web 相关总结，乱七八糟,难度不分先后，随意插入的
 
 
 ***
-#### 细说PHP中strlen和mb_strlen的区别
+####  细说PHP中strlen和mb_strlen的区别
 ```
 //测试时文件的编码方式要是UTF8  
 $str='中文a字1符';  
@@ -22,13 +22,13 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 ```
 
 ***
-#### 调研了下直播 播放器方案
+####  调研了下直播 播放器方案
 ```
 看了下主流方案，手机端用的hls,PC端用的rtmp转flash妥协，然后播放器就是videojs
 ```
 
 ***
-#### 面试题JS
+####  面试题JS
 ```
 var z=10
 function foo(){
@@ -54,7 +54,7 @@ data[2]()//3
 ```
 
 ***
-#### JS常见内存泄漏的原因
+####  JS常见内存泄漏的原因
 
 ```
 全局变量引起的内存泄漏
@@ -70,7 +70,7 @@ http://www.cnblogs.com/libin-1/p/6013490.html
 ```
 
 ***
-#### javascript中new Date()的浏览器兼容性问题
+####  javascript中new Date()的浏览器兼容性问题
 ```
 IOS端，火狐有问题
 endTime=endTime.replace(/-/g,'/')
@@ -80,14 +80,14 @@ http://blog.csdn.net/blueheart20/article/details/44902747
 ```
 
 ***
-#### table JQuery点击table获取点击行的数据
+####  table JQuery点击table获取点击行的数据
 ```
 click事件中
 $(this).parents().find("td").eq(1).html();  
 
 ```
 ***
-#### Linux下 crontab实现秒级定时任务的两种方案
+####  Linux下 crontab实现秒级定时任务的两种方案
 ```
 1、执行的脚本内实现，如循环之类的
 2、crontab -e 
@@ -102,7 +102,7 @@ $(this).parents().find("td").eq(1).html();
 ```
 
 ***
-#### TIMESTAMP vs DATETIME 到底我该如何选择
+####  TIMESTAMP vs DATETIME 到底我该如何选择
 ```
 日期范围
 TIMESTAMP 支持从’1970-01-01 00:00:01′ 到 ’2038-01-19 03:14:07′ UTC. 这个时间可能对目前正在工作的人来说没什么问题，可以坚持到我们退休，但对一些年轻的读者，就会有 Bug2K+38 的问题。
@@ -114,7 +114,7 @@ TIMESTAMP 需要 4 字节的存储空间，而 DATETIME 则需要 8 字节
 ```
 
 ***
-#### 运维相关姿势
+####  运维相关姿势
 ```
 echo ok > test.txt ；把 ok 字符覆盖 test.txt 内容，>表示追加并
 覆盖的意思。
@@ -127,7 +127,7 @@ tail -100 1.txt 查看最后一百条
 
 ```
 ***
-#### linux shell 相关姿势
+####  linux shell 相关姿势
 ```
 -f 判断文件是否存在 eg: if [ -f filename ] 中括号之间必须要空格
 -d 判断目录是否存在 eg: if [ -d dir ]
@@ -181,7 +181,7 @@ fi
 
 
 ***
-#### nginx的access日志按日按时切割的实现方法
+####  nginx的access日志按日按时切割的实现方法
 ```
 # /bin/bash
 now_logs_path="/opt/modules/nginx/logs/"
@@ -201,7 +201,7 @@ echo ${directory}/${log_pre}$(date +%d%H).log
 ```
 
 ***
-#### nginx 修改完配置记得先测试再重启[nginx -t]
+####  nginx 修改完配置记得先测试再重启[nginx -t]
 ```
 nginx -t
 nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok
@@ -209,7 +209,7 @@ nginx: configuration file /usr/local/nginx/conf/nginx.conf test is successful
  service nginx restart
 ```
 ***
-#### linux之sed用法
+####  linux之sed用法
 ```
 sed是一个很好的文件处理工具，本身是一个管道命令，主要是以行为单位进行处理，可以将数据行进行替换、删除、新增、选取等特定工作，下面先了解一下sed的用法
 
@@ -229,7 +229,7 @@ sed是一个很好的文件处理工具，本身是一个管道命令，主要�
 ```
 
 ***
-#### laravel的事件总结
+####  laravel的事件总结
 ```
     //总结： laravel的事件中EventServiceProvider可以分成$listen 和 $subscribe方式
     //$listen : 对应于事件-》监听者（handle(SomeEvent $event)中处理），一个事件可以对应多个监听者，监听者通过handle 返回false可以阻止事件向下传递
@@ -239,13 +239,13 @@ sed是一个很好的文件处理工具，本身是一个管道命令，主要�
 ```
 
 ***
-#### redis RDB和AOF持久化对比
+####  redis RDB和AOF持久化对比
 ```
 http://www.cnblogs.com/rollenholt/p/3874443.html
 ```
 
 ***
-#### grep 命令
+####  grep 命令
 ```
 -a ：将 binary 文件以 text 文件的方式搜寻数据
 -c ：计算找到 '搜寻字符串' 的次数
@@ -256,7 +256,7 @@ http://www.cnblogs.com/rollenholt/p/3874443.html
 
 ```
 ***
-#### nohup 命令
+####  nohup 命令
 ```
 Unix/Linux下一般想让某个程序在后台运行，很多都是使用 & 在程序结尾来让程序自动运行。比如我们要运行mysql在后台： 
  /usr/local/mysql/bin/mysqld_safe --user=mysql &
@@ -269,7 +269,7 @@ nohup: ignoring input and appending output to ‘nohup.out’
 ```
 
 ***
-#### awk 命令
+####  awk 命令
 ```
 http://www.cnblogs.com/ggjucheng/archive/2013/01/13/2858470.html
 
@@ -304,7 +304,7 @@ awk '!a[$0]++' a.log > d.log //a[$0]以每行内容为index的一个hash表，�
 ```
 
 ***
-#### nginx try_files
+####  nginx try_files
 ```
 语法：try_files file ... uri 或 try_files file ... = code
 默认值：无
@@ -324,7 +324,7 @@ location / {
 
 ```
 ***
-#### nginx location的匹配命令
+####  nginx location的匹配命令
 ```
 ~     #波浪线表示执行一个正则匹配，区分大小写
 ~*    #表示执行一个正则匹配，不区分大小写
@@ -338,7 +338,7 @@ location / {
 
 
 ***
-####getBoundingClientRect
+#### getBoundingClientRect
 ```
 ![demo](http://images.cnitblog.com/blog2015/678562/201504/262132219001037.jpg)
 ClientRect {top: 788.578125, right: 1525.484375, bottom: 820.578125, left: 600.828125, width: 924.65625…}
@@ -346,13 +346,13 @@ ClientRect {top: 788.578125, right: 1525.484375, bottom: 820.578125, left: 600.8
 ```
 
 ***
-####git sourcetree 想回滚未提交的文件，可以选中文件，右键--移除--再右键--丢弃
+#### git sourcetree 想回滚未提交的文件，可以选中文件，右键--移除--再右键--丢弃
 
 ***
-####git sourcetree 想回滚到某个版本，可以双击版本--点击确定
+#### git sourcetree 想回滚到某个版本，可以双击版本--点击确定
 
 ***
-####array_map() 函数将用户自定义函数作用到数组中的每个值上，并返回用户自定义函数作用后的带有新值的数组。
+#### array_map() 函数将用户自定义函数作用到数组中的每个值上，并返回用户自定义函数作用后的带有新值的数组。
 ```
 
 if (get_magic_quotes_gpc()) {
@@ -367,7 +367,7 @@ if (get_magic_quotes_gpc()) {
 ```
 
 ***
-####PHP7专题
+#### PHP7专题
 ```
 
 // 返回值类型
@@ -472,7 +472,7 @@ echo intdiv(7,2);//3
 ```
 
 ***
-####为querySelectorAll添加forEach方法
+#### 为querySelectorAll添加forEach方法
 ```
 let selector = 'th.vuetable-th-checkbox-' + idColumn + ' input[type=checkbox]'
       let els = document.querySelectorAll(selector)
@@ -498,14 +498,14 @@ let selector = 'th.vuetable-th-checkbox-' + idColumn + ' input[type=checkbox]'
 ```
 
 ***
-####WinSCP下su切换到root的技巧
+#### WinSCP下su切换到root的技巧
 ```
 https://my.oschina.net/u/1038053/blog/611562?p={{totalPage}}
 
 ```
 
 ***
-####图片转base64 字符串转base64
+#### 图片转base64 字符串转base64
 ```
 将图片数据进行Base64编码
 function getCanvas(w, h) {
@@ -548,7 +548,7 @@ function getPixels(img) {
 
 
 ***
-####HTML语言中表格的书写中TD TR TH的英文全称是什么？
+#### HTML语言中表格的书写中TD TR TH的英文全称是什么？
 ```
 是定义表格中的一行
 table row
@@ -560,7 +560,7 @@ table head
 ```
 
 ***
-####js计算耗时
+#### js计算耗时
 ```
 console.time('myTime'); //Starts the timer with label - myTime
  
@@ -577,7 +577,7 @@ console.table(myArray)
 
 
 ***
-####group by 按最新一条排序（考勤数据）
+#### group by 按最新一条排序（考勤数据）
 ```
 分析：由于group by 会取出排在最上面的一条做显示的一条，所以对考勤数据进行排序（时间降序）再group by 就行了：
 SELECT * FROM (SELECT a.`student_id` AS studentID,a.`name` AS studentName,b.`type`,b.`time` AS DATETIME FROM manager_student a LEFT JOIN xsk_attendance b ON a.`device_id`=b.`device_id` AND DATE_FORMAT(b.time,'%Y-%m-%d') ='2017-02-14' WHERE a.`class_id`=208 AND a.`school_id`=61 ORDER BY (DATETIME) DESC)t GROUP BY studentName ORDER BY studentID ASC
@@ -589,7 +589,7 @@ http://www.tuicool.com/articles/FnQFre
 ```
 
 ***
-####mysql 对null进行排序，降序时候让null在前面
+#### mysql 对null进行排序，降序时候让null在前面
 ```
  ISNULL(DATETIME) DESC ,DATETIME DESC，升序反之，怎么搞都行
 
@@ -599,7 +599,7 @@ http://www.cnblogs.com/jeffen/p/6044764.html
 ```
 
 ***
-####子域名间共享cookie（seesion id）
+#### 子域名间共享cookie（seesion id）
 ```
 设置顶级域名就行了
 
@@ -617,7 +617,7 @@ http://www.cnblogs.com/jeffen/p/6044764.html
 ```
 
 ***
-####mysql中模糊查询的四种用法： 
+#### mysql中模糊查询的四种用法： 
 ```
 http://www.jb51.net/article/48315.htm
 1，%：表示任意0个或多个字符。可匹配任意类型和长度的字符，有些情况下若是中文，请使用两个百分号（%%）表示。 
@@ -651,20 +651,33 @@ SELECT * FROM bikelock WHERE device_id REGEXP  '^1[1-9]*'
 ```
 
 ***
-####relative absolute 居中方法
+#### relative absolute 居中方法
 ```
 relative:
-margin：0 auto;
+margin：0 auto;水平剧中
+垂直居中：注意浏览器兼容性写法
+.box2{
+    display: flex;
+    justify-content:center;
+    align-items:center;
+}
 
 absolute：
+1、（最实际但不灵活）
 left:50%;
 margin-left:-1.42857143rem;/* 40px */
+2、我们经常用margin:0 auto来实现水平居中，而一直认为margin:auto不能实现垂直居中……实际上，实现垂直居中仅需要声明父级元素高度和下面的CSS:
 
+.Absolute-Center {  
+  margin: auto;  
+  position: absolute;  
+  top: 0; left: 0; bottom: 0; right: 0;  
+}  
 也可以配合flex设置
 ```
 
 ***
-####判断object中是否存在xx键值
+#### 判断object中是否存在xx键值
 ```
 a={ a:123,tt:999}
 Object {a: 123, tt: 999}
@@ -672,7 +685,7 @@ if('tt' in a) alert(1)//比 a['tt']更直观
 ```
 
 ***
-####nginx 配置域名重定向
+#### nginx 配置域名重定向
 ```
 server {
         server_name luokr.com;
@@ -681,7 +694,7 @@ server {
 ```
 
 ***
-####取消冒泡事件兼容性写法
+#### 取消冒泡事件兼容性写法
 ```
        //取消冒泡事件
 function stopBubble(e){
@@ -696,7 +709,7 @@ if(e.stopPropagation){
 ```
 
 ***
-####transform-origin 旋转中心点
+#### transform-origin 旋转中心点
 ```
 http://www.zhangxinxu.com/wordpress/2012/06/css3-transform-matrix-%E7%9F%A9%E9%98%B5/
 
@@ -733,14 +746,14 @@ HTML代码：
 ```
 
 ***
-####取消手机端点击时候的样式
+#### 取消手机端点击时候的样式
 ```
 -webkit-tap-highlight-color:rgba(0,0,0,0);
 还有个outline
 ```
 
 ***
-####linux 查看本机链接tcp/http情况
+#### linux 查看本机链接tcp/http情况
 ```
  netstat -nat|grep -i "6677"
 http://blog.csdn.net/he_jian1/article/details/40787269
@@ -768,7 +781,7 @@ CLOSED： 没有任何连接状态
 
 
 ***
-####mysql添加查询日志
+#### mysql添加查询日志
 ```
 general_log=ON
 general_log_file=/tmp/mysql.log
@@ -776,7 +789,7 @@ general_log_file=/tmp/mysql.log
 
 
 ***
-####mysql区分大小写
+#### mysql区分大小写
 ```
 
 在 字段前加 binary
@@ -786,7 +799,7 @@ SELECT * FROM daxiaoxie WHERE BINARY NAME='haha'
 
 
 ***
-####PHP 面试题
+#### PHP 面试题
 ```
 
 $test = 'aaaaaa';
@@ -850,8 +863,8 @@ $a=array('3','8','1','8','4','11','7');
 $len = count($a);
 
 function quikSort($arr){
-    for ($i=0; $i <$len ; $i++) { 
-    for ($j=0; $j <$len-$i-1 ; $j++) { 
+    for ($i=0; $i <$len ; $i++) {
+    for ($j=0; $j <$len-$i-1 ; $j++) {
         if ($a[$j]>$a[$j+1]) {
             $temp=$a[$j+1];
             $a[$j+1]=$a[$j];
@@ -944,7 +957,7 @@ function selectSort($array){
 
 
 ***
-####四种this的类型
+#### 四种this的类型
 ```
 介绍一下四种this的类型：
 
@@ -956,7 +969,7 @@ new绑定
 ```
 
 ***
-####绝对定位 max-width也可以居中
+#### 绝对定位 max-width也可以居中
 ```
 max-width: 600px;
 position: absolute;
@@ -970,7 +983,7 @@ position: absolute;
 
 
 ***
-####mysql left join、right join、inner join的区别
+#### mysql left join、right join、inner join的区别
 ```
 A LEFT JOIN B:
 left join是以A表的记录为基础的,A可以看成左表,B可以看成右表,left join是以左表为准的.
@@ -982,7 +995,7 @@ inner join 取两者都有的，其他不显示
 
 
 ***
-####mysql设置外键 on update on delete CASCADE
+#### mysql设置外键 on update on delete CASCADE
 ```
 CASCADE
 删除：删除主表时自动删除从表。删除从表，主表不变
@@ -993,7 +1006,7 @@ https://my.oschina.net/cart/blog/277624
 
 
 ***
-####LBS应用中"附近的人"在服务器端如何更高效快速地计算距离？
+#### LBS应用中"附近的人"在服务器端如何更高效快速地计算距离？
 
 ```
 用经纬度做索引，
@@ -1050,7 +1063,7 @@ php 代码：（laravel）
 
 
 ***
-#### 查询数据库中的表名
+####  查询数据库中的表名
 ```
 SELECT * FROM information_schema.tables WHERE TABLE_NAME LIKE 'data_%'
 
@@ -1059,7 +1072,7 @@ SELECT * FROM information_schema.tables WHERE TABLE_SCHEMA='db_kirito' AND  TABL
 ```
 
 ***
-#### 百度地图经纬度偏移量
+####  百度地图经纬度偏移量
 ```
 
   var lng = parseFloat(obj.lng) + 0.011307845100006375;
@@ -1067,7 +1080,7 @@ SELECT * FROM information_schema.tables WHERE TABLE_SCHEMA='db_kirito' AND  TABL
 ```
 
 ***
-####compact 创建一个包含变量名和它们的值的数组：
+#### compact 创建一个包含变量名和它们的值的数组：
 ```
 <?php
 $firstname = "Bill";
@@ -1083,7 +1096,7 @@ print_r($result);//Array ( [firstname] => Bill [lastname] => Gates [age] => 60 )
 
 
 ***
-####微信端地址刷新（跳转）不能是和当前页面同一个连接，否则不刷新
+#### 微信端地址刷新（跳转）不能是和当前页面同一个连接，否则不刷新
 ```
 window.location.reload()
 window.location.href="/reload.html"
@@ -1094,7 +1107,7 @@ window.location.href="/reload.html"
 
 
 ***
-####String.replace() 语法 替换文本中的$字符有特殊含义：（用于模式匹配的String方法）
+#### String.replace() 语法 替换文本中的$字符有特殊含义：（用于模式匹配的String方法）
 ```
 $1、$2、...、$99 与 regexp 中的第 1 到第 99 个子表达式相匹配的文本。
 $&  与 regexp 相匹配的子串。
@@ -1126,7 +1139,7 @@ http://web.jobbole.com/89221/
 ```
 
 ***
-####gitignore 语法
+#### gitignore 语法
 ```
 语法规范
 
@@ -1153,14 +1166,14 @@ doc/**/*.pdf
 
 
 ***
-####table 自动换行
+#### table 自动换行
 ```
 word-break: break-all;text-align: left;padding-left: 5px;word-wrap:break-word;
 ```
 
 
 ***
-####cookie ls 跨域的办法
+#### cookie ls 跨域的办法
 ```
 Cookie跨域单点登录  
 
@@ -1184,7 +1197,7 @@ Response.AppendHeader("P3P", "CP='IDC DSP COR CURa ADMa  OUR IND PHY ONL COM STA
 
 
 ***
-####ajax 跨域原理
+#### ajax 跨域原理
 ```
 1、简单请求(simple request)
 简单请求的判断包括两个条件：
@@ -1269,7 +1282,7 @@ js
 ```
 
 ***
-####laravel 获得查询原始sql
+#### laravel 获得查询原始sql
 ```
 DB::connection()->enableQueryLog();
  
@@ -1281,7 +1294,7 @@ DB::connection()->enableQueryLog();
     DB::getQueryLog()
 ```
 ***
-####mysql 多字段搜索中文 报错 Illegal mix of collations for operation 'like'
+#### mysql 多字段搜索中文 报错 Illegal mix of collations for operation 'like'
 ```
 原因datetime等日期型 不支持中文搜索
 解决方法：判断是中文搜索就去掉日期
@@ -1295,7 +1308,7 @@ if (!empty($search)){
 
 ```
 ***
-####laravel 数据库锁
+#### laravel 数据库锁
 ```
 首先，laravel事务有两种写法
 1、
@@ -1337,14 +1350,13 @@ $queue = Users::with(array('email'=>function($query){
 ```
 
 ***
-####laravel 分页
+#### laravel 分页
 ```
 http://laravelacademy.org/post/6960.html
 
         $users=User::paginate(15,  ['*'], 'page',1);//per_page,column,page,current_page
         $users->setPath('custom/url');
         return $this->toJson($users);
-        return $this->toJson();
 
 $pagination = $query->with('address')->paginate($perPage);
     $pagination->appends([
@@ -1355,7 +1367,7 @@ $pagination = $query->with('address')->paginate($perPage);
 ```
 
 ***
-####Laravel 5 : MassAssignmentException in Model.php
+#### Laravel 5 : MassAssignmentException in Model.php
 ```
 原因，model中使用了create方法，该Model类中必须制定$fillable
 protected $fillable = ['user_id','sign_code_id'];
@@ -1368,10 +1380,13 @@ protected $fillable = ['user_id','sign_code_id'];
 ```
 
 ***
-####laravel 配置相关、缓存配置
+#### laravel 配置相关、缓存配置
 ```
 php artisan config:cache
 php artisan config:clear
+
+php artisan route:cache
+php artisan route:clear
 
 获取配置
 可以使用 config 辅助函数获取你的设置值，设置值可以通过「点」语法来获取，其中包含了文件与选项的名称。你也可以指定一个默认值，当该设置选项不存在时就会返回默认值：
@@ -1385,12 +1400,23 @@ config(['app.timezone' => 'America/Chicago']);
 获取ENV文件的值
 env('APP_DEBUG', false)
 
+优化composer拆解：
+php artisan optimize
+1.composer dump-autoload --optimize // composer 层面优化加载速度
+2.php artisan clear-compiled // 删除 bootstrap/cache/services.php
+
+总结
+php artisan optimize
+php artisan config:cache
+php artisan route:cache
+
+http://www.jianshu.com/p/1d5fa4696ca9
 http://d.laravel-china.org/docs/5.4/configuration#configuration-caching
 
 ```
 
 ***
-####laravel passport jwt
+#### laravel passport jwt
 ```
 根據http://laravelacademy.org/post/5993.html配置后，
 不用oauth的話，只要php artisan passport:client --password生成一個自用的client就行了
@@ -1427,7 +1453,7 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjVkNTYzZDM5Nz
 
 
 ***
-####laravel 获取session id
+#### laravel 获取session id
 ```
 nRRw2MfQNqe5gbohFqhgt5mJ5zqBhPeJSK87CvcB
 var_dump(Session::getId());
@@ -1435,14 +1461,14 @@ var_dump(Session::getId());
 ```
 
 ***
-####前端移动适配
+#### 前端移动适配
 ```
 <link rel="alternate" media="only screen and (max-width: 640px)" href="http://m.dilidili.com/">
 
 ```
 
 ***
-####获取远程文件的大小
+#### 获取远程文件的大小
 ```
 function remote_filesize($url, $user = "", $pw = "")
 {
@@ -1467,7 +1493,7 @@ function remote_filesize($url, $user = "", $pw = "")
 
 
 ***
-####文件下载 和文件限速下载
+#### 文件下载 和文件限速下载
 ```
 // local file that should be send to the client
 $local_file = 'test-file.zip';
@@ -1476,7 +1502,8 @@ $download_file = 'your-download-name.zip';
  
 // set the download rate limit (=> 20,5 kb/s)
 $download_rate = 20.5; 
-if(file_exists($local_file) && is_file($local_file)) {
+if( is_file($local_file)) {//如果要检查的文件存在，那么is_file() 比 file_exists() 快很多倍，但如果文件不存在，则两者差不多。
+
     // send headers
     header('Cache-control: private');
     header('Content-Type: application/octet-stream'); 
@@ -1523,7 +1550,7 @@ fclose($fp);
 
 
 ***
-####确定任意图片的主导颜色
+#### 确定任意图片的主导颜色
 ```
 function dominant_color($image)
 {
@@ -1600,7 +1627,7 @@ $bAverage = round($bTotal/$total);
 ```
 
 ***
-####laravel 测试过的一些方法
+#### laravel 测试过的一些方法
 ```
         // $user=new User();
         // $user->name="1234567333";
@@ -1657,7 +1684,7 @@ $bAverage = round($bTotal/$total);
 ```
 
 ***
-####laravel Eloquent 获取数据库个别字段
+#### laravel Eloquent 获取数据库个别字段
 ```
 1 $users = User::all(['name']);
 2 $admin_users = User::where('role', 'admin')->get(['id','device_id as aaa']);
@@ -1667,7 +1694,7 @@ $fileUploadVoteRecords=FileUploadVoteRecord::where(['openid'=>$openid])->get()->
         $fileUploadVoteRecords=array_pluck($fileUploadVoteRecords,'file_upload_id');
 ```
 ***
-####laravel 缓存查询
+#### laravel 缓存查询
 ```
 $users = DB::table('users')->remember(10)->get();
 在本例中,查询的结果将为十分钟被缓存。查询结果缓存时,不会对数据库运行,结果将从默认的缓存加载驱动程序指定您的应用程序。
@@ -1677,7 +1704,7 @@ $users = DB::table('users')->cacheTags(array('people', 'authors'))->remember(10)
 ```
 
 ***
-####laravel 加锁
+#### laravel 加锁
 ```
     public function t()
     {
@@ -1697,13 +1724,13 @@ public function t2()
 ```
 
 ***
-####laravel Eloquent 只获取第一个对象的方法
+#### laravel Eloquent 只获取第一个对象的方法
 ```
 $merchant=Merchant::where('openid',$re_openid)->first();
 ```
 
 ***
-####laravel Eloquent date filtering
+####  laravel Eloquent date filtering
 ```
 1 $users = User::all(['name']);
 2 $admin_users = User::where('role', 'admin')->get(['id','device_id as aaa']);
@@ -1711,21 +1738,22 @@ $merchant=Merchant::where('openid',$re_openid)->first();
 ```
 
 ***
-####laravel Eloquent Retrieve random rows
+####  laravel Eloquent Retrieve random rows
 ```
 $questions = Question::orderByRaw('RAND()')->take(10)->get();
 
+select * from cmf_posts where 1=1 order by RAND()
 ```
 
 ***
-####laravel router dispatch
+#### laravel router dispatch
 ```
 $request = Request::create('/api/cars/' . $id . '?fields=id,color', 'GET');
 $response = json_decode(Route::dispatch($request)->getContent());
 ```
 
 ***
-####laravel 依赖注入的时候传递参数
+#### laravel 依赖注入的时候传递参数
 ```
 熟悉Laravel人都知道Laravel的Service Provider，但是如果要注入的类需要初始化参数呢？这个时候可以通过ServiceProvider中的register来绑定实现。
 
@@ -1742,7 +1770,7 @@ public function register()
 ```
 
 ***
-####laravel share cookie between domains
+#### laravel share cookie between domains
 ```
 // app/Http/Middleware/EncryptCookies.php
 protected $except = [
@@ -1754,7 +1782,7 @@ Cookie::queue('shared_cookie', 'my_shared_value', 10080, null, '.example.com');
 ```
 
 ***
-####laravel Eloquent 专题，，一个个贴太累了
+#### laravel Eloquent 专题，，一个个贴太累了
 ```
 Simple incrementing & Decrementing
 
@@ -1774,7 +1802,7 @@ Customer::find($customer_id)->decrement('loyalty_points', 50);
 ```
 
 ***
-####laravel Eloquent having raw
+#### laravel Eloquent having raw
 ```
 SELECT *, COUNT(*) FROM products GROUP BY category_id HAVING count(*) > 1;
 
@@ -1788,7 +1816,7 @@ Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
 
 
 ***
-####laravel Eloquent 联合查询,with 解决N+1问题
+#### laravel Eloquent 联合查询,with 解决N+1问题
 ```
 在Model中创建：
     public function bookhistory()
@@ -1901,7 +1929,7 @@ $query = app(User::class)->newQuery();
 
 
 ***
-####通用hover 样式
+#### 通用hover 样式
 ```
 .card-view:hover{
   -webkit-animation: mlsh 0.5s ease 0s forwards;
@@ -1922,7 +1950,7 @@ $query = app(User::class)->newQuery();
 ```
 
 ***
-####通用card view 样式
+#### 通用card view 样式
 ```
 .card-view{
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2);
@@ -1932,7 +1960,7 @@ $query = app(User::class)->newQuery();
 
 
 ***
-####发送短信验证码记得加个type，
+#### 发送短信验证码记得加个type，
 ```
 注册要判断用户是否已经注册，找回判断用户未注册
 不正确就不要发短信，省钱
@@ -1940,7 +1968,7 @@ $query = app(User::class)->newQuery();
 
 
 ***
-####uuid 
+#### uuid 
 ```
      /**
      * 最长32位的 uuid
@@ -1960,7 +1988,7 @@ function uuid($len=32){
 
 
 ***
-####防止mysql 重复插入 
+#### 防止mysql 重复插入 
 ```
 INSERT INTO marks (NAME,subject1,mark) (SELECT * FROM (SELECT 'kirito','maths',100) AS t WHERE NOT EXISTS (SELECT NAME FROM marks WHERE NAME='kirito' AND subject1='maths' LIMIT 1))
 
@@ -1968,7 +1996,7 @@ INSERT INTO marks (NAME,subject1,mark) (SELECT * FROM (SELECT 'kirito','maths',1
 ```
 
 ***
-####移动端经验
+#### 移动端经验
 ```
 禁止保存或拷贝图像
 
@@ -2014,14 +2042,14 @@ html {
 ```
 
 ***
-####nginx access_log 设置buffer
+#### nginx access_log 设置buffer
 ```
 access_log /data/wwwlogs/bxjtest.snewfly.com_nginx.log combined buffer=2k;
 
 ```
 
 ***
-####PHP trait 
+#### PHP trait 
 ```
 就是代码块的继承
 当前类成员覆盖trait的成员,trait覆盖基类的成员
@@ -2059,7 +2087,7 @@ $o->sayExclamationMark();//Hello World!
 
 
 ***
-####备忘，省得每次都查
+#### 备忘，省得每次都查
 ```
 iptables -I INPUT -p tcp -m tcp --dport 3306 -j ACCEPT
 
@@ -2068,7 +2096,7 @@ iptables -L -n
 ```
 
 ***
-####redis 允许外网链接
+#### redis 允许外网链接
 ```
 1、禁止所有的redis请求
 iptables -I INPUT -p TCP --dport 6379 -j DROP
@@ -2097,7 +2125,7 @@ redis-cli -h 127.0.0.1 -p 6379 -a foobared
 ```
 
 ***
-####mysql 修改host
+#### mysql 修改host
 ```
 mysql -u root –p
 mysql>use mysql;
@@ -2107,7 +2135,7 @@ mysql>select host, user from user;
 ```
 
 ***
-####将制定元素置于可视区内。在listview，scrollview非常有价值
+#### 将制定元素置于可视区内。在listview，scrollview非常有价值
 ```
 setTimeout(()=>{
           let e=document.getElementsByClassName('season_selected')[0]
@@ -2117,7 +2145,7 @@ setTimeout(()=>{
 
 
 ***
-####flex布局总结
+#### flex布局总结
 
 >http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html?utm_source=tuicool
 ###container 属性
@@ -2208,7 +2236,7 @@ stretch（默认值）：如果项目未设置高度或设为auto，将占满整
 
 
 ###建议优先使用这个属性，而不是单独写三个分离的属性，因为浏览器会推算相关值。
-####一个简单的例子
+#### 一个简单的例子
 ```js
 .tab-title-container{
     position: relative;
@@ -2266,13 +2294,13 @@ X5兼容写法
 
 
 ***
-####在 _onTouchMove中this变为此this
+#### 在 _onTouchMove中this变为此this
 ```
 this._onTouchMove = this._onTouchMove.bind(this);
 ```
 
 ***
-####nginx 控制上传文件大小
+#### nginx 控制上传文件大小
 ```
 http{} 加上
 client_max_body_size 5m;
@@ -2286,7 +2314,7 @@ APACHE 好像是LimitRequestBody
 ```
 
 ***
-####SecureCRT中文乱码解决方法
+#### SecureCRT中文乱码解决方法
 ```
 http://jingyan.baidu.com/article/948f59245be128d80ff5f9aa.html
 
@@ -2296,20 +2324,20 @@ http://jingyan.baidu.com/article/948f59245be128d80ff5f9aa.html
 
 
 ***
-####ios系统中元素被触摸时产生的半透明灰色遮罩怎么去掉
+#### ios系统中元素被触摸时产生的半透明灰色遮罩怎么去掉
 ```
 a,button,input,textarea{-webkit-tap-highlight-color: rgba(0,0,0,0;)} 
 ```
 ***
 
 ***
-####消除transition闪屏
+#### 消除transition闪屏
 ```
 .css{ /*设置内嵌的元素在 3D 空间如何呈现：保留 3D*/ -webkit-transform-style: preserve-3d; /*（设置进行转换的元素的背面在面对用户时是否可见：隐藏）*/ -webkit-backface-visibility: hidden; }
 ```
 ***
 
-####屏幕旋转的事件和样式
+#### 屏幕旋转的事件和样式
 ```
 window.onorientationchange = function(){ 
 switch(window.orientation){ 
@@ -2325,7 +2353,7 @@ break;
 ```
 
 ***
-####2>&1 linux命令详解
+#### 2>&1 linux命令详解
 ```
      command >out.file 2>&1 &
     是将标准出错重定向 2到标准输出 1，这里的标准输出已经重定向到了out.file文件，即将标准出错也输出到out.file文件中。最后一个& 是让该命令在后台执行。
@@ -2346,7 +2374,7 @@ command <&- 把关闭标准输入
 ```
 
 ***
-####jquery serialize 通过序列化表单值，创建 URL 编码文本字符串
+#### jquery serialize 通过序列化表单值，创建 URL 编码文本字符串
 ```
 var query  = $('.search-form').find('input').serialize();
 
@@ -2354,7 +2382,7 @@ $("div").text($("form").serialize());
 ```
 
 ***
-####ssh登录远程服务器
+#### ssh登录远程服务器
 ```
 ssh root@123.57.82.164
  q09307206
@@ -2362,14 +2390,14 @@ ssh root@123.57.82.164
 
 
 ***
-####快速加减的做法
+#### 快速加减的做法
 ```
         let order = await this.model("order").where({user_id: this.user.uid, pay_status: 1}).getField('order_amount');
         let orderTotal = eval(order.join("+"));
 ```
 
 ***
-####mysql配置相关查看
+#### mysql配置相关查看
 ```
 查看mysql全局变量，可以直接用SQLyog查看：工具---信息
 mysqladmin variables -uxsk -p
@@ -2378,7 +2406,7 @@ mysqld --verbose --help |grep -A 1 'Default options'
 ```
 
 ***
-####Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,
+#### Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,
 ```
   SET collation_connection = 'utf8_general_ci'
 
@@ -2392,7 +2420,7 @@ MySQL sneaks swedish in there sometimes for no sensible reason.
 ```
 
 ***
-####严格模式主要有以下限制。
+#### 严格模式主要有以下限制。
 ```
 变量必须声明后再使用
 函数的参数不能有同名属性，否则报错
@@ -2412,7 +2440,7 @@ arguments不会自动反映函数参数的变化
 ```
 
 ***
-####jquery ajaxForm表单提交
+#### jquery ajaxForm表单提交
 ```
 
 <form id="formToUpdate" method="post" enctype="multipart/form-data">
@@ -2436,7 +2464,7 @@ $("#formToUpdate").ajaxSubmit({
                 });
 ```
 ***
-####js技巧
+#### js技巧
 ```
 3.玩转数字 除了上一节介绍的之外，这里有更多的处理数字的技巧 
 0xFF; // Hex declaration, returns 255 
@@ -2476,7 +2504,7 @@ $("#formToUpdate").ajaxSubmit({
 ```
 
 ***
-####99%的人都理解错了HTTP中GET与POST的区别
+#### 99%的人都理解错了HTTP中GET与POST的区别
 ```
 GET和POST还有一个重大区别，简单的说：
 GET产生一个TCP数据包；POST产生两个TCP数据包。
@@ -2494,7 +2522,7 @@ GET产生一个TCP数据包；POST产生两个TCP数据包。
 ```
 
 ***
-####php 空对象
+#### php 空对象
 ```
 $obj=(object)null;
 $obj=(object)[];
@@ -2504,13 +2532,13 @@ $data->statusCode = '172004';
 var_dump($data);
 ```
 ***
-####service init.d 重启后不再/再启动
+#### service init.d 重启后不再/再启动
 ```
 chkconfig httpd off              #开机重启后，apache服务不再启动
 
 ```
 ***
-####SQLyog 设置CURRENT_TIMESTAMP
+#### SQLyog 设置CURRENT_TIMESTAMP
 ```
 在默认里填
 CURRENT_TIMESTAMP
@@ -2519,7 +2547,7 @@ ALTER TABLE  `li_wx_user` ADD  `update_time` TIMESTAMP ON UPDATE CURRENT_TIMESTA
 
 ```
 ***
-####随机数 （值得学习的思维）
+#### 随机数 （值得学习的思维）
 ```js
 var generateRandomAlphaNum=function (len) {
         var rdmString = '';
@@ -2529,7 +2557,7 @@ var generateRandomAlphaNum=function (len) {
 ```
 
 ***
-####将增删改查cookie操作都用一个函数搞定
+#### 将增删改查cookie操作都用一个函数搞定
 ```js
 var myCookie=function (cookieName, cookieValue, day) {
         var readCookie = function (name) {
@@ -2562,7 +2590,7 @@ var myCookie=function (cookieName, cookieValue, day) {
 ```
 
 ***
-####js timeUtil 时间格式化函数
+#### js timeUtil 时间格式化函数
 ```js
 压缩版
 var timeUtil={parseTime:function(format,timeStamp){var date=new Date(timeStamp||Date.now()),o={"M+":date.getMonth()+1,"D+":date.getDate(),"h+":date.getHours(),"m+":date.getMinutes(),"s+":date.getSeconds(),"S":date.getMilliseconds()},format=format||"YYYY-MM-DD hh:mm:ss";if(/(Y+)/.test(format)){format=format.replace(RegExp.$1,(date.getFullYear()+"").substr(4-RegExp.$1.length))}for(var k in o){if(new RegExp("("+k+")").test(format)){format=format.replace(RegExp.$1,RegExp.$1.length==1?o[k]:("00"+o[k]).substr((""+o[k]).length))}}return format},getTimeShow:function(time_str){var now=new Date();var date=new Date(time_str);var inter=parseInt((now.getTime()-date.getTime())/1000/60);if(inter==0){return"刚刚"}else{if(inter<60){return inter.toString()+"分钟前"}else{if(inter<60*24){return parseInt(inter/60).toString()+"小时前"}else{if(now.getFullYear()==date.getFullYear()){return this.parseTime("MM-DD hh:mm:ss",time_str)}else{return this.parseTime("YY-MM-DD hh:mm:ss",time_str)}}}}}};
@@ -2636,7 +2664,7 @@ var timeUtil={parseTime:function(format,timeStamp){var date=new Date(timeStamp||
 ```
 
 ***
-####gzip指令
+#### gzip指令
 ```
 http://www.kuqin.com/shuoit/20160805/352716.html
 
@@ -2683,7 +2711,7 @@ tar -jxvf a.tar.bz2
 ```
 
 ***
-####js 模块开发规范
+#### js 模块开发规范
 ```
 原文链接：http://caibaojian.com/toutiao/6194
 模块
@@ -2713,7 +2741,7 @@ tar -jxvf a.tar.bz2
 
 ```
 ***
-####解决 PHPExcel 长数字串显示为科学计数  
+#### 解决 PHPExcel 长数字串显示为科学计数  
 ```
     for ($i=0; $i < $count; $i++) {
       $index=strval($i+2);
@@ -2727,7 +2755,7 @@ tar -jxvf a.tar.bz2
 ref:http://blog.163.com/tfz_0611_go/blog/static/20849708420146172398214/
 ```
 ***
-####PHPExcel 设置宽度  
+#### PHPExcel 设置宽度  
 ```
     $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth('12');
     $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth('12');
@@ -2736,7 +2764,7 @@ ref:http://blog.163.com/tfz_0611_go/blog/static/20849708420146172398214/
 ref:http://blog.sina.com.cn/s/blog_92ca585801011lqs.html
 ```
 
-####sublime插件推荐
+#### sublime插件推荐
 ```
 Sublime Text3 插件：DocBlockr与javascript注释规范
 http://www.ithao123.cn/content-719950.html
@@ -2752,7 +2780,7 @@ SublimeCodeIntel
 
 
 ***
-####sublime 自定义代码片段
+#### sublime 自定义代码片段
 ```
 http://www.bluesdream.com/blog/sublime-text-snippets-function.html
 例如：
@@ -2859,7 +2887,7 @@ switch
 ```
 
 ***
-####当运用了闭包后，全局作用域内的方法没法调用闭包内的函数时候，可以用观察者模式，在闭包内监听
+#### 当运用了闭包后，全局作用域内的方法没法调用闭包内的函数时候，可以用观察者模式，在闭包内监听
 ```
 闭包内：
 $(document).on('refreshAttendance',function(e,search){
@@ -2896,7 +2924,7 @@ getAttendanceByDate(B_util.refreshDate());
 ```
 
 ***
-####js陷阱题
+#### js陷阱题
 ```
 <script type="text/javascript"> 
 var aColors = ["red", "green", "blue"]; 
@@ -3138,7 +3166,7 @@ function bar(a) {
 ```
 
 ***
-####php设置error_reporting(E_ALL) 还是无效的原因
+#### php设置error_reporting(E_ALL) 还是无效的原因
 ```
 ini文件配置问题。
 
@@ -3148,7 +3176,7 @@ error_reporting(E_ALL);
 
 
 ***
-####给项目添加POST参数的日志
+#### 给项目添加POST参数的日志
 ```
 
 if ($_SERVER['REQUEST_METHOD']=='POST')
@@ -3183,11 +3211,11 @@ location ~ .*\.(js|css)?$ {
 ```
 
 
-####webAPP中若要让软键盘弹出的时候某些按钮不跟着上浮，就必须保持它与表单的position都为relative，不能是absolute fixed之类的
+#### webAPP中若要让软键盘弹出的时候某些按钮不跟着上浮，就必须保持它与表单的position都为relative，不能是absolute fixed之类的
 
 
 ***
-####[算法]求出所有给出的数的排列组合
+#### [算法]求出所有给出的数的排列组合
 ```
 //求出所有给出的数的排列组合
 //个人解法，仅供参考，无标准答案
@@ -3228,7 +3256,7 @@ function collect(&$subArr,$pushArrString){
 ```
 
 ***
-####https和http同步session
+#### https和http同步session
 ```
 https域登录，获得sessionid，然后重定向到http,get请求里带上sessionid（加密），http域写入sessionid，重定向到http域登录成功页
 http://www.gy0929.com/wz/1312.html
@@ -3236,7 +3264,7 @@ http://www.gy0929.com/wz/1312.html
 ```
 
 ***
-####visibility hidden
+#### visibility hidden
 ```
 
 <a style="visibility: hidden;" href="">bajian2</a><!-- 占位hidden， 可应用于清楚浮动 -->
@@ -3244,7 +3272,7 @@ http://www.gy0929.com/wz/1312.html
 ```
 
 ***
-####setTimeout传参数
+#### setTimeout传参数
 ```
 var timer = setTimeout(function (timerInstance, timeoutId) {
     timerInstance.clear(timeoutId);
@@ -3252,7 +3280,7 @@ var timer = setTimeout(function (timerInstance, timeoutId) {
   }, delay, this, id);
 ```
 ***
-####sql 高级查询汇总 
+#### sql 高级查询汇总 
 ```
 http://aoxueshou.blog.163.com/blog/static/1002357142013817515604/
 http://www.cnblogs.com/yubinfeng/archive/2010/11/02/1867386.html
@@ -3302,7 +3330,7 @@ UPDATE `xsk_command` SET `begin_time`=DATE_ADD(now(),INTERVAL 10 SECOND), send_t
 ```
 
 ***
-####一些复杂的sql记录
+#### 一些复杂的sql记录
 ```
 每次查询limit个老师（一个老师含多个班级）
 SELECT a.*,b.`name`,b.`password`,b.`nickname`,b.`note` AS subject,c.`name` AS class  FROM manager_class_teacher a INNER JOIN manager_admin b ON a.`admin_id`=b.`id` LEFT JOIN manager_class c ON a.class_id=c.`id` WHERE a.admin_id IN ( SELECT * FROM( SELECT DISTINCT admin_id FROM manager_class_teacher WHERE school_id=? LIMIT ?,?)AS t)
@@ -3335,14 +3363,14 @@ SELECT a.*,b.`name`,b.`password`,b.`nickname`,b.`note` AS SUBJECT,c.`name` AS cl
 
 
 ***
-####获取运行脚本的目录（也可用于require的模块中）
+#### 获取运行脚本的目录（也可用于require的模块中）
 ```
 console.log(require('path').dirname(process.argv[1]));
 ```
 
 
 ***
-####事件的委托处理（Event Delegation）
+#### 事件的委托处理（Event Delegation）
 ```
 javascript的事件模型，采用"冒泡"模式，也就是说，子元素的事件会逐级向上"冒泡"，成为父元素的事件。
 利用这一点，可以大大简化事件的绑定。比如，有一个表格（table元素），里面有100个格子（td元素），现在要求在每个格子上面绑定一个点击事件（click），请问是否需要将下面的命令执行100次？
@@ -3364,14 +3392,14 @@ javascript的事件模型，采用"冒泡"模式，也就是说，子元素的�
 ```
 
 ***
-####h:i格式可以直接比大小
+#### h:i格式可以直接比大小
 ```
 "15:46">"23:00"
 false
 ```
 
 ***
-####语义版本号分为X.Y.Z三位
+#### 语义版本号分为X.Y.Z三位
 ```
 语义版本号分为X.Y.Z三位，分别代表主版本号、次版本号和补丁版本号。当代码变更时，版本号按以下原则更新。
 + 如果只是修复bug，需要更新Z位。
@@ -3379,7 +3407,7 @@ false
 + 如果有大变动，向下不兼容，需要更新X位。
 ```
 ***
-####mysql 字符串数字排序
+#### mysql 字符串数字排序
 ```
 return DB::connection('jxhd')->select('SELECT a.`student_id` AS studentID,a.`name` AS studentName,b.`type`,b.`time` AS datetime FROM manager_student a LEFT JOIN xsk_attendance b ON a.`device_id`=b.`device_id` AND DATE_FORMAT(b.time,\'%Y-%m-%d\') =? WHERE a.`class_id`=? GROUP BY a.`name` ORDER BY (studentID+0) ASC',[$date,$class_id]);
 http://www.111cn.net/database/mysql/55179.htm
@@ -3387,7 +3415,7 @@ http://www.111cn.net/database/mysql/55179.htm
 ```
 
 ***
-####Table的“min-height”属性
+#### Table的“min-height”属性
 ```
 需要对table元素里的td设置min-height属性，设置都没有效果。
 
@@ -3397,14 +3425,14 @@ http://www.111cn.net/database/mysql/55179.htm
 ```
 
 ***
-####JavaScript中字符串与Unicode编码的互相转换
+#### JavaScript中字符串与Unicode编码的互相转换
 ```
 code = 'a'.charCodeAt(0); // 97
 String.fromCharCode(97)//a
 ```
 
 ***
-####mysql中having的用法
+#### mysql中having的用法
 ```
 http://jingyan.baidu.com/article/425e69e6ddeebdbe14fc1678.html
 mysql中，当我们用到聚合函数，如sum，count后，又需要筛选条件时，having就派上用场了，因为WHERE是在聚合前筛选记录的，having和group by是组合着用的，下面通过实例介绍下用法
@@ -3417,7 +3445,7 @@ SELECT region, SUM(population), SUM(area)FROM bbcGROUP BY regionHAVING SUM(area)
 
 ```
 ***
-####viewport模板——通用
+#### viewport模板——通用
 ```
 <!-- <!DOCTYPE html>
 <html>
@@ -3441,7 +3469,7 @@ SELECT region, SUM(population), SUM(area)FROM bbcGROUP BY regionHAVING SUM(area)
 ```
 
 ***
-####webkit表单元素的默认外观怎么重置
+#### webkit表单元素的默认外观怎么重置
 ```
 通用
 .css{-webkit-appearance:none;}
@@ -3449,7 +3477,7 @@ SELECT region, SUM(population), SUM(area)FROM bbcGROUP BY regionHAVING SUM(area)
 ```
 
 ***
-####数组和对象都是引用传递
+#### 数组和对象都是引用传递
 ```
 b=c=[];
 []
@@ -3467,7 +3495,7 @@ typeof 'A'
 ```
 
 ***
-####欣赏别人的写法
+#### 欣赏别人的写法
 ```
 
     var createDots = function(){
@@ -3494,19 +3522,19 @@ nth-child快速实现table相间色 :nth-child(odd) 与 :nth-child(even)
 ```
 
 ***
-####去掉点击后控件的outline
+#### 去掉点击后控件的outline
 ```
 outline-style: none;
 ```
 
 ***
-####预加载资源
+#### 预加载资源
 ```
   <link rel="prefetch" href="/src/modules/composer/resize.js?v=6e953938-9cd1-4442-8be8-9e95d39203dd" />
 ```
 
 ***
-####获取文件大小
+#### 获取文件大小
 ```
 //jQ版float ,kb
 function getFileSize(id){
@@ -3526,7 +3554,7 @@ webkitRelativePath: ""
 ```
 
 ***
-####text-align:center
+#### text-align:center
 ```
  6、text-align:center 在块元素中用text-align来设置其中的文本对齐样式，这里设置为居中。其实text-align属性会影响到一个元素中所有内联内容的对齐样式，不仅仅是文本。还要记住，text-aligh属性只能用于块元素，如果直接用于内联元素（如<img>）就没有作用了。text-aligh属性值也可继承。例如<div>元素中的所有文本都在其他块元素中，如<h2>、<p>.但现在他们的对齐样式都改变了。这是因为这些块元素继承了<div>的text-align属性。区别是，不是<div>直接影响标题和段落（这些都是块元素）中的文本对齐样式，而是标题和段落继承了text-align属性值"center"，使它们自己的内容居中了。但是谨记并非所有的属性都是可以默认继承的，所以这并不会对所有的属性都起作用。
 
@@ -3534,7 +3562,7 @@ webkitRelativePath: ""
 ```
 
 ***
-####修改输入框placeholder文字默认颜色-webkit-input-placeholder
+#### 修改输入框placeholder文字默认颜色-webkit-input-placeholder
 ```
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
@@ -3542,15 +3570,15 @@ textarea::-webkit-input-placeholder {
 }
 ```
 ***
-####mysql查詢數據存儲位置
+#### mysql查詢數據存儲位置
 ```
 show global variables like "%datadir%";
 ```
 ***
-####span文字居中可以调节line-height
+#### span文字居中可以调节line-height
 
 ***
-####JS计算2个标准格式时间字符串的差 时间差
+#### JS计算2个标准格式时间字符串的差 时间差
 ```
  
 /*
@@ -3562,7 +3590,7 @@ function calStanderTimeDiff(t1,t2){
 }
 ```
 ***
-####JS 保留小数点后X位（四舍五入）
+#### JS 保留小数点后X位（四舍五入）
 ```
 (4.5).toFixed(1)
 "4.5"
@@ -3575,7 +3603,7 @@ function calStanderTimeDiff(t1,t2){
 ```
 
 ***
-####微信下载app（任何附件）的方式（安卓唤起自带浏览器下载）
+#### 微信下载app（任何附件）的方式（安卓唤起自带浏览器下载）
 ```
 设置 header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 适用于融云和自己的服务器
@@ -3584,7 +3612,7 @@ function calStanderTimeDiff(t1,t2){
 
 
 ***
-####自定义android版confirm依赖AL框架
+#### 自定义android版confirm依赖AL框架
 ```
 myConfirm('退出当前账号后不会删除任何历史数据，下次登录依然可以使用本账号。','取消','退出','',function(){
     alert(1);
@@ -3618,7 +3646,7 @@ myConfirm('退出当前账号后不会删除任何历史数据，下次登录依
 ```
 
 ***
-####js 字符或字符串出现次数  
+#### js 字符或字符串出现次数  
 ```
 function countSubstr(str,substr){
            var count;
@@ -3634,7 +3662,7 @@ function countSubstr(str,substr){
 ```
 
 ***
-####让php执行shell
+#### 让php执行shell
 ```
 system() 输出并返回最后一行shell结果。
 exec() 不输出结果，返回最后一行shell结果，所有结果可以保存到一个返回的数组里面。
@@ -3642,7 +3670,7 @@ passthru() 只调用命令，把命令的运行结果原样地直接输出到标
 ```
 
 ***
-####grep多个关键字“与”和“或
+#### grep多个关键字“与”和“或
 ```
 或操作
 grep -E '123|abc' filename
@@ -3653,7 +3681,7 @@ grep pattern1 files | grep pattern2
 ```
 
 ***
-####解决apache下重定向不执行
+#### 解决apache下重定向不执行
 ```
 public function auth_card_bxjtest()
   {
@@ -3674,7 +3702,7 @@ public function auth_card_bxjtest()
 ```
 
 ***
-####Jquery获取和修改img的src值的方法
+#### Jquery获取和修改img的src值的方法
 ```
 $("#imgId")[0].src;
 $("#imgId").attr('src',path); 
@@ -3682,7 +3710,7 @@ $("#imgId").attr('src',path);
 ```
 
 ***
-####当用curl下载文件的时候不能带\/这样的转义字符
+#### 当用curl下载文件的时候不能带\/这样的转义字符
 ```
 //正确
 $url='http://bxj242.snewfly.com/upload/wechat/card/voice/16-04-26/0.07610300146164359034.amr';
@@ -3693,14 +3721,14 @@ $url='http:\/\/10.169.117.7:9090\/upload\/wechat\/card\/voice\/16-04-26\/0.07610
 
 
 ***
-####Php函数前加@是什么意思  
+#### Php函数前加@是什么意思  
 ```
 @通常是用来抑制误输出的
 
 ```
 
 ***
-####PHP 获取post和get的全部参数
+#### PHP 获取post和get的全部参数
 ```
 echo $_SERVER["QUERY_STRING"];//get
 
@@ -3711,7 +3739,7 @@ $arr = $request->all();
 ```
 
 ***
-####CAP理论
+#### CAP理论
 ```
 CAP：任何分布式系统在可用性、一致性、分区容错性方面，不能兼得，最多只能得其二，因此，任何分布式系统的设计只是在三者中的不同取舍而已。
 C（一致性）：所有的节点上的数据时刻保持同步
@@ -3721,7 +3749,7 @@ P（分区容错）：系统应该能持续提供服务，即使系统内部有�
 ```
 
 ***
-####php获取毫秒级别的时间戳
+#### php获取毫秒级别的时间戳
 ```
     /**
      * 获取毫秒级别的时间戳
@@ -3737,7 +3765,7 @@ P（分区容错）：系统应该能持续提供服务，即使系统内部有�
 ```
 
 ***
-####函数的作用域是在定义的时候创建的，而不是在执行的时候创建的
+#### 函数的作用域是在定义的时候创建的，而不是在执行的时候创建的
 ```
 var aaa = "123";
 
@@ -3769,7 +3797,7 @@ Jquery具有词法作用域
 ```
 
 ***
-####object->post和get的全部参数
+#### object->post和get的全部参数
 ```
 function obj2param(obj){
             var param='?';
@@ -3813,14 +3841,14 @@ function obj2param(obj){
 
 
 ***
-####js 遍历object，array类似
+#### js 遍历object，array类似
 ```
 a={"a":"b","c":"d"};for(var i in a){console.log(i+'='+a[i])}
 
 ```
 
 ***
-####JS 取文本中间
+#### JS 取文本中间
 ```
   /**
    * 取文本中间
@@ -3843,7 +3871,7 @@ function getStringMiddle(str,left,right,returnWhole) {
 
 
 ***
-####jQuery 新增元素绑定方法
+#### jQuery 新增元素绑定方法
 ```
 
 $(document).on('click', '.banner-img', function () {
@@ -3853,7 +3881,7 @@ $(document).on('click', '.banner-img', function () {
 ```
 
 ***
-####jQuery学习之prop和attr的区别示例介绍
+#### jQuery学习之prop和attr的区别示例介绍
 
 ```
 
@@ -3867,14 +3895,14 @@ $('#lll').prop('disabled') //判断LLL元素是否含有disable
 ```
 
 ***
-####JS 用正则替换【全部】
+#### JS 用正则替换【全部】
 ```
 content.replace(/\r\n/g, '<br/>');
 data=data.replace(/\d+-\d+-(\d\d) \d\d:\d\d:\d\d/g, "$1号");
 ```
 
 ***
-####js 数组的key value添加
+#### js 数组的key value添加
 ```
 var a=[];a['111']=11; a['22']=22222; a['111']
 a.push(1111)//顺序添加 shift移除末尾
@@ -3893,7 +3921,7 @@ document.write(mycars[x]+x + "<br />")
 ```
 
 ***
-####AL 获取当前section和article的id
+#### AL 获取当前section和article的id
 ```
 
 function getCurrentActiveSectionId() {
@@ -3907,14 +3935,14 @@ function getCurrentActionArticleId() {
 ```
 
 ***
-####post和get的参数最好加上urlencode
+#### post和get的参数最好加上urlencode
 ```
 http://binma85.iteye.com/blog/850042
 echo urlencode('&');
 
 ```
 ***
-####mysql的ERROR 1129 (00000): is blocked because of many connection errors
+#### mysql的ERROR 1129 (00000): is blocked because of many connection errors
 ```
 whereis mysqladmin
 /usr/bin/mysqladmin flush-hosts -uroot -psxxxxx
@@ -3955,7 +3983,7 @@ class TestController extends BaseController{
 [百度地图圆形区域类](http://developer.baidu.com/map/reference/index.php?title=Class:%E8%A6%86%E7%9B%96%E7%89%A9%E7%B1%BB/Circle)
 
 ***
-####StrokeDashArray/
+#### StrokeDashArray/
 ```
 StrokeDashArray 描述Shape类型轮廓的虚线和间隔的样式，写法为StrokeDashArray="str"。str是虚线和间隙的值的集合，奇数项为虚线长度；偶数项为间隙长度。例如：StrokeDashArray="2,1",则表示虚线长度为2，间隔为1. StrokeDashArray="2" 则表示虚线和间隔都是2
 
@@ -3965,7 +3993,7 @@ StrokeDashArray 描述Shape类型轮廓的虚线和间隔的样式，写法为St
 
 
 ***
-####属性变化的动画效果
+#### 属性变化的动画效果
 [属性变化的动画效果](http://www.dglives.com/effect/9%E7%A7%8D%E7%AE%80%E5%8D%95%E6%98%93%E7%94%A8%E7%9A%84css3%E8%BF%87%E6%B8%A1%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C)
 ```
 参考anime.html
@@ -3973,7 +4001,7 @@ StrokeDashArray 描述Shape类型轮廓的虚线和间隔的样式，写法为St
 ```
 
 ***AL 动态添加的也可以绑定
-####
+#### 
 ```
 //动态添加的也可以绑定
     $(document).on(A.options.clickEvent, '.control', function(){
@@ -3991,7 +4019,7 @@ StrokeDashArray 描述Shape类型轮廓的虚线和间隔的样式，写法为St
 [js判断移动端是否安装某款app的多种方法](http://www.jb51.net/article/76585.htm)
 但是，但是....还是有奇思淫巧滴，启动app需要的时间较长，js中断时间长，如果没安装，js瞬间就执行完毕。直接上代码吧！
 ***
-####获取url参数
+#### 获取url参数
 ```
 function getRequest() {
 var url = location.search; //获取url中"?"符后的字串 
@@ -4034,7 +4062,7 @@ function otherDevice(){
 ```
 
 ***
-####float元素 toggle 平齐
+#### float元素 toggle 平齐
 ```
 <div style="vertical-align: baseline;height:30px;line-height: 30px;"> <strong style="float: left;">上课禁用</strong><span id="toggle_school_manage" style="float: right;" class="toggle classic" data-role="toggle" data-on="开" data-on-value="1" data-off="关" data-off-value="0"></span><br/>
       </div><hr style="height:1px;border:none;border-top:1px dashed #0066CC;margin-top: 3px;" />
@@ -4043,7 +4071,7 @@ function otherDevice(){
 [html中hr的各种样式使用](http://jingyan.baidu.com/article/af9f5a2d37342c43140a4500.html)
 
 ***
-####jquery 获取元素id（任何属性）和AL获取当前section和article
+#### jquery 获取元素id（任何属性）和AL获取当前section和article
 ```
 $('section.active').attr("id")
 
@@ -4058,7 +4086,7 @@ $('#section_cardcenter article.active').attr("id")
 
 
 ***
-####AL Toggle获取状态 和设置
+#### AL Toggle获取状态 和设置
 ```
 
 //@return 1=true,0=false
@@ -4092,7 +4120,7 @@ function setToggleState(toggleId,state){
 ```
 
 ***
-####AL select选择问题
+#### AL select选择问题
 ```
 基本都是没法100%宽度导致点不到
 select {width: 100%}
@@ -4100,7 +4128,7 @@ select {width: 100%}
 ```
 
 ***
-####document.createElement()用法
+#### document.createElement()用法
 见createElement.html
 [document.createElement()用法](http://www.jb51.net/article/34740.htm)
 
@@ -4108,7 +4136,7 @@ select {width: 100%}
 
 
 ***
-####微信内下载app提示在其他浏览器打开
+#### 微信内下载app提示在其他浏览器打开
 ```
 
 http://caibaojian.com/weixin-tip.html
@@ -4121,7 +4149,7 @@ B_util.is_weixin=(navigator.userAgent.toLowerCase()).match(/MicroMessenger/i) ==
 ```
 
 ***
-####php插入数组的简便方法
+#### php插入数组的简便方法
 ```
 $arr=[];
 for ($i=0; $i <5 ; $i++) { 
@@ -4131,7 +4159,7 @@ print_r($arr);
 
 ```
 ***
-####shell脚本参数
+#### shell脚本参数
 ```
 shell脚本参数可以任意多，但只有前9各可以被访问，使用shift命令可以改变这个限制。参数从第一个开始，在第九个结束。
 $0 程序名字
@@ -4146,7 +4174,7 @@ $?  最近使用命令的退出状态
 ```
 
 ***
-####nginx负载均衡
+#### nginx负载均衡
 ```
 http://www.cnblogs.com/liping13599168/archive/2011/04/15/2017369.html
 
@@ -4155,7 +4183,7 @@ http://yourname:password@git.oschina.net/name/project.git
 
 ```
 ***
-####setTimeout延时0毫秒的作用
+#### setTimeout延时0毫秒的作用
 ```
 http://www.cnblogs.com/winner/archive/2008/11/15/1334077.html
 http://www.cnblogs.com/silin6/p/4333999.html
@@ -4165,7 +4193,7 @@ http://www.cnblogs.com/silin6/p/4333999.html
 ```
 
 ***
-####git操作总结
+#### git操作总结
 ```
 安装git
 sudo apt-get install git-core
@@ -4203,14 +4231,14 @@ git reset --hard origin/master
 ```
 
 ***
-####git push 免输入密码
+#### git push 免输入密码
 ```
 http://my.oschina.net/silentboy/blog/217766
 ```
 
 
 ***
-####data-scroll="verticle|horizontal|scroll":刷新
+#### data-scroll="verticle|horizontal|scroll":刷新
 ```
       //当scroll初始化会进入此监听
 $('#index_article').on('scrollInit', function(){
@@ -4233,14 +4261,14 @@ $('#index_article').on('scrollInit', function(){
 
 
 ***
-####有空可以瞧瞧的前端资源教程
+#### 有空可以瞧瞧的前端资源教程
 ```
 http://www.shejidaren.com/category/css/css-learn
 ```
 
 
 ***
-####html5 audio
+#### html5 audio
 ```
 
 html5 audio音频播放全解析
@@ -4255,13 +4283,13 @@ http://www.cnblogs.com/leinov/p/3701951.html
 
 
 ***
-####bone首页也要带上page out 的class，否则返回会错版
+#### bone首页也要带上page out 的class，否则返回会错版
 ```
   <div  id="pageHome" class="page out" >
 ```
 
 ***
-####bone ajax加载 需要 data-ajax="false"  且href="qrcode/wifisettings.html" 为相对同域名路径
+#### bone ajax加载 需要 data-ajax="false"  且href="qrcode/wifisettings.html" 为相对同域名路径
 ```
         <div style="margin: 8px"><a href="qrcode/wifisettings.html" data-ajax="false"  type="button" style=" -webkit-border-radius:7px;" class="am-btn am-btn-secondary am-btn-block ">伴学机配置wifi</a></div>
      
@@ -4269,7 +4297,7 @@ http://www.cnblogs.com/leinov/p/3701951.html
 
 
 ***
-####字符串转json对象
+#### 字符串转json对象
 ```
 var json='{"code":"S000000","data":[{"deviceId":"ss333322$$222","pages":500,"timecost":3600,"ts":"2015-12-01","warning":50,"words":30000},{"deviceId":"ss333322$$222","pages":500,"timecost":3600,"ts":"2015-12-02","warning":50,"words":30000}],"msg":""}';
 var obj = eval("("+json+")");
@@ -4285,20 +4313,20 @@ json对象转json字符串：JSON.stringify(jsonObj);
 ```
 
 ***
-####把github 当服务器使用
+#### 把github 当服务器使用
 ```
 http://rawgit.com/
 ```
 
 ***
-####js刷新当前页面
+#### js刷新当前页面
 ```
 location.reload() 
 ```
 
 
 ***
-####不允许bone ajax加载bug data-ajax="false" 
+#### 不允许bone ajax加载bug data-ajax="false" 
 ```
 <a style="float: right;margin: 1px" class="am-btn-sm am-btn-danger" data-ajax="false" href="http://lamp.snewfly.com/hzsb_login_page_zhihui">
         <i class="am-icon-exchange am-text-default"></i>
@@ -4308,7 +4336,7 @@ location.reload()
 ```
 
 ***
-####特殊字符过滤
+#### 特殊字符过滤
 ```
 
   B_util.wordFilter=function(t){
@@ -4347,7 +4375,7 @@ location.reload()
 ```
 
 ***
-####js 和php版正则匹配替换
+#### js 和php版正则匹配替换
 ```
 js:
 var string = '{"code":"S000000","data":[{"deviceId":"ss333322$$222","pages":500,"timecost":3600,"ts":"2015-12-01","warning":50,"words":30000},{"deviceId":"ss333322$$222","pages":500,"timecost":3600,"ts":"2015-12-02","warning":50,"words":30000}],"msg":""}'; string.replace(/(\d+-\d+)-/g,'');
@@ -4383,13 +4411,13 @@ echo preg_replace($pattern, $replacement, $string);
 ```
 
 ***
-####并发编程（四）：也谈谈数据库的锁机制
+#### 并发编程（四）：也谈谈数据库的锁机制
 ```
 http://www.2cto.com/database/201403/286730.html
 ```
 
 ***
-####mysql in 和not in
+#### mysql in 和not in
 ```
 SELECT * FROM t_userinfo WHERE userphone IN ('13714876874','18609944488') ORDER BY FIELD(userphone ,'13714876874','18609944488')
 出来的顺序就是指定的顺序了
@@ -4398,13 +4426,13 @@ http://www.jb51.net/article/25639.htm
 ```
 
 ***
-####CSS3 transition 属性
+#### CSS3 transition 属性
 ```
 http://www.w3chtml.com/css3/properties/transition/transition.html
 ```
 
 ***
-####
+#### 
 ```
 http://www.ituring.com.cn/article/48461
 
@@ -4515,13 +4543,13 @@ function loadCss(a,b){var c=document.getElementById(b),d=document.getElementsByT
 ```
 
 ***
-####mobilebone.js-mobile移动web APP单页切换骨架
+#### mobilebone.js-mobile移动web APP单页切换骨架
 ```
 http://www.zhangxinxu.com/wordpress/2014/10/mobilebone-js-mobile-web-app-core/
 ```
 
 ***
-####jq模拟链接被点击（或者按钮）
+#### jq模拟链接被点击（或者按钮）
 ```
 链接只能用：$('#go123').get(0).click();
 
@@ -4530,14 +4558,14 @@ http://www.zhangxinxu.com/wordpress/2014/10/mobilebone-js-mobile-web-app-core/
 ```
 
 ***
-####php接收键盘输入数据
+#### php接收键盘输入数据
 ```
  $a=fgets(STDIN);//接收键盘数据
  echo $a;
 ```
 
 ***
-####js 反射
+#### js 反射
 ```
 见jsreflect.html
 http://blog.csdn.net/liuzizi888/article/details/6632434
@@ -4545,7 +4573,7 @@ http://blog.csdn.net/liuzizi888/article/details/6632434
 ```
 
 ***
-####封装AM Alert框
+#### 封装AM Alert框
 ```
 HTML:
 
@@ -4582,7 +4610,7 @@ function myAlert(value){
 
 
 ***
-####封装AM confirm框
+#### 封装AM confirm框
 ```
 HTML:
 
@@ -4650,7 +4678,7 @@ JS:
 ```
 
 ***
-####jq判断元素是否存在某类
+#### jq判断元素是否存在某类
 ```
 $(selector).hasClass(class);
 $('#toggle_attendance').addClass('active');
@@ -4659,14 +4687,14 @@ $('#toggle_attendance').removeClass('active');
 ```
 
 ***
-####php回调函数
+#### php回调函数
 ```
 http://www.nowamagic.net/librarys/veda/detail/1509
 http://myceo.blog.51cto.com/2340655/725411/
 ```
 
 ***
-####AL框架中radio
+#### AL框架中radio
 ```
 
       <form class="form-group">
@@ -4692,7 +4720,7 @@ http://myceo.blog.51cto.com/2340655/725411/
 
 
 ***
-####table遍历和删除
+#### table遍历和删除
 ```
 //遍历 整个table每行没咧
 function GetInfoFromTable(tableid) {
@@ -4724,10 +4752,10 @@ function GetInfoFromTable(tableid) {
 
 
 ***
-####delete  js delete可以删除对象属性及变量
+#### delete  js delete可以删除对象属性及变量
 http://www.jb51.net/article/54247.htm
 ***
-####验证码发送
+#### 验证码发送
 ```
 var btn_sendSMS_obj=$('#btn_sendSMS');//发送验证码的对象
 var wait=0;//等待时间 
@@ -4747,7 +4775,7 @@ setTimeout('count()',1000);
 ```
 ***
 
-####弹出数字键盘
+#### 弹出数字键盘
 
 ```
 <input id="phone" type="tel" class="am-form-field" placeholder="手机号" >
@@ -4757,7 +4785,7 @@ setTimeout('count()',1000);
 ```
 
 ***
-####ul listview删除全部不需要遍历再remove，可以直接将整个ul内html只为空
+#### ul listview删除全部不需要遍历再remove，可以直接将整个ul内html只为空
 ```
 var ul=$('#lv_device'); ul.html('');//先清空ul
 ```
@@ -4783,7 +4811,7 @@ sendSMS();
 
 函数一定要加function 否则无法使用
 ***
-####jQuery常用方法一览
+#### jQuery常用方法一览
 http://www.cnblogs.com/linzheng/archive/2010/10/14/1851816.html
 ***
 ```
@@ -4792,7 +4820,7 @@ checkCode.length
 ***
 id绝对不能相同，不然很容易造成某些不易察觉的错误
 ***
-####常见jq属性操作
+#### 常见jq属性操作
 ```
 $('#submitMyRec').attr("disabled", true);
 
@@ -4807,7 +4835,7 @@ $('#recList').append(content);
 $('#bindPhone').removeAttr('href');
 ```
 ***
-####ajax 
+#### ajax 
 ```
 $.ajax({
 url:"/wechat/queryMyRec",
@@ -4842,7 +4870,7 @@ alert('服务器连接失败，请稍后重试');
 
 
 ***
-####ajax_get 封装终极版，统一请求，解耦处理数据（订阅者模式，模板方法、js回调）
+#### ajax_get 封装终极版，统一请求，解耦处理数据（订阅者模式，模板方法、js回调）
 ```
       /*
         * by hgxbajian 15-11-28
@@ -4887,7 +4915,7 @@ alert('服务器连接失败，请稍后重试');
 ```
 
 ***
-####ajax_post 封装终极版，统一请求，解耦处理数据（订阅者模式，模板方法、js回调）
+#### ajax_post 封装终极版，统一请求，解耦处理数据（订阅者模式，模板方法、js回调）
 ```
 
       /*
@@ -4956,7 +4984,7 @@ setTimeout('time()',1000);
 } 
 ```
 ***
-####时间格式化
+#### 时间格式化
 
 ```
 var d=new Date(date); 
@@ -4964,7 +4992,7 @@ var formatdate=d.getMonth()+"月"+d.getDay()+"日 "+d.getHours()+"时"+d.getMinu
 
 ```
 ***
-####jq ajax 解析json中的数组
+#### jq ajax 解析json中的数组
 
 ```
 $.each(data.data, function(i, item) {
@@ -4991,13 +5019,13 @@ switch(n)
 ```
 
 ***
-####表单只能输入整数
+#### 表单只能输入整数
 ```
 onkeyup="value=value.replace(/[^\d]/g,'')" 
 <input type="text" name="Money" id="Money" placeholder="输入整数提现金额" onkeyup="value=value.replace(/[^\d]/g,'')"  >
 ```
 ***
-####jq xml解析并运用
+#### jq xml解析并运用
 ```
 
 //经纬度转实际地址
@@ -5029,7 +5057,7 @@ A.showToast('网络错误');
 ```
 
 ***
-####百度地图相关
+#### 百度地图相关
 ```
 //当数组为空时定位到深圳
 function ShenZhen () {
@@ -5095,7 +5123,7 @@ map.openInfoWindow(infoWindow,point); //开启信息窗口
 ```
 
 ***
-####别人问我的正则问题
+#### 别人问我的正则问题
 ```
 1、
 https://coding.net/u/LDCN/p/LD/git/tree/master/1C4088BA/trunk/DesomodGaren
@@ -5105,7 +5133,7 @@ https://coding.net/u/LDCN/p/LD/git/tree/master/DesomodGaren
 
 LDCN，LD，DesomodGare是我要的
 LDCN，LD，DesomodGare，1C4088BA这几个位置的内容不是固定的
-#####解决：
+#### #解决：
 https://coding.net/u/(.*?)/p/(.*?)/git/tree/master/(.*/trunk/)?(.*)
 
 2、
@@ -5132,7 +5160,7 @@ print_r($re);
 ```
 
 ***
-####AL框架中listview之类的DOM操作后要refresh下，否则scroller会出问题
+#### AL框架中listview之类的DOM操作后要refresh下，否则scroller会出问题
 ```
 //一般当Article为refresh组件的时候，都是通过监听refresh初始化事件（refreshInit）而不是监听articleload或者articleshow事件，因为前者通常比后者晚触发，所以如果需要异步加载数据可能会出现refresh组件尚未初始化的情况，所以一般建议在refreshInit中执行注入等操作。
 //当refresh初始化会进入此监听
@@ -5156,7 +5184,7 @@ refresh.refresh();//当scroll区域有dom结构变化需刷新
 
 
 ***
-####AL:section间传参数,注意.html?，没有#
+#### AL:section间传参数,注意.html?，没有#
 ```
 var li='<li href="section_device_main.html?id=1" data-toggle="section"><div class="img appimg"><img class="am-circle" src="http://mhfm4.us.cdndm5.com/19/18034/20150409110918_180x240_10.jpg" width="60px" height="60px" /></div><i class="icon-color-blue ricon iconfont iconline-arrow-right"></i><div class="text">设备Aa<small>已关机<br/>电量 | 音量</small></div> </li>';
 
@@ -5169,13 +5197,13 @@ A.showToast('参数id的值为：'+params.id);
 
 
 ***
-####真机web调试
+#### 真机web调试
 ```
 https://github.com/jieyou/remote_inspect_web_on_real_device?utm_campaign=email_admin&utm_source=trigger-email&utm_medium=email#%E8%B0%83%E8%AF%95android-app%E9%87%8C%E7%9A%84webview
 ```
 
 ***
-####AL框架中点击事件不要使用JQ的，手机上会出先点击难以捕捉问题。使用框架自带的：
+#### AL框架中点击事件不要使用JQ的，手机上会出先点击难以捕捉问题。使用框架自带的：
 ```
 //选择头像
 $('.head-img').on(A.options.clickEvent, function(){
@@ -5192,7 +5220,7 @@ return false;
 ```
 
 ***
-####获得当前时间 格式06-26 20:23:50
+#### 获得当前时间 格式06-26 20:23:50
 ```
 
 /**
@@ -5241,7 +5269,7 @@ return curDateTime;
 ```
 
 ***
-####返回当前十位时间戳 string
+#### 返回当前十位时间戳 string
 ```
 function getCurTs(){return (Date.now()+'').substr(0,10);}
 parseInt(Date.now()/1000)
@@ -5249,7 +5277,7 @@ parseInt(Date.now()/1000)
 ```
 
 ***
-####返回当天0点时间戳 十三位
+#### 返回当天0点时间戳 十三位
 ```
 function getZeroTs(){
 var today = new Date();
@@ -5264,7 +5292,7 @@ function getZeroTs(){var a=new Date;return a.setHours(0),a.setMinutes(0),a.setSe
 ```
 
 ***
-####web 融云使用
+#### web 融云使用
 ```
 //初始化，传入key
 RongIMClient.init(RongKey);
@@ -5379,7 +5407,7 @@ timeoutHandler=setTimeout("closeShowCommand()",SHOWMSG_TIME);
 ```
 
 ***
-####highchart使用
+#### highchart使用
 ```
 /**
 * @param data，欲处理原始数据
@@ -5461,7 +5489,7 @@ series:data
 
 
 ***
-####jq <div> \span 赋值 input
+#### jq <div> \span 赋值 input
 ```
 $('#sp').val();//
 $('#sp').html();
@@ -5473,7 +5501,7 @@ http://blog.sina.com.cn/s/blog_70491fc60100t5kw.html
 
 
 ***
-####获取选中的单选按钮
+#### 获取选中的单选按钮
 ```
 <label class="label-right" id="radio_group_sex">
 	<a href="#" data-role="radio">
@@ -5492,14 +5520,14 @@ var volume=$('#select_volume').find('input[name="volume"]:checked').val();//效�
 ```
 
 ***
-####radio 设置选中
+#### radio 设置选中
 ```
 $('#male').attr("checked",true);
 
 ```
 
 ***
-####select 默认提示设置&禁止选择
+#### select 默认提示设置&禁止选择
 ```
 <div data-role="select" class="card noborder nopadding">
 	<select placeholder="选择按键3号码">
@@ -5513,7 +5541,7 @@ $('#male').attr("checked",true);
 ```
 
 ***
-####al中不要出现href="#",这会变成返回上一页的
+#### al中不要出现href="#",这会变成返回上一页的
 ```
 直接不要写href
 <a data-role="radio">
@@ -5525,7 +5553,7 @@ $('#male').attr("checked",true);
 ```
 
 ***
-####jq设置radio选中，
+#### jq设置radio选中，
 ```
 $('#male').prop("checked",true);
 不要用下面的，会出毛病的
@@ -5533,7 +5561,7 @@ $('#male').attr("checked",true);
 
 ```
 ***
-####设置 获取元素自定义属性
+#### 设置 获取元素自定义属性
 ```
   img.setAttribute('mId','bajianid');
   img.getAttribute('mId');
@@ -5541,7 +5569,7 @@ $('#male').attr("checked",true);
 ```
 
 ***
-####自定义一个select添加器
+#### 自定义一个select添加器
 ```
 ace chosen update:
 $('#select_province').trigger("chosen:updated")
@@ -5573,7 +5601,7 @@ select.options.add(varItem);
 ```
 
 ***
-####如果select选项中存在指定text，将其设置为选中
+#### 如果select选项中存在指定text，将其设置为选中
 ```
 
         /*
@@ -5621,7 +5649,7 @@ select.options.add(varItem);
 ```
 
 ***
-####判断select选项中 是否存在Value="paraValue"的Item
+#### 判断select选项中 是否存在Value="paraValue"的Item
 ```
 
         /*
@@ -5642,7 +5670,7 @@ select.options.add(varItem);
 ```
 
 ***
-####判断select选项中 是否存在Value="paraValue"的Item
+#### 判断select选项中 是否存在Value="paraValue"的Item
 ```
 
         /*
@@ -5684,20 +5712,20 @@ select.options.add(varItem);
 
 
 ***
-####select操作大全
+#### select操作大全
 ```
 http://www.cnblogs.com/Herist/archive/2007/09/24/903890.html
 
 ```
 
 ***
-####删除指定index的数组元素
+#### 删除指定index的数组元素
 ```
 arr.splice(1);//删除指定index的数组元素
 ```
 
 ***
-####js支持类似重载的调用方法
+#### js支持类似重载的调用方法
 ```
 <!DOCTYPE html>
 <html>
@@ -5723,7 +5751,7 @@ myfun("arg2","arg2","arg2","arg2");
 ```
 
 ***
-####js 回调函数
+#### js 回调函数
 ```
 http://blog.csdn.net/lulei9876/article/details/8494337
 
@@ -5773,7 +5801,7 @@ function test()
 ```
 
 ***
-####php 保存同时上传多个文件
+#### php 保存同时上传多个文件
 ```
 // print_r($_FILES);
 // exit();Array
