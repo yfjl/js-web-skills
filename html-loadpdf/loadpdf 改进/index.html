@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="utf-8">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>loadpdf</title>
+<!-- <script src="es6-polyfill.js"></script> -->
+<script src="./pdf.min.js"></script>
+<!-- <script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script> -->
+  <script src="./system.js"></script>
+  <!-- <script src="../../node_modules/systemjs/dist/system.js"></script> -->
+  <!-- <script src="../../systemjs.config.js"></script> -->
+  
+  <!-- <script src="hello.js"></script> -->
+    <style>
+        canvas{
+            width:80%;
+            max-width: 720px;
+            min-width: 400px;
+        }
+    </style>
+</head>
+
+<body style="text-align: center;">
+<label id="tip"></label>
+<!-- <canvas id="the-canvas"></canvas> -->
+</body>
+<script type="text/javascript">
+
+function getRequest(){var c,d,a=location.search,b=new Object;if(-1!=a.indexOf("?"))for(c=a.substr(1),strs=c.split("&"),d=0;d<strs.length;d++)b[strs[d].split("=")[0]]=decodeURIComponent(strs[d].split("=")[1]);return b}
+
+
+var urlParam=getRequest();
+var url=urlParam['url'];
+if (!url) {
+  document.writeln('no url params')
+}
+	// If absolute URL from the remote server is provided, configure the CORS
+// header on that server.
+// var url = 'http://sdp.hzsb365.com/upload/resumes/2017-09-14/r1505379490106548.pdf';
+// var url = 'http://cdn.mozilla.net/pdfjs/helloworld.pdf';
+
+// Disable workers to avoid yet another cross-origin issue (workers need
+// the URL of the script to be loaded, and dynamically loading a cross-origin
+// script does not work).
+// PDFJS.disableWorker = true;
+
+// The workerSrc property shall be specified.
+PDFJS.workerSrc = './pdf.worker.min.js';
+tip.innerHTML="加载中..."
+// Asynchronous download of PDF
+var loadingTask = PDFJS.getDocument(url);
+loadPage()
+function loadPage(){
+  loadingTask.promise.then(function(pdf) {
+  console.log('PDF loaded',pdf);
+  // window.pdf=pdf
+  for (var i = 1; i <= pdf.numPages; i++) {
+    (function(i){
+      var canvas= document.createElement('canvas');
+      var div= document.createElement('div');
+      div.innerHTML='- '+i+' -'
+      canvas.id     = "canvas_"+i;
+
+      document.body.appendChild(canvas);
+      document.body.appendChild(div);
+
+    pdf.getPage(i).then(function(page) {
+    console.log('Page loaded');
+    
+    var scale = 1.5;
+    var viewport = page.getViewport(scale);
+
+    // Prepare canvas using PDF page dimensions
+    // var canvas = document.getElementById('the-canvas');
+    var context = canvas.getContext('2d');
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+
+    // Render PDF page into canvas context
+    var renderContext = {
+      canvasContext: context,
+      viewport: viewport
+    };
+    var renderTask = page.render(renderContext);
+    tip.innerHTML=""
+    renderTask.then(function () {
+      console.log('Page rendered');
+    });
+  })
+    })(i)
+  }
+
+}, function (reason) {
+  // PDF loading error
+  console.error(reason);
+  document.writeln(reason)
+});
+}
+
+</script>
+</html>

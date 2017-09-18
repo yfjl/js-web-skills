@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<title></title>
+</head>
+<body>
+
+	<form id="form1">
+		<input id="file" type="file"/>
+		<input id="user_name" value="黄桂旋"></input>
+		<input id="sex" value="1"></input>
+		<input id="highest_education" value="本科"></input>
+		<input id="work_age" value="4"></input>
+		<input id="city" value="深圳市"></input>
+		<input id="email" value="313066164@qq.com"></input>
+		<input id="phone" value="13714876874"></input>
+	</form>
+
+	<button id="upic" type="button">upic</button>
+	<button id="upic2" type="button">upic2</button>
+	<button id="upic3" type="button">upic3</button>
+
+
+
+	<script src="http://7xkaou.com2.z0.glb.qiniucdn.com/jquery-2.1.4.min.js"></script>
+	<!-- <script src="http://static.snewfly.com/zepto.min.js"></script> -->
+	<!-- <script type="text/javascript" src="http://static.snewfly.com/myajax1.3.min.js?30"></script> -->
+	<script type="text/javascript" src="http://old.static.hzsb365.com/myajax1.5.min.js"></script>
+	<script type="text/javascript" src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
+	<script type="text/javascript">
+
+
+
+$('#upic').click(function(){
+	var formData = new FormData();
+formData.append('file', $('#file')[0].files[0]);
+
+	$.ajax({
+			type:"POST",
+			url:'http://sdp.hzsb365.com/api/v1/user/upload_avatar',
+			headers:{
+				"Authorization":'f55147d3c2602209caad0861fc425286',
+			},
+			data: formData,
+            processData: false,
+            contentType: false,
+			success: function(data){
+				console.log('success',JSON.stringify(data));
+			},
+			error: function(data){
+				console.error(JSON.stringify(data));
+
+			}
+		});
+});
+
+
+$('#upic2').click(function(){
+	var formData = new FormData();
+formData.append('file', $('#file')[0].files[0]);
+
+	$.ajax({
+			type:"POST",
+			url:'http://sdp.hzsb365.com/api/v1/user/upload_attachment_resume',
+			headers:{
+				"Authorization":'f55147d3c2602209caad0861fc425286',
+			},
+			data: formData,
+            processData: false,
+            contentType: false,
+			success: function(data){
+				console.log('success',JSON.stringify(data));
+			},
+			error: function(data){
+				console.error(JSON.stringify(data));
+
+			}
+		});
+});
+
+
+$('#upic3').click(function(){
+	var formData = new FormData();
+formData.append('file', $('#file')[0].files[0]);
+formData.append('user_name', $('#user_name').val());
+formData.append('sex', $('#sex').val());
+formData.append('highest_education', $('#highest_education').val());
+formData.append('work_age', $('#work_age').val());
+formData.append('city', $('#city').val());
+formData.append('email', $('#email').val());
+formData.append('phone', $('#phone').val());
+formData.append('work_expricnce', '[{"company":"思路飞扬x","job":"后台开发x","time_begin":"2017-01","time_end":"至今x","work_content":"主要负责XXX工作x"},{"company":"思路飞扬2x","job":"后台开发2x","time_begin":"2016-01","time_end":"2017-01","work_content":"主要负责XXX工作x"}]');
+formData.append('education_expricnce', '[{"school":"深圳大学x","major":"通信工程x","graduated_at":"2017-08","education":"本科x"}]');
+	$.ajax({
+			type:"POST",
+			url:'http://sdp.hzsb365.com/api/v1/user/upload_online_resume',
+			headers:{
+				"Authorization":'f55147d3c2602209caad0861fc425286',
+			},
+			data: formData,
+            processData: false,
+            contentType: false,
+			success: function(data){
+				console.log('success',JSON.stringify(data));
+			},
+			error: function(data){
+				console.error(JSON.stringify(data));
+
+			}
+		});
+});
+
+
+</script>
+</body>
+</html>

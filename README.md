@@ -22,6 +22,14 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 ```
 
 ***
+####  当使用strpos 或者strstr等查找字符串的时候，一定要两个都是字符串，不能有整形等
+```
+var_dump(strstr($pre,strval($obj->activities[0]->id)));//正确
+var_dump(strstr($pre,$obj->activities[0]->id));//错误，诡异
+以上第二种写法 在php7会出现诡异的错误
+```
+
+***
 ####  调研了下直播 播放器方案
 ```
 看了下主流方案，手机端用的hls,PC端用的rtmp转flash妥协，然后播放器就是videojs
@@ -50,7 +58,14 @@ data[0]()//3
 data[1]()//3
 data[2]()//3
 
+--------------
+[] == ![] //true
 
+优先运算![]为false,由于是比较，涉及到强制类型转换左边的[]等效于'',因此有如下
+''==![]//ture
+''==[]//true
+
+而if([]) alert(1)//ALERT(1)，则没有强制类型转换，[]是object类型，所以true
 ```
 
 ***
@@ -86,6 +101,25 @@ click事件中
 $(this).parents().find("td").eq(1).html();  
 
 ```
+
+***
+####  php 判断变量类型
+```
+php 常用的判断变量的函数有下列几个gettype()、is_array()、is_bool()、is_float()、is_integer()、is_null()、is_numeric()、is_object()、is_resource()、is_scalar() 和 is_string()
+
+gettype() 
+gettype 会根据 参数类型返回下列值 
+“boolean”（从 PHP 4 起） 
+“integer” 
+“double”（如果是 float 则返回“double”，而不是“float”） 
+“string” 
+“array” 
+“object” 
+“resource”（从 PHP 4 起） 
+“NULL”（从 PHP 4 起） 
+“unknown type” 
+```
+
 ***
 ####  Linux下 crontab实现秒级定时任务的两种方案
 ```
@@ -336,6 +370,211 @@ location / {
 
 ```
 
+***
+####  nginx全局变量
+```
+arg_PARAMETER    #这个变量包含GET请求中，如果有变量PARAMETER时的值。
+args                    #这个变量等于请求行中(GET请求)的参数，如：foo=123&bar=blahblah;
+binary_remote_addr #二进制的客户地址。
+body_bytes_sent    #响应时送出的body字节数数量。即使连接中断，这个数据也是精确的。
+content_length    #请求头中的Content-length字段。
+content_type      #请求头中的Content-Type字段。
+cookie_COOKIE    #cookie COOKIE变量的值
+document_root    #当前请求在root指令中指定的值。
+document_uri      #与uri相同。
+host                #请求主机头字段，否则为服务器名称。
+hostname          #Set to themachine’s hostname as returned by gethostname
+http_HEADER
+is_args              #如果有args参数，这个变量等于”?”，否则等于”"，空值。
+http_user_agent    #客户端agent信息
+http_cookie          #客户端cookie信息
+limit_rate            #这个变量可以限制连接速率。
+query_string          #与args相同。
+request_body_file  #客户端请求主体信息的临时文件名。
+request_method    #客户端请求的动作，通常为GET或POST。
+remote_addr          #客户端的IP地址。
+remote_port          #客户端的端口。
+remote_user          #已经经过Auth Basic Module验证的用户名。
+request_completion #如果请求结束，设置为OK. 当请求未结束或如果该请求不是请求链串的最后一个时，为空(Empty)。
+request_method    #GET或POST
+request_filename  #当前请求的文件路径，由root或alias指令与URI请求生成。
+request_uri          #包含请求参数的原始URI，不包含主机名，如：”/foo/bar.php?arg=baz”。不能修改。
+scheme                #HTTP方法（如http，https）。
+server_protocol      #请求使用的协议，通常是HTTP/1.0或HTTP/1.1。
+server_addr          #服务器地址，在完成一次系统调用后可以确定这个值。
+server_name        #服务器名称。
+server_port          #请求到达服务器的端口号。
+
+```
+
+***
+####  Nginx的Rewrite规则编写实例
+```
+认真阅读 http://www.linuxidc.com/Linux/2014-01/95493.htm
+
+1.当访问的文件和目录不存在时，重定向到某个php文件
+if( !-e $request_filename )
+{
+rewrite ^/(.*)$ index.php last;
+}
+
+
+2.目录对换 /123456/xxxx  ====>  /xxxx?id=123456
+rewrite ^/(\d+)/(.+)/  /$2?id=$1 last;
+
+
+3.如果客户端使用的是IE浏览器，则重定向到/ie目录下
+if( $http_user_agent  ~ MSIE)
+{
+rewrite ^(.*)$ /ie/$1 break;
+}
+
+
+4.禁止访问多个目录
+location ~ ^/(cron|templates)/
+{
+deny all;
+break;
+}
+
+
+5.禁止访问以/data开头的文件
+location ~ ^/data
+{
+deny all;
+}
+
+
+6.禁止访问以.sh,.flv,.mp3为文件后缀名的文件
+location ~ .*\.(sh|flv|mp3)$
+{
+return 403;
+}
+
+
+7.设置某些类型文件的浏览器缓存时间
+location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
+{
+expires 30d;
+}
+location ~ .*\.(js|css)$
+{
+expires 1h;
+}
+
+
+8.给favicon.ico和robots.txt设置过期时间;
+这里为favicon.ico为99天,robots.txt为7天并不记录404错误日志
+location ~(favicon.ico) {
+log_not_found off;
+expires 99d;
+break;
+}
+location ~(robots.txt) {
+log_not_found off;
+expires 7d;
+break;
+}
+
+
+9.设定某个文件的过期时间;这里为600秒，并不记录访问日志
+location ^~ /html/scripts/loadhead_1.js {
+access_log  off;
+root /opt/lampp/htdocs/web;
+expires 600;
+break;
+}
+
+
+10.文件反盗链并设置过期时间
+这里的return412 为自定义的http状态码，默认为403，方便找出正确的盗链的请求
+“rewrite ^/ http://img.linuxidc.net/leech.gif;”显示一张防盗链图片
+“access_log off;”不记录访问日志，减轻压力
+“expires 3d”所有文件3天的浏览器缓存
+
+
+location ~*^.+\.(jpg|jpeg|gif|png|swf|rar|zip|css|js)$ {
+valid_referers none blocked *.linuxidc.com*.linuxidc.net localhost 208.97.167.194;
+if ($invalid_referer) {
+rewrite ^/ http://img.linuxidc.net/leech.gif;
+return 412;
+break;
+}
+access_log  off;
+root /opt/lampp/htdocs/web;
+expires 3d;
+break;
+}
+
+
+11.只允许固定ip访问网站，并加上密码
+
+
+root /opt/htdocs/www;
+allow  208.97.167.194; 
+allow  222.33.1.2; 
+allow  231.152.49.4;
+deny  all;
+auth_basic “C1G_ADMIN”;
+auth_basic_user_file htpasswd;
+
+
+12将多级目录下的文件转成一个文件，增强seo效果
+/job-123-456-789.html 指向/job/123/456/789.html
+
+
+rewrite^/job-([0-9]+)-([0-9]+)-([0-9]+)\.html$ /job/$1/$2/jobshow_$3.html last;
+
+
+13.文件和目录不存在的时候重定向：
+
+
+if (!-e $request_filename) {
+proxy_pass http://127.0.0.1;
+}
+
+
+14.将根目录下某个文件夹指向2级目录
+如/shanghaijob/ 指向 /area/shanghai/
+如果你将last改成permanent，那么浏览器地址栏显是/location/shanghai/
+rewrite ^/([0-9a-z]+)job/(.*)$ /area/$1/$2last;
+上面例子有个问题是访问/shanghai时将不会匹配
+rewrite ^/([0-9a-z]+)job$ /area/$1/ last;
+rewrite ^/([0-9a-z]+)job/(.*)$ /area/$1/$2last;
+这样/shanghai 也可以访问了，但页面中的相对链接无法使用，
+如./list_1.html真实地址是/area/shanghia/list_1.html会变成/list_1.html,导至无法访问。
+那我加上自动跳转也是不行咯
+(-d $request_filename)它有个条件是必需为真实目录，而我的rewrite不是的，所以没有效果
+if (-d $request_filename){
+rewrite ^/(.*)([^/])$ http://$host/$1$2/permanent;
+}
+知道原因后就好办了，让我手动跳转吧
+rewrite ^/([0-9a-z]+)job$ /$1job/permanent;
+rewrite ^/([0-9a-z]+)job/(.*)$ /area/$1/$2last;
+
+
+15.域名跳转
+server
+{
+listen      80;
+server_name  jump.linuxidc.com;
+index index.html index.htm index.php;
+root  /opt/lampp/htdocs/www;
+rewrite ^/ http://www.linuxidc.com/;
+access_log  off;
+}
+
+
+16.多域名转向
+server_name  www.linuxidc.comwww.linuxidc.net;
+index index.html index.htm index.php;
+root  /opt/lampp/htdocs;
+if ($host ~ "linuxidc\.net") {
+rewrite ^(.*) http://www.linuxidc.com$1permanent;
+}
+
+```
+
 
 ***
 #### getBoundingClientRect
@@ -525,11 +764,11 @@ function getPixels(img) {
 字符串转base64
 /**
  * 
- * btoa()：字符串或二进制值转为Base64编码
+ * btoa()：字符串或二进制值转为Base64编码 a=ascii,b=base64
  * atob()：Base64编码转为原来的编码
   */
   var string = 'Hello World!';
-  console.log(btoa(string)) // "SGVsbG8gV29ybGQh" 将ascii字符串或二进制数据转换成一个base64编码过的字符串,该方法不能直接作用于Unicode字符串.
+  console.log(btoa(string)) // "SGVsbG8gV29ybGQh" 将ascii字符串或二进制数据转换成一个base64编码过的字符串,该方法不能直接作用于Unicode字符串.可以先encodeURIComponent编码
 
   console.log(atob('SGVsbG8gV29ybGQh')) // "Hello World!"
 
@@ -543,7 +782,7 @@ function getPixels(img) {
   console.log(b64Encode('Hello World! 你好！'))
   console.log(b64Decode('SGVsbG8lMjBXb3JsZCElMjAlRTQlQkQlQTAlRTUlQTUlQkQlRUYlQkMlODE='))
 
-
+实现原理https://my.oschina.net/goal/blog/201032#OSC_h2_11
 ```
 
 
@@ -961,11 +1200,35 @@ function selectSort($array){
 ```
 介绍一下四种this的类型：
 
-默认绑定
+默认绑定 （全局环境中，this默认绑定到window）
 隐式绑定
-显式绑定
+显式绑定 all/apply
 new绑定
 其中，默认绑定就是什么都匹配不到的情况下，非严格模式this绑定到全局对象window或者global,严格模式绑定到undefined;隐式绑定就是函数作为对象的属性，通过对象属性的方式调用，这个时候this绑定到对象;显示绑定就是通过apply和call调用的方式;new绑定就是通过new操作符时将this绑定到当前新创建的对象中，它们的匹配有限是是从小到大的。
+
+一般地，被直接对象所包含的函数调用时，也称为方法调用，this隐式绑定到该直接对象
+
+复制代码
+function foo(){
+    console.log(this.a);
+};
+var obj1 = {
+    a:1,
+    foo:foo,
+    obj2:{
+        a:2,
+        foo:foo
+    }
+}
+
+//foo()函数的直接对象是obj1，this隐式绑定到obj1
+obj1.foo();//1
+
+//foo()函数的直接对象是obj2，this隐式绑定到obj2
+obj1.obj2.foo();//2
+
+隐式丢失 值得一看
+http://www.cnblogs.com/xiaohuochai/p/5735901.html
 ```
 
 ***
@@ -1380,6 +1643,30 @@ protected $fillable = ['user_id','sign_code_id'];
 ```
 
 ***
+####  laravel 5.4 报错SQLSTATE[42000] Syntax error or access violation 1055 'xxx' isn't in GROUP BY
+```
+查询mysql 1055错误码发现问题为在mysql的配置中如果设置了sql_mode包含ONLY_FULL_GROUP_BY值得话，在进行查询时需要将select的字段都包含在group by 中。
+即 select x,y from xxx group by x,y
+否则就会报错
+但是查看自己的配置my.cnf发现在sql_mode中并没有ONLY_FULL_GROUP_BY这个值
+然后去查看Laravel的配置文件，config/database.php，查找mysql的配置，
+'mysql' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => env('DB_PREFIX',''),
+            'strict' => true,
+            'engine' => null,
+        ],
+发现有个strict项，默认为true，上网也没有查找到相关解释，根据字面意思猜测可能为是否开启严格模式，将其修改为false，再次测试发现问题解决，可以输出正确结果
+```
+
+***
 #### laravel 配置相关、缓存配置
 ```
 php artisan config:cache
@@ -1753,6 +2040,12 @@ $response = json_decode(Route::dispatch($request)->getContent());
 ```
 
 ***
+#### laravel header 获取
+```
+$access_token = Request::header('Authorization');
+```
+
+***
 #### laravel 依赖注入的时候传递参数
 ```
 熟悉Laravel人都知道Laravel的Service Provider，但是如果要注入的类需要初始化参数呢？这个时候可以通过ServiceProvider中的register来绑定实现。
@@ -1812,6 +2105,8 @@ DB::table('products')
     ->having('products_count', '>', 1)
     ->get();
 Product::groupBy('category_id')->havingRaw('COUNT(*) > 1')->get();
+
+$emails = Email::select('username', DB::raw('count(*) as total')) ->groupBy('username') ->get(); 
 ```
 
 
@@ -1846,6 +2141,7 @@ class Article extends BaseModel
     public function tags()
     {
         return $this->belongsToMany('App\Tag');
+        //return $this->belongsToMany('App\Tag')->withTimestamps(); //带时间戳 created_at之类的
     }
 
 }
@@ -1863,6 +2159,17 @@ class Tag extends BaseModel
     }
 
 }
+
+
+class ArticleTag extends BaseModel
+{
+
+    protected $hidden = [
+        'password',
+    ];
+}
+
+三个表：articles , tags , article_tag
 
 $article = Article::find(1);
 //return $this->toJson(0,'',$article);
@@ -1925,6 +2232,15 @@ $query = app(User::class)->newQuery();
         $query->whereNotNull('merchant_id')->with(['merchant'=>function ($queryx){
             $queryx->with('province')->with('city')->with('county')->withCount('car');
         }]);
+
+You may add the "counts" for multiple relations as well as add constraints to the queries:
+
+$posts = Post::withCount(['votes', 'comments' => function ($query) {
+    $query->where('content', 'like', 'foo%');
+}])->get();
+
+echo $posts[0]->votes_count;
+echo $posts[0]->comments_count;
 ```
 
 
@@ -2426,7 +2742,7 @@ MySQL sneaks swedish in there sometimes for no sensible reason.
 函数的参数不能有同名属性，否则报错
 不能使用with语句
 不能对只读属性赋值，否则报错
-不能使用前缀0表示八进制数，否则报错
+不能使用前缀0表示八进制数，否则报错（新的八进制 literal 写法是 0o 前缀，如 0o10 就是 8。在 strict 模式下也是可用的。）
 不能删除不可删除的属性，否则报错
 不能删除变量delete prop，会报错，只能删除属性delete global[prop]
 eval不会在它的外层作用域引入变量
@@ -2434,7 +2750,7 @@ eval和arguments不能被重新赋值
 arguments不会自动反映函数参数的变化
 不能使用arguments.callee
 不能使用arguments.caller
-禁止this指向全局对象
+禁止this指向全局对象 就是禁止this默认绑定
 不能使用fn.caller和fn.arguments获取函数调用的堆栈
 增加了保留字（比如protected、static和interface）
 ```
@@ -2554,6 +2870,8 @@ var generateRandomAlphaNum=function (len) {
         for (; rdmString.length < len; rdmString += Math.random().toString(36).substr(2));
         return rdmString.substr(0, len);
     };
+
+var generateRandomAlphaNum=function(a){for(var b="";b.length<a;b+=Math.random().toString(36).substr(2));return b.substr(0,a)};
 ```
 
 ***
@@ -2627,7 +2945,7 @@ var timeUtil={parseTime:function(format,timeStamp){var date=new Date(timeStamp||
     },
     getTimeShow:function(time_str){
             var now = new Date();
-            var date = new Date(time_str);
+            var date = new Date(time_str);//兼容性问题'-'=>'/'
             //计算时间间隔，单位为分钟
             var inter = parseInt((now.getTime() - date.getTime())/1000/60);
             if(inter == 0){
@@ -2648,9 +2966,19 @@ var timeUtil={parseTime:function(format,timeStamp){var date=new Date(timeStamp||
             else{
                 return this.parseTime('YY-MM-DD hh:mm:ss',time_str);
             }
-        }
+        },
+    getZeroTs:function (){//返回当天0点时间戳，13位数
+            var today = new Date();
+            today.setHours(0);
+            today.setMinutes(0);
+            today.setSeconds(0);
+            today.setMilliseconds(0);
+            return today.valueOf();
+          }
     };
 
+//压缩
+function getZeroTs(){var a=new Date;return a.setHours(0),a.setMinutes(0),a.setSeconds(0),a.setMilliseconds(0),a.valueOf()}
     console.log(timeUtil.parseTime('YYYY-MM-DD hh:mm:ss',new Date().getTime()));
     console.log(timeUtil.parseTime());
     console.log(timeUtil.parseTime('YY-MM-DD hh:mm:ss',Date.now()));
@@ -2690,7 +3018,7 @@ tar -rvf bak.tar /etc/password
 6、解压
 tar -xvf bak.tar
 
-7、打包并压缩
+7、打包并压缩(重要的事情说三遍!!!)
 tar -zcvf a.tar.gz  aaa/
 
 8、解包并解压缩(重要的事情说三遍!!!)
@@ -2924,7 +3252,7 @@ getAttendanceByDate(B_util.refreshDate());
 ```
 
 ***
-#### js陷阱题
+#### js陷阱题 js面试题
 ```
 <script type="text/javascript"> 
 var aColors = ["red", "green", "blue"]; 
@@ -3099,7 +3427,7 @@ var lowerCaseOnly =  /^[a-z]+$/;
 the argument is converted to a string with the abstract ToString operation, so it is "null" and "undefined". 
 
 
-[,,,].join(", ")//", , " （JavaScript allows a trailing comma when defining arrays, so that turns out to be an array of three undefined. ）
+[,,,].join(", ")//", , " （JavaScript allows a trailing（蔓延的） comma （逗号） when defining arrays, so that turns out to be an array of three undefined. ）
 [,,,].length//3
 [0,0,0,].length//3
 [0,0,0,''].length//4
@@ -3114,8 +3442,11 @@ var a = new Date("epoch")//"Invalid Date",
 
 
 var min = Math.min(), max = Math.max()
-min < max//false，反过来了
-
+min < max//false，反过来了,
+Math.max()返回参数中最大的值。如果没有参数，则返回 -Infinity。
+如果有某个参数为 NaN，或是不能转换成数字的非数字值，则返回 NaN。
+Math.min(),没有参数，则返回 Infinity。
+【要和Number.MAX_VALUE Number.MIN_VALUE 区别开】
 
 function captureOne(re, str) {
   var match = re.exec(str);
@@ -3136,7 +3467,7 @@ if ('http://giftwrapped.com/picture.jpg'.match('.gif')) {
 } else {
   'not a gif file'
 }
-//a gif file（String.prototype.match silently converts the string into a regular expression, without escaping it, thus the '.' becomes a metacharacter matching '/'. ）
+//a gif file（String.prototype.match silently converts the string into a regular expression, without escaping it, thus the '.' becomes a metacharacter matching '/'. 正确match('\.gif')）
 
 
 
@@ -3174,6 +3505,16 @@ ini_set('display_errors','On');
 error_reporting(E_ALL);
 ```
 
+***
+#### mysql 占用CPU过大的解决
+```
+尝试:发现重启后就降低了，过段时间又99%了。探究应该是缓存的问题，将tmp_table_size从18M修改成150M
+[mysqld] 
+tmp_table_size=150M 
+
+show processlist;可以查看哪些语句常驻
+```
+
 
 ***
 #### 给项目添加POST参数的日志
@@ -3183,10 +3524,12 @@ if ($_SERVER['REQUEST_METHOD']=='POST')
     Log::debug($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'],$_POST);
 
 GET可以直接交给nginx设置，但是post参数就不能了（按百度设置了啥query_...参数的也无效，奇怪，有成功的麻烦告诉我）
+设置buffer可以优化写入日志
+
     server {
 listen 80;
 server_name test.wechat.hzsb365.com;
-access_log /data/wwwlogs/test.wechat.hzsb365.com_nginx.log combined;
+access_log /data/wwwlogs/test.wechat.hzsb365.com_nginx.log combined buffer=10k;
 index index.html index.htm index.php;
 include /usr/local/nginx/conf/laravel.conf;
 root /home/hgx/hzsbTest/public;
@@ -3235,7 +3578,7 @@ $len=count($arr);
     }
 
 print_r($subArr);
-
+//array_splice(array,start,length,array)
 function toSpliceFromOffset($arr,$i,&$subArr,$offset){
         array_splice($arr,$i,1);
         collect($subArr,join(',',$arr));
@@ -3282,6 +3625,41 @@ var timer = setTimeout(function (timerInstance, timeoutId) {
 ***
 #### sql 高级查询汇总 
 ```
+一个用户有多个兴趣和资源，需要去根据某用户这两个属性给全部人匹配度排序。。（加权）
+SELECT SUM(t.h_sum),t.user_id FROM (SELECT COUNT(*) *20 AS h_sum,user_id FROM hobbies WHERE h_id IN (1,2,3) GROUP BY user_id UNION ALL SELECT COUNT(*) *80 AS h_sum,user_id FROM resource WHERE r_id IN (1,2,3) GROUP BY user_id) AS t GROUP BY t.user_id
+【UNION ALL 需要两次查询的字段一致】【in后加上order by field可以按in的顺序排序】
+
+——MySQL多表查询合并结果和内连接查询
+1、使用union和union all合并两个查询结果：select 字段名 from tablename1 union select 字段名 from tablename2;
+注意这个操作必须保证两张表字段相同，字段数据类型也相同。另外，使用union的时候会去除重复(相同)的记录，而union all则不会。
+
+So here is an example in mysql.
+
+SELECT * FROM my_table UNION ALL SELECT * FROM my_table WHERE id IN (1,2)
+Then if you are using Laravel's eloquent like I am use this.
+
+$query = Class::whereIn('id', $array);
+Class::where('id','>=',0)->unionAll($query)->get();
+
+                $offset=($page-1) * $per_page;
+                $hobby_ids=array_pluck(DB::select('select hobby_id  from hobby_user where user_id='.$user->id),'hobby_id');
+                $resource_ids=array_pluck(DB::select('select resource_id  from resource_user where user_id='.$user->id),'resource_id');
+
+                if (!count($hobby_ids) && !count($resource_ids))
+                    return $this->toJson('请先完善 兴趣爱好 或者 资源 ');
+                $user_ids=DB::select('SELECT t.user_id FROM (SELECT COUNT(*) *20 AS h_sum,user_id FROM hobby_user WHERE hobby_id IN ('.join(',',$hobby_ids).') GROUP BY user_id UNION ALL SELECT COUNT(*) *80 AS h_sum,user_id FROM resource_user WHERE resource_id IN ('.join(',',$resource_ids).') GROUP BY user_id) AS t GROUP BY t.user_id ORDER BY  t.h_sum DESC limit '.$offset.','.$per_page);
+                $userlist=[];
+                foreach ($user_ids as $user_idx){
+                    $userlist[]=User::where('id',$user_idx->user_id)->with('hobbies')->with('resources')
+                        ->with(['resume'=>function ($queryx){
+                            $queryx->with('education_exprience')->with('work_exprience');
+                        }])->first();
+                }
+                $this->calDistant($userlist,$user->lat,$user->lng);
+                return $this->toJson(0,'',$userlist);
+===================================
+
+
 http://aoxueshou.blog.163.com/blog/static/1002357142013817515604/
 http://www.cnblogs.com/yubinfeng/archive/2010/11/02/1867386.html
 
@@ -3309,17 +3687,20 @@ select ord.user_id, ord.money, ord.create_time from orders ord where ord.user_id
 2. 将(1)中记录按user_id分组, group_concat(money);
 select t.user_id, group_concat( t.money ) moneys from (select ord.user_id, ord.money, ord.create_time from orders ord where ord.user_id > 0 and create_time > 0 order by user_id asc , create_time desc) t group by user_id
 user_id moneys
-1 100,50
-2 200,100
+  1      100,50
+  2      200,100
+[group_concat()函数需要与group by语句在一起使用，才能得到需要的效果,
+自定义分隔符：select id,group_concat(name separator ';') from aa group by id;
+自定义排序：select id,group_concat(name order by name desc) from aa group by id;  
+去除冗余name：select id,group_concat(distinct name) from aa group by id;  ]
+
 3. 这时, 如果用户有多个消费记录, 就会按照时间顺序排列好, 再利用 subString_index 函数进行切分即可
 select t.user_id, substring_index(group_concat( t.money ),',',1) lastest_money from (select ord.user_id, ord.money, ord.create_time from orders ord where ord.user_id > 0 and create_time > 0 order by user_id asc , create_time desc) t group by user_id ;
 
-5、限制返回的行数
-使用TOP n [PERCENT]选项限制返回的数据行数，TOP n说明返回n行，而TOP n PERCENT时，说明n是
-表示一百分数，指定返回的行数等于总行数的百分之几。
-例如： 
-代码:SELECT TOP 2 * FROM `testtable` 
-代码:SELECT TOP 20 PERCENT * FROM `testtable`
+mysql replace用法 
+1.replace into 
+REPLACE INTO table1 (fileId,pName) VALUES ('8','222'),('6','bb')
+此语句的作用是向表table中插入两条记录。如果主键fileId为1或2不存在 
 
 mysql数据库replace、regexp的用法 http://www.jb51.net/article/27997.htm
 特别注意中文的话：
@@ -3356,7 +3737,38 @@ $re=$this->queryTeacherSql($_SESSION['admin_school_id'],$start,$limit);
         array_push($list, $t);
       }
 按关键字查，还得拉取出其他班级的
-SELECT a.*,b.`name`,b.`password`,b.`nickname`,b.`note` AS SUBJECT,c.`name` AS class FROM manager_class_teacher a INNER JOIN manager_admin b ON a.`admin_id`=b.`id` LEFT JOIN manager_class c ON a.class_id=c.`id` WHERE a.`admin_id` IN (SELECT * FROM (SELECT DISTINCT manager_class_teacher.`admin_id` FROM manager_class_teacher  INNER JOIN manager_admin  ON manager_class_teacher.`admin_id`=manager_admin.`id` LEFT JOIN manager_class  ON manager_class_teacher.class_id=manager_class.`id` WHERE manager_class_teacher.school_id=30 AND (manager_admin.`name` LIKE '%徐小航%' OR manager_class.`name` LIKE '%测试二班%' OR manager_admin.`note` LIKE '%徐小航%' OR manager_admin.`nickname` LIKE '%测试二班%') )AS tt)
+SELECT 
+  a.*,
+  b.`name`,
+  b.`password`,
+  b.`nickname`,
+  b.`note` AS SUBJECT,
+  c.`name` AS class 
+FROM
+  manager_class_teacher a 
+  INNER JOIN manager_admin b 
+    ON a.`admin_id` = b.`id` 
+  LEFT JOIN manager_class c 
+    ON a.class_id = c.`id` 
+WHERE a.`admin_id` IN 
+  (SELECT 
+    * 
+  FROM
+    (SELECT DISTINCT 
+      manager_class_teacher.`admin_id` 
+    FROM
+      manager_class_teacher 
+      INNER JOIN manager_admin 
+        ON manager_class_teacher.`admin_id` = manager_admin.`id` 
+      LEFT JOIN manager_class 
+        ON manager_class_teacher.class_id = manager_class.`id` 
+    WHERE manager_class_teacher.school_id = 30 
+      AND (
+        manager_admin.`name` LIKE '%徐小航%' 
+        OR manager_class.`name` LIKE '%测试二班%' 
+        OR manager_admin.`note` LIKE '%徐小航%' 
+        OR manager_admin.`nickname` LIKE '%测试二班%'
+      )) AS tt)
 
 
 ```
@@ -3439,7 +3851,7 @@ mysql中，当我们用到聚合函数，如sum，count后，又需要筛选条�
 
 http://www.jb51.net/article/32562.htm
 二、 显示每个地区的总人口数和总面积．仅显示那些面积超过1000000的地区 
-SELECT region, SUM(population), SUM(area)FROM bbcGROUP BY regionHAVING SUM(area)>1000000 
+SELECT region, SUM(population), SUM(area)FROM bbc GROUP BY region HAVING SUM(area)>1000000 
 在这里，我们不能用where来筛选超过1000000的地区，因为表中不存在这样一条记录。相反，having子句可以让我们筛选成组后的各组数据 
 
 
@@ -3450,18 +3862,24 @@ SELECT region, SUM(population), SUM(area)FROM bbcGROUP BY regionHAVING SUM(area)
 <!-- <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-<meta content="yes" name="apple-mobile-web-app-capable">
-<meta content="black" name="apple-mobile-web-app-status-bar-style">
-<meta content="telephone=no" name="format-detection">
-<meta content="email=no" name="format-detection">
-<title>标题</title>
-<link rel="stylesheet" href="index.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <meta content="black" name="apple-mobile-web-app-status-bar-style">
+  <meta content="telephone=no" name="format-detection">
+  <meta content="email=no" name="format-detection">
+  <title></title>
+  <link rel="stylesheet" href="index.css"> 
+  <style type="text/css">
+  body{-webkit-text-size-adjust: 100%!important;}
+  </style>
 </head>
 
 <body>
-这里开始内容
+
+<script type="text/javascript">
+                
+</script>
 </body>
 
 </html> -->
@@ -3587,10 +4005,11 @@ show global variables like "%datadir%";
  */
 function calStanderTimeDiff(t1,t2){
   return (new Date(t1)-new Date(t2))/1000;
+  //return Math.abs(new Date(t1)-new Date(t2))/1000;
 }
 ```
 ***
-#### JS 保留小数点后X位（四舍五入）
+#### JS 保留小数点后X位（四舍五入）返回值的是字符串
 ```
 (4.5).toFixed(1)
 "4.5"
@@ -3733,7 +4152,7 @@ $url='http:\/\/10.169.117.7:9090\/upload\/wechat\/card\/voice\/16-04-26\/0.07610
 echo $_SERVER["QUERY_STRING"];//get
 
 $data=file_get_contents('php://input');//post
-laravrl :
+laravel :
 Input::all();或者：
 $arr = $request->all();
 ```
@@ -3871,7 +4290,7 @@ function getStringMiddle(str,left,right,returnWhole) {
 
 
 ***
-#### jQuery 新增元素绑定方法
+#### jQuery 新增元素绑定方法 事件代理
 ```
 
 $(document).on('click', '.banner-img', function () {
@@ -3897,7 +4316,7 @@ $('#lll').prop('disabled') //判断LLL元素是否含有disable
 ***
 #### JS 用正则替换【全部】
 ```
-content.replace(/\r\n/g, '<br/>');
+content.replace(/\r\n|\n/g, '<br/>');
 data=data.replace(/\d+-\d+-(\d\d) \d\d:\d\d:\d\d/g, "$1号");
 ```
 
@@ -3908,13 +4327,12 @@ var a=[];a['111']=11; a['22']=22222; a['111']
 a.push(1111)//顺序添加 shift移除末尾
 
 遍历：
-var x
 var mycars = new Array()
 mycars['1q1'] = "Saab"
 mycars['q2'] = "Volvo"
 mycars['q3'] = "BMW"
 
-for (x in mycars)
+for (var x in mycars)
 {
 document.write(mycars[x]+x + "<br />")
 }
@@ -4011,8 +4429,6 @@ StrokeDashArray 描述Shape类型轮廓的虚线和间隔的样式，写法为St
 
 [酷炫的FAB](http://materialdesignblog.com/awesome-css-codepen-to-enhance-material-design-fab-button/)
 
-[1秒破解 js packer 加密](http://www.cnblogs.com/52cik/p/js-unpacker.html)
-
 [替换webview中js资源本地加载，提高速度](http://xunhou.me/webview-2/)
 [jQuery.extend 函数详解](http://www.cnblogs.com/RascallySnake/archive/2010/05/07/1729563.html)
 
@@ -4061,12 +4477,6 @@ function otherDevice(){
 }
 ```
 
-***
-#### float元素 toggle 平齐
-```
-<div style="vertical-align: baseline;height:30px;line-height: 30px;"> <strong style="float: left;">上课禁用</strong><span id="toggle_school_manage" style="float: right;" class="toggle classic" data-role="toggle" data-on="开" data-on-value="1" data-off="关" data-off-value="0"></span><br/>
-      </div><hr style="height:1px;border:none;border-top:1px dashed #0066CC;margin-top: 3px;" />
-```
 
 [html中hr的各种样式使用](http://jingyan.baidu.com/article/af9f5a2d37342c43140a4500.html)
 
@@ -4322,6 +4732,7 @@ http://rawgit.com/
 #### js刷新当前页面
 ```
 location.reload() 
+微信浏览器内不适用，需要url有变化（加随机数）才能刷新成功
 ```
 
 
@@ -4333,6 +4744,20 @@ location.reload()
         切换账号
       </a>
 
+```
+
+***
+#### php 编码检测和转换
+```
+        // $cha=mb_detect_encoding($re);
+        // var_dump($cha);//string(5) "UTF-8"
+        // $re = iconv($cha,"GB2312",$re);//转成GB2312
+
+```
+***
+#### nginx 静态文件 跨域 nginx跨域
+```
+add_header 'Access-Control-Allow-Origin' '*';
 ```
 
 ***
@@ -4378,13 +4803,14 @@ location.reload()
 #### js 和php版正则匹配替换
 ```
 js:
-var string = '{"code":"S000000","data":[{"deviceId":"ss333322$$222","pages":500,"timecost":3600,"ts":"2015-12-01","warning":50,"words":30000},{"deviceId":"ss333322$$222","pages":500,"timecost":3600,"ts":"2015-12-02","warning":50,"words":30000}],"msg":""}'; string.replace(/(\d+-\d+)-/g,'');
-string.replace(/(\d+-\d+)-/g,'');//匹配全部，string.replace(/(\d+-\d+)-/,'');//匹配第一个就结束
+var string = '{"code":"S000000","data":[{"deviceId":"ss333322$$222","pages":500,"timecost":3600,"ts":"2015-12-01","warning":50,"words":30000},{"deviceId":"ss333322$$222","pages":500,"timecost":3600,"ts":"2015-12-02","warning":50,"words":30000}],"msg":""}'; string.replace(/\d+-\d+-/g,'');
+string.replace(/(\d+-\d+)-/g,'');//g匹配全部，string.replace(/(\d+-\d+)-/,'');//匹配第一个就结束
 
 ---------------------------------------------
 name = '{"code":"S000000","msg":"操作成功","data":[{"deviceId":"5142521630344243c400003222840507","words":800,"pages":2,"timecost":120,"warning":2,"ts":"2015-12-19 14:40:52"},{"deviceId":"5142521630344243c400003222840507","words":1200,"pages":3,"timecost":120,"warning":3,"ts":"2015-12-20 10:32:01"}],"extra":""}';
 
-uw=name.replace(/\d+-\d+-(\d\d) \d\d:\d\d:\d\d/g, function(word){
+uw=name.replace(/\d+-\d+-\d\d \d\d:\d\d:\d\d/g, function(word){//只替换掉修改的部分，然后整个name完整输出
+console.log(word)//2015-12-19 14:40:52、2015-12-20 10:32:01
   return word[8]+word[9];}
   );document.write (uw);
 -------------------------------------------
@@ -4399,12 +4825,12 @@ document.write (uw);
 
  var newstr=str.replace(/(人)民(共)/g,"<font color=red>$1</font>aa<font color=red>$2</font>");   
 
-document.write(newstr);   
+document.write(newstr);
 -----------------------------------------
 
 php:
 $string = '{"code":"S000000","data":[{"deviceId":"ss333322$$222","pages":500,"timecost":3600,"ts":"2015-12-01","warning":50,"words":30000},{"deviceId":"ss333322$$222","pages":500,"timecost":3600,"ts":"2015-12-02","warning":50,"words":30000}],"msg":""}';
-$pattern = '/(\d+-\d+)-/i';
+$pattern = '/\d+-\d+-/i';
 $replacement = '';
 echo preg_replace($pattern, $replacement, $string);
 
@@ -4417,10 +4843,13 @@ http://www.2cto.com/database/201403/286730.html
 ```
 
 ***
-#### mysql in 和not in
+#### mysql in 按顺序ORDER BY FIELD 和not in 包含null（子查询）
 ```
 SELECT * FROM t_userinfo WHERE userphone IN ('13714876874','18609944488') ORDER BY FIELD(userphone ,'13714876874','18609944488')
+select * from test_in_orderby where id in (3,5,1) order by field(id,3,5,1)
 出来的顺序就是指定的顺序了
+
+SELECT COUNT(DISTINCT name) FROM CVE WHERE name NOT IN (SELECT cveID FROM cve_sig WHERE cveID IS NOT NULL) 
 
 http://www.jb51.net/article/25639.htm
 ```
@@ -4683,6 +5112,7 @@ JS:
 $(selector).hasClass(class);
 $('#toggle_attendance').addClass('active');
 $('#toggle_attendance').removeClass('active');
+toggleClass
 
 ```
 
@@ -4835,37 +5265,27 @@ $('#recList').append(content);
 $('#bindPhone').removeAttr('href');
 ```
 ***
-#### ajax 
+#### jquery ajax 带header
 ```
 $.ajax({
-url:"/wechat/queryMyRec",
-type:"get",
-dataType: "json",
-success: function (data) {
-// alert(data.msg);
-if (data.state=='1') {
-if (data.msg!='0') {
-var content='';
-if (data.msg=='1') {
-content='<br><li><a href="#" style="margin:10px">'+data.data+'</a></li>';
-}else{
-var array = data.data.split(",");
-var length=array.length;
-for (var i = 0; i <length; i++) {
-content+='<br><li><a href="#" style="margin:10px">'+array[i]+'</a></li>';
-};
-}
-$('#myRecNum').text(data.msg+'个'); 
-$('#recList').append(content);
-}
-}else{
-alert(data.msg);
-}
-},
-error: function (msg) {
-alert('服务器连接失败，请稍后重试');
-}
-});
+      type:"POST",
+      url:"https://api.coinvc.com/api/v2/project/subscribe",
+      headers:{
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Authorization":'Bearer '+token,
+      },
+      data:{
+        id:pid,
+        amount:num
+      },
+      success: function(data){
+        console.log('success',JSON.stringify(data));
+      },
+      error: function(data){
+        console.error(JSON.stringify(data));
+
+      }
+    });
 ```
 
 
@@ -4917,7 +5337,7 @@ alert('服务器连接失败，请稍后重试');
 ***
 #### ajax_post 封装终极版，统一请求，解耦处理数据（订阅者模式，模板方法、js回调）
 ```
-
+【废弃，请看util文件夹里的myajax】
       /*
         * by hgxbajian 15-11-28(此方法写了暂未使用测试)
         * 统一处理ajax post 请求（返回json格式），成功分发回调函数处理,失败统一提示
@@ -4972,25 +5392,18 @@ alert('服务器连接失败，请稍后重试');
 ***
 ```
 function time() {
-if (wait == 0) { 
-o.removeAttr("disabled"); 
-o.text("点击发送短信验证码");//改变按钮中value的值 
-} else { 
-o.attr("disabled", true);//倒计时过程中禁止点击按钮 
-o.text(wait + "秒后重新获取验证码");//改变按钮中value的值 
-wait--;
-setTimeout('time()',1000);
-}
+  if (wait == 0) { 
+  o.removeAttr("disabled"); 
+  o.text("点击发送短信验证码");//改变按钮中value的值 
+  } else { 
+  o.attr("disabled", true);//倒计时过程中禁止点击按钮 
+  o.text(wait + "秒后重新获取验证码");//改变按钮中value的值 
+  wait--;
+  setTimeout('time()',1000);
+  }
 } 
 ```
-***
-#### 时间格式化
 
-```
-var d=new Date(date); 
-var formatdate=d.getMonth()+"月"+d.getDay()+"日 "+d.getHours()+"时"+d.getMinutes()+"分"+d.getSeconds()+"秒";
-
-```
 ***
 #### jq ajax 解析json中的数组
 
@@ -5220,55 +5633,6 @@ return false;
 ```
 
 ***
-#### 获得当前时间 格式06-26 20:23:50
-```
-
-/**
-* ts="now" 为当前时间 10/13位时间戳（必须String类型）
-*/
-function curDateTime(ts) {
-var d = new Date();
-if (ts!='now') {
-if(ts.length==10){
-  var t=parseInt(ts);
-  d.setTime(t*1000);
-}else{
-  d.setTime(t);
-}
-}
-// var year = d.getFullYear();
-var month = d.getMonth() + 1;
-var date = d.getDate();
-var day = d.getDay();
-var Hours=d.getHours(); //获取当前小时数(0-23)
-var Minutes=d.getMinutes(); //获取当前分钟数(0-59)
-var Seconds=d.getSeconds(); //获取当前秒数(0-59)
-var curDateTime = '';
-if (month > 9)
-curDateTime += month+'-';
-else
-curDateTime += "0" + month+'-';
-if (date > 9)
-curDateTime += date+' ';
-else
-curDateTime += "0" + date+' ';
-if (Hours > 9)
-curDateTime+= Hours+':';
-else
-curDateTime+="0" + Hours+':';
-if (Minutes > 9)
-curDateTime +=Minutes+':';
-else
-curDateTime+="0" + Minutes+':';
-if (Seconds > 9)
-curDateTime += Seconds;
-else
-curDateTime += "0" + Seconds;
-return curDateTime;
-}
-```
-
-***
 #### 返回当前十位时间戳 string
 ```
 function getCurTs(){return (Date.now()+'').substr(0,10);}
@@ -5276,20 +5640,6 @@ parseInt(Date.now()/1000)
 
 ```
 
-***
-#### 返回当天0点时间戳 十三位
-```
-function getZeroTs(){
-var today = new Date();
-today.setHours(0);
-today.setMinutes(0);
-today.setSeconds(0);
-today.setMilliseconds(0);
-return today.valueOf();
-}
-//压缩
-function getZeroTs(){var a=new Date;return a.setHours(0),a.setMinutes(0),a.setSeconds(0),a.setMilliseconds(0),a.valueOf()}
-```
 
 ***
 #### web 融云使用
@@ -5566,6 +5916,19 @@ $('#male').attr("checked",true);
   img.setAttribute('mId','bajianid');
   img.getAttribute('mId');
   //或者 img.attributes['mId'].nodeValue
+
+  data-X
+  dataset
+```
+
+***
+#### JS中的假值
+```
+ false null undefined 0 '' (空字符串) NaN
+ 除了这 6 个外，其它均为“真” ，包括对象、数组、正则、函数等。注意 '0'、'null'、'false'、{}、[],-1也都是真值  。
+
+自制口诀：0闹非数字是未定义的空字符串是错的
+
 ```
 
 ***
@@ -5599,6 +5962,7 @@ select.options.add(varItem);
 }
 
 ```
+
 
 ***
 #### 如果select选项中存在指定text，将其设置为选中
@@ -5648,6 +6012,7 @@ select.options.add(varItem);
 
 ```
 
+
 ***
 #### 判断select选项中 是否存在Value="paraValue"的Item
 ```
@@ -5668,6 +6033,7 @@ select.options.add(varItem);
         } 
 
 ```
+
 
 ***
 #### 判断select选项中 是否存在Value="paraValue"的Item
@@ -5721,7 +6087,11 @@ http://www.cnblogs.com/Herist/archive/2007/09/24/903890.html
 ***
 #### 删除指定index的数组元素
 ```
-arr.splice(1);//删除指定index的数组元素
+splice(index,num) //index 从1开始
+arr=[1,2,3,4,5]
+arr.splice(1);//[2, 3, 4, 5] 删除指定index及前面的数组元素,返回剩余的数组
+
+arr.splice(3,1) //[4]
 ```
 
 ***
