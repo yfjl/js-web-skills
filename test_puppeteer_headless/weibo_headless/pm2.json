@@ -1,0 +1,15 @@
+{
+  "apps": [{
+    "name": "bikelock",
+    "script": "index.js",
+    "cwd": "/home/hgx/bikelock",
+    "exec_mode": "cluster",
+    "max_memory_restart": "150M",
+    "autorestart": true,
+    "node_args": [],
+    "args": [],
+    "env": {
+      
+    }
+  }]
+}

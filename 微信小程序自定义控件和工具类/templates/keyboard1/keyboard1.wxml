@@ -1,0 +1,15 @@
+<!-- keyboard1 的UI -->
+<view  wx:if="{{!hideKeyboard1}}" class="keyboard-container"  style="" bindtap="tapKeyBoard1">
+    <view
+    wx:for="{{keyboard1Arr}}"
+    class="keyboard-item {{item.class_name}}"
+    wx:key="{{item.value}}"
+    data-v="{{item.value}}"
+  >
+    <text
+
+      data-v="{{item.value}}"
+    >{{item.value}}</text>
+  </view>
+
+</view>

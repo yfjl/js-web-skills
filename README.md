@@ -36,6 +36,44 @@ var_dump(strstr($pre,$obj->activities[0]->id));//错误，诡异
 ```
 
 ***
+####  js获取最上层window对象的架构思路
+```
+window.top.location.href
+
+function isOriginComStore(){
+    // return window.location.href.indexOf("origin")!=-1 &&
+    //  window.location.href.indexOf("\/store\/browse")==-1 && 
+    //  window.location.href.indexOf("store\/")!=-1 
+    console.log('test',parent.location.href,location.href,top.location.href);
+    return  (location.host.indexOf("origin.com")!==-1) ;
+    // return  (location.href.indexOf("origin.com")!==-1 && (parent.location.href== location.href == window.top.location.href)) ;
+}
+```
+
+***
+####  php linux ffmpeg amr 转mp3
+```
+$re=exec("ffmpeg -i $amrDir.amr $mp3Dir.mp3");
+更多命令查看
+http://blog.csdn.net/king1425/article/details/70348374
+```
+
+***
+####  JS 终止执行的实现方法
+```
+如果觉得if不优雅。。那么：
+(一)在function里面
+（1）return;
+（2）return false;
+(二)非function方法里面，抛异常
+alert("before error.");
+//throw SyntaxError();
+throw "————————";
+alert("after error.");
+
+```
+
+***
 ####  面试题JS
 ```
 var z=10
@@ -92,6 +130,106 @@ endTime=endTime.replace(/-/g,'/')
 endTime=endTime?(new Date(endTime)).getTime():new Date().getTime()
 http://blog.csdn.net/blueheart20/article/details/44902747
 
+```
+
+***
+####  str_replace 指定匹配次数不可行
+```
+mixed str_replace ( mixed $search , mixed $replace , mixed $subject [, int &$count ] )  
+
+$str = 'abcdefgh';  
+echo str_replace('abc', '123', $str); // 123defgh  
+  
+$str = '123456';  
+$search = array(1, 2, 3, 4, 5, 6);  
+$replace = array('a', 'b', 'c', 'd', 'f', 'g');  
+echo str_replace($search, $replace, $str); // abcdefg  
+  
+$arr = array('abc','bac','cba');  
+$result = str_replace('b', 'B', $arr, $count);  
+print_r($result); // Array ( [0] => aBc [1] => Bac [2] => cBa )  
+echo $count;      // 3 共替换了3次  
+str_replace 默认全部匹配的，无法指定次数。替换指定次数的方法，可以使用正则 preg_replace 方法来实现。
+mixed preg_replace ( mixed $pattern , mixed $replacement , mixed $subject [, int $limit = -1 [, int &$count ]] )
+$string = 'April 15, 2003';
+$pattern = '/(\w+) (\d+), (\d+)/i';
+$replacement = '${1}1,$3';
+echo preg_replace($pattern, $replacement, $string);//April1,2003
+
+string preg_quote ( string $str [, string $delimiter = NULL ] )// 转义正则表达式字符，正则表达式特殊字符有： . \ + * ? [ ^ ] $ ( ) { } = ! < > | : -注意 / 不是正则表达式特殊字符。
+
+/** 
+ * 对字符串执行指定次数替换 
+ * @param  Mixed $search   查找目标值 
+ * @param  Mixed $replace  替换值 
+ * @param  Mixed $subject  执行替换的字符串／数组 
+ * @param  Int   $limit    允许替换的次数，默认为-1，不限次数 
+ * @return Mixed 
+ */  
+function str_replace_limit($search, $replace, $subject, $limit=-1){  
+    if(is_array($search)){  
+        foreach($search as $k=>$v){  
+            $search[$k] = '`'. preg_quote($search[$k], '`'). '`';  
+        }  
+    }else{  
+        $search = '`'. preg_quote($search, '`'). '`';  
+    }  
+    return preg_replace($search, $replace, $subject, $limit);  
+}  
+
+$str = 'user_order_list';  
+echo str_replace_limit('_', '/', $str, 1); // user/order_list  
+  
+$arr = array('abbc','bbac','cbba');  
+$result = str_replace_limit('b', 'B', $arr, 1);  
+print_r($result); // Array ( [0] => aBbc [1] => Bbac [2] => cBba )  
+
+```
+
+***
+####  php读取文件的4种方式
+```
+关于php读取文件的4种方式：
+1，使用fopen,fread一次读取文件,也可通过指定大小多次读取。
+$fp = fopen($file_path, "r");
+$str = trim(fread($fp, filesize($file_path)));
+
+2，使用fopen打开，通过fgets逐行读取,fgets不指定length参数，默认是读取1k。
+$fp = fopen($file_path,"r");
+$str ="";
+while(!feof($fp)){
+    $str .= fgets($fp);
+}
+
+3，使用file函数一次性将内容读入数组(按行分开)
+$file = file($file_path);
+echo implode('<br>', $file);//把数组元素组合为字符串.explode相反
+
+
+4，读取文件内容的方式file_get_contents
+$str=trim(file_get_contents($file_path));
+```
+
+***
+####  Linux批量杀死包含某个关键字的进程
+```
+ps -ef|grep goods|grep -v grep|cut -c 9-15|xargs kill -9
+
+批量杀死包含关键字“./amplxe-gui”的进程。
+
+"ps -ef" ——查看所有进程
+
+
+"grep ./amplxe-gui" ——列出所有含有关键字"./amplxe-gui"的进程
+
+
+"grep -v grep" ——在列出的进程中去除含有关键字"grep"的进程（因为我们在前一步生成的grep进程也包含关键字）
+
+
+"cut -c 9-15" ——截取输入行的第9个字符到第15个字符，而这正好是进程号PID
+
+
+"xargs kill -9" ——xargs 命令是用来把前面命令的输出结果（PID）作为"kill -9"命令的参数，并执行该命令。"kill -9"会强行杀掉指定进程。
 ```
 
 ***
@@ -278,6 +416,47 @@ sed是一个很好的文件处理工具，本身是一个管道命令，主要�
 http://www.cnblogs.com/rollenholt/p/3874443.html
 ```
 
+
+***
+####  百度公司php开发编码规范规则 中比较有用的规范
+```
+3.5. [强制] [PHP026] 类method命名采用驼峰命名, 普通function采用过程函数风格命名。
+类method：
+public function getName() { } 
+
+普通function：
+function show_me_the_money() { } 
+
+3.6. [强制·]类成员变量和局部变量必须采用驼峰命名法，建议增加三字节的类型前缀：arr、str、int、bol、obj等
+$strName, $intAge 
+
+3.7. [建议]文件(除了类)命名使用小写字母，单词之间以’_’连接。¶
+show_lemma.php 
+
+3.8. [建议]配置文件的名称为配置文件名 + .conf.php, 不涉及类的都小写通过”_”连接。
+good_version.conf.php 
+
+5.24. [建议]进行==判断时，建议把常量放在前面, 避免误写成赋值操作。
+示例
+不推荐形式：
+if ($a == 1){
+}
+推荐形式：
+if (1 == $a){
+}
+
+5.26. [建议]错误码使用统一文件集中配置，并且使用常量，而不应裸写数字
+
+6.1. [强制] [PHP034] 把重复调用放在循环体外。
+示例
+不推荐形式：
+for($i = 0; $i < count($arr); $i++)
+推荐形式：
+$arrCount = count($arr);
+for($i = 0; $i < $arrCount; $i++)
+
+```
+
 ***
 ####  grep 命令
 ```
@@ -287,6 +466,25 @@ http://www.cnblogs.com/rollenholt/p/3874443.html
 -n ：顺便输出行号
 -v ：反向选择，亦即显示出没有 '搜寻字符串' 内容的那一行！
 -v或许比较好用，如redis-cli -h host -p port client list | grep -v "omem=0"，来查询输出缓冲区不为0的客户端连接
+
+-n #增加显示行号
+-c #计算查找到的行数
+-o #只输出文件中匹配到的部分。
+-v #反转查找，即查找不包含指定字符串的数据
+-R/-r #目录递归查找 和-d recurse 选项等价。
+-E #使用能使用扩展正则表达式。
+-i #不区分大小写差别
+-A #当匹配本行后显示本行后面几行，-B 显示前两几行，-C 前后各几行。
+
+#不常用选项
+-h #在显示符合范本样式的那一列之前，不标示该列所属的文件名称。 
+-H #在显示符合范本样式的那一列之前，标示该列的文件名称。 
+-l #同时查找多个文件，显示哪些文件中找到了内容 
+-L #与-l相反，显示没有查找到内容的文件
+-e #要查找多个内容，就相当于 或
+-q #静默输出,不显示任何信息,可捕获命令运行结果来作条件测试。
+
+grep -e 1 -e 2 a.txt //包含1/2的内容
 
 ```
 ***
@@ -713,6 +911,21 @@ echo intdiv(7,2);//3
 ***
 #### 为querySelectorAll添加forEach方法
 ```
+[].forEach(function(value,index,array){
+　　　　//code something
+　　});
+
+var data=[1,3,4]
+
+var Squares=data.map(function(val,index,arr){
+  console.log(arr[index]==val);  // ==> true
+  return val*val           
+})
+console.log(Squares);        // ==> [1, 9, 16]
+map 用来修改数组中原有数据，而forEach用于遍历吧
+
+Object.keys(value).forEach((key) => defineReactive(value, key, value[key] , cb))
+
 let selector = 'th.vuetable-th-checkbox-' + idColumn + ' input[type=checkbox]'
       let els = document.querySelectorAll(selector)
 
@@ -1941,7 +2154,8 @@ $bAverage = round($bTotal/$total);
         // echo $user[0]->id;
         // var_dump(User::find(1)->bookhistory->device_id);//不包含delete_at不为null的
         // 
-        // var_dump(Auth::user());
+        // var_dump(Auth::user());同样效果
+        // $request->user() returns an instance of the authenticated user...
         // echo session('user_id');
             // var_dump(Auth::guard('web')->check());
         // 
@@ -2300,6 +2514,7 @@ function uuid($len=32){
     return $charid;
 }
 // echo uuid(22);
+怕重复还可以按实际情况做一重exist的查询
 ```
 
 
@@ -2330,6 +2545,7 @@ img {
 .xxx {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+还有个outline
 
 禁止选中内容
 
@@ -2418,7 +2634,7 @@ iptables -L -n
 iptables -I INPUT -p TCP --dport 6379 -j DROP
 2、开放给某IP访问请求,如192.168.5.100：
 iptables -I INPUT -s 192.168.5.100 -p TCP --dport 6379 -j ACCEPT
-然后将/etc/redis/redis.conf中的bind注释掉
+然后将/etc/redis/redis.conf中的bind注释掉 【关键】
 重启redis，ok！
 
 测试链接：
@@ -2605,6 +2821,60 @@ X5兼容写法
   }
 
 更多可参考AL框架seedsui layout页面
+
+
+.flex-wrp{
+  display: flex;
+}
+
+/* 垂直排列 flex-direction: row | row-reverse | column | column-reverse;*/
+.flex-column{
+  flex-direction:  column !important;
+}
+
+
+/* 右边对齐 justify-content: flex-start | flex-end | center | space-between | space-around;*/
+.flex-align-right{
+  justify-content: flex-end !important;
+  align-items: flex-end !important;
+}
+
+.flex-tab{
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.flex-item{
+  flex-grow: 1;
+  text-align: center;
+}
+
+.flex-item-verticl-center{
+  align-self: center;
+}
+
+.flex-item-fixed{
+  flex: 1 0 0;
+}
+
+.flex-container{
+  display: flex;
+}
+
+/* 垂直并水平居中 */
+.flex-container-verticle-center{
+  justify-content:center;
+  align-items:center;
+}
+
+/* 垂直居中 */
+.flex-container-verticle{
+  align-items:center;
+}
+
+
+vue中可以使用兼容库 "flex.css": "^1.1.6",解决Android4.3等老浏览器导致的问题
 ```
 
 
@@ -2643,6 +2913,7 @@ http://jingyan.baidu.com/article/948f59245be128d80ff5f9aa.html
 #### ios系统中元素被触摸时产生的半透明灰色遮罩怎么去掉
 ```
 a,button,input,textarea{-webkit-tap-highlight-color: rgba(0,0,0,0;)} 
+还有个outline
 ```
 ***
 
@@ -2784,7 +3055,7 @@ $("#formToUpdate").ajaxSubmit({
 ```
 3.玩转数字 除了上一节介绍的之外，这里有更多的处理数字的技巧 
 0xFF; // Hex declaration, returns 255 
-020; // Octal declaration, returns 16 
+020; // Octal declaration, returns 16 （新的八进制 literal 写法是 0o 前缀，如 0o10 就是 8。在 strict 模式下也是可用的。）
 1e3; // Exponential, same as 1 * Math.pow(10,3), returns 1000 
 (1000).toExponential(); // Opposite with previous, returns 1e3 
 (3.1415).toFixed(3); // Rounding the number to string, returns "3.142"
@@ -3138,7 +3409,7 @@ http://www.bluesdream.com/blog/sublime-text-snippets-function.html
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
 
   <title>$1</title>
-     <link rel="stylesheet" href="index.css"> 
+     <!-- <link rel="stylesheet" href="index.css">  -->
   <style type="text/css">
   body{-webkit-text-size-adjust: 100%!important;}
   </style>

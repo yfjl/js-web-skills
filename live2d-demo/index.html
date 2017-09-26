@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="black" name="apple-mobile-web-app-status-bar-style">
+	<meta content="telephone=no" name="format-detection">
+	<meta content="email=no" name="format-detection">
+	<!--隐藏ios上的浏览器地址栏-->
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <!-- UC默认竖屏 ，UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <!-- QQ强制竖屏 QQ强制全屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="app">
+	<title></title>
+	<!-- <link rel="stylesheet" href="index.css"> -->
+	<style type="text/css">
+	body{-webkit-text-size-adjust: 100%!important;}
+	</style>
+</head>
+
+<body>
+
+<script type="text/javascript" src="live2d/script.js"></script>
+    <div>
+    	<canvas id="live2dcanvas" width="200" height="400" class="live2d"></canvas>
+    </div>
+    <canvas id="live2dcanvas2" width="200" height="400" class="live2d"></canvas>
+    一次只能展示一个，且需要在服务器环境才能浏览，因为涉及到跨域
+    <style>
+      canvas {
+      	position: relative;
+        z-index: 999;
+        pointer-events: none;
+      }
+      /*
+      #live2dcanvas {
+        position: fixed;
+        right: 0px;
+        z-index: 999;
+        pointer-events: none;
+        bottom: -60px;
+      }*/
+    </style>
+    <script>
+    // loadlive2d("live2dcanvas" ,"live2d/assets/koharu/koharu.model.json")
+    loadlive2d("live2dcanvas2" ,"live2d/assets/haru/haru.model.json")
+    </script>
+</body>
+
+</html>
+     

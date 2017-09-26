@@ -1,0 +1,23 @@
+
+<!--mask-->  
+<view class="drawer_screen" bindtap="tapMask" wx:if="{{showModalStatus}}"></view>  
+<!--content-->  
+<!--使用animation属性指定需要执行的动画-->  
+<view animation="{{animationDataDrawer}}" class="drawer_attr_box" wx:if="{{showModalStatus}}">  
+  <!--drawer content-->  
+  <view class="drawer_content">
+
+      <scroll-view  bindtap="tapItem">
+        <view class="item-wrp  flex-container flex-container-verticle-center" 
+        wx:for="{{sheetList}}" wx:for-index="index" wx:for-item="item" wx:key="{{index}}">
+          <view class="item flex-item-verticl-center" data-index="{{index}}">{{item}}</view>
+
+        
+        </view>
+
+        <view wx:if="{{!hideModalCancellBtn}}" class="item cancel flex-item-verticl-center" data-index="cancel">取 消</view>
+
+      </scroll-view>
+
+  </view>  
+</view>  

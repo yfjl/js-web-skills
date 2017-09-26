@@ -1,0 +1,71 @@
+/*mask*/  
+.drawer_screen {  
+  width: 100%;  
+  height: 100%;  
+  position: fixed;  
+  top: 0;  
+  left: 0;  
+  z-index: 1000;  
+  background: #000;  
+  opacity: 0.2;  
+  overflow: hidden;  
+}  
+/*content*/  
+.drawer_attr_box {  
+  width: 100%;  
+  overflow: hidden;  
+  position: fixed;  
+  bottom: -240px;  
+  left: 0;  
+  z-index: 1001;  
+  background: #fff;
+  opacity: 0.8;
+}  
+.drawer_content {  
+  padding: 20rpx 40rpx;  
+  height: 470rpx;  
+  overflow-y: scroll;  
+}
+
+.drawer_content .cancel{
+  color: red;
+}
+
+.drawer_content .item{
+  text-align: center;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-bottom: 1px solid #f8f8f8;
+  font-weight: bold;
+  width: 100%;
+}
+
+.drawer_title{  
+  padding:20rpx;  
+  font:42rpx "microsoft yahei";  
+  text-align: center;  
+}  
+
+
+.flex-item-verticl-center{
+  align-self: center;
+}
+
+.flex-item-fixed{
+  flex: 1 0 0;
+}
+
+.flex-container{
+  display: flex;
+}
+
+/* 垂直并水平居中 */
+.flex-container-verticle-center{
+  justify-content:center;
+  align-items:center;
+}
+
+/* 垂直居中 */
+.flex-container-verticle{
+  align-items:center;
+}
