@@ -1,6 +1,6 @@
 ### js-web-skills
-js web 相关总结，乱七八糟,难度不分先后，随意插入的
-
+js web linux 相关总结，乱七八糟,难度不分先后，随意插入的
+nodejs、vue有单独.md文件
 ***
 
 [1秒破解 js packer 加密](http://www.cnblogs.com/52cik/p/js-unpacker.html)
@@ -11,7 +11,7 @@ js web 相关总结，乱七八糟,难度不分先后，随意插入的
 
 
 ***
-####  细说PHP中strlen和mb_strlen的区别
+####  PHP中strlen和mb_strlen的区别
 ```
 //测试时文件的编码方式要是UTF8  
 $str='中文a字1符';  
@@ -19,6 +19,81 @@ echo strlen($str).'<br>';//14
 echo mb_strlen($str,'utf8').'<br>';//6  
 echo mb_strlen($str,'gbk').'<br>';//8  
 echo mb_strlen($str,'gb2312').'<br>';//10  
+```
+
+***
+####  WINDOWS 环境下laravel 项目目录千万不可以用中文
+```
+否则在静态文件解析上会出问题。无法访问，要么500要么404
+其他php代码是可以正常访问的，所以这个bug很不好找
+```
+
+***
+####  微信小程序用户拒绝授权后可以弹出setting让用户选择
+```
+
+function getUserInfo() {
+  return new Promise(function (resolve, reject) {
+    wx.getSetting({
+      success(res) {
+        if (!res.authSetting['scope.userInfo']) {
+          //wx.openSetting()
+          wx.showModal({
+            title: '未授权获取用户信息',
+            showCancel: false,
+            content: '请允许授权，否则无法登录账号。请谨慎选择，拒绝后短时间内无法再次发起授权，将影响您的正常使用',
+            success: function (res) {
+              if (wx.authorize)
+                wx.authorize({
+                  scope: 'scope.userInfo',
+                  success(err) {
+                    console.log('scope.userInfo', err)
+                    wx.getUserInfo({
+                      withCredentials: true,
+                      success: function (res) {
+                        resolve(res);
+                      },
+                      fail: function (err) {
+                        reject(err);
+                      }
+                    })
+                  },
+                  fail(err){
+                    wx.openSetting()
+                    reject(err);
+                  }
+                })
+                else
+                wx.getUserInfo({
+                  withCredentials: true,
+                  success: function (res) {
+                    resolve(res);
+                  },
+                  fail: function (err) {
+                    reject(err);
+                  }
+                })
+            }
+          })
+          
+        }else{
+          wx.getUserInfo({
+            withCredentials: true,
+            success: function (res) {
+              resolve(res);
+            },
+            fail: function (err) {
+              reject(err);
+            }
+          })
+        }
+      }
+    })
+
+    
+  });
+}
+
 ```
 
 ***
@@ -30,22 +105,216 @@ var_dump(strstr($pre,$obj->activities[0]->id));//错误，诡异
 ```
 
 ***
-####  调研了下直播 播放器方案
+####  监听网页返回 和 微信内关闭页面
 ```
-看了下主流方案，手机端用的hls,PC端用的rtmp转flash妥协，然后播放器就是videojs
+history.pushState({}, "", "");
+      //关闭浏览器窗口
+      $(window).on('popstate', function(){
+      var r=confirm("要关闭页面吗？");
+      if (r) {wx.closeWindow();}
+      history.pushState({}, "", "");
+      
+      return;
+      });
+
 ```
 
 ***
-####  js获取最上层window对象的架构思路
+####  调研了下直播 播放器方案
+```
+看了下主流方案，手机端用的hls,PC端用的rtmp转flash妥协，然后播放器就是videojs
+主要分 
+1、推流（电脑端直接用OBS https://obsproject.com/）、
+2、服务器 （srs https://github.com/ossrs/srs rtmp实测3秒延迟、nginx rtmp模块 https://github.com/arut/nginx-rtmp-module,测试 rtmp 5秒延迟，hls 30秒延迟）、
+3、拉流 （电脑端直接VLS 简单粗暴 http://www.videolan.org/vlc/）
+三部分做测试，然后可以替换各个实现部分
+入门可以参考http://blog.csdn.net/lmj623565791/article/details/77937483
+（注意OBS rtmp里 url 填写rtmp://192.168.1.28/bajian，流名称 mylive 才会组合成下面的地址）
+（注意OBS hls里 url 填写http://192.168.1.28/hls，名称 mylive 才会组合成下面的地址）
+rtmp://192.168.1.28/bajian/mylive
+http://192.168.1.28/hls/mylive.m3u8
+nginx-rtmp 安装 见下面 【安装成功的nginx如何添加未编译安装模块 【nginx-rtmp-module安装过程】】
+h5直接播放m3u8格式：https://github.com/huangyaoxin/hLive
+```
+
+***
+####  安装成功的nginx如何添加未编译安装模块 【nginx-rtmp-module安装过程】
+```
+原已经安装好的nginx，现在需要添加一个未被编译安装的模块
+举例说明：安装第三方的ngx_cache_purge模块（用于清除指定URL的缓存）
+nginx的模块是需要重新编译nginx，而不是像apache一样配置文件引用.so
+/usr/local/nginx/sbin/nginx -V 查看原来的依赖
+
+bajian@ubuntu:~/Desktop/lnmp$ /usr/local/nginx/sbin/nginx -V
+nginx version: nginx/1.12.1
+built by gcc 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.4) 
+built with OpenSSL 1.0.2l  25 May 2017
+TLS SNI support enabled
+configure arguments: --prefix=/usr/local/nginx --user=www --group=www --with-http_stub_status_module --with-http_v2_module --with-http_ssl_module --with-http_gzip_static_module --with-http_realip_module --with-http_flv_module --with-http_mp4_module --with-openssl=../openssl-1.0.2l --with-pcre=../pcre-8.41 --with-pcre-jit --with-ld-opt=-ljemalloc
+
+tar xzf nginx-1.12.1.tar.gz 
+cd nginx-1.12.1/
+git clone https://github.com/arut/nginx-rtmp-module
+
+./configure --prefix=/usr/local/nginx --user=www --group=www --with-http_stub_status_module --with-http_v2_module --with-http_ssl_module --with-http_gzip_static_module --with-http_realip_module --with-http_flv_module --with-http_mp4_module --with-openssl=../openssl-1.0.2l --with-pcre=../pcre-8.41 --with-pcre-jit --with-ld-opt=-ljemalloc --add-module=/home/bajian/Desktop/lnmp/src/nginx-1.12.1/nginx-rtmp-module
+sudo make，不要make install会覆盖
+
+需要替换nginx二进制文件,先备份一下原来的启动脚本。
+sudo cp /usr/local/nginx/sbin/nginx /usr/local/nginx/sbin/nginx.bak
+
+关闭nginx 再复制再启动
+sudo killall nginx
+sudo cp ./objs/nginx /usr/local/nginx/sbin/
+/usr/local/nginx/sbin/nginx -V 查看下是不是已经加入了。
+sudo /usr/local/nginx/sbin/nginx
+
+/usr/local/nginx/conf/nginx.conf 添加最外层
+
+rtmp {  
+    server {  
+        listen 1935;  
+  
+        application comrtmp {  
+            live on;  
+        }  
+        application hls {  
+            live on;  
+            hls on;  
+            hls_path /tmp/hls;  
+        }  
+    }  
+}
+
+然后,针对hls,还需要在http里面增加一个location配置
+# Incoming stream must be in H264/AAC.For iPhones use baseline H264
+location /hls {  
+            types {  
+                application/vnd.apple.mpegurl m3u8;  
+                video/mp2t ts;  
+            }  
+            root /tmp;  
+            add_header Cache-Control no-cache;
+            add_header 'Access-Control-Allow-Origin' '*';
+}
+
+iptables -I INPUT -p tcp -m tcp --dport 1935 -j ACCEPT
+sudo mkdir /tmp/hls
+sudo chmod -R 777 /tmp/hls
+重启nginx
+上面这两个流的地址分别是:
+第一个就是推送的地址: rtmp://serverIp:1935/comrtmp/bajian
+rtmp://192.168.1.28/comrtmp/mylive
+
+第二个是HTTP地址: http://serverIp:8080/hls/test2.m3u8
+http://192.168.1.28/hls/mylive.m3u8
+参考：
+http://redstarofsleep.iteye.com/blog/2123752
+
+```
+
+***
+####  VM ubuntu 怎么进入命令行界面/图像界面
+```
+
+Ctrl + Alt + f1 //命令行
+Ctrl + Alt + f7 //图像界面
+
+```
+***
+####  关于PUSH 推送 调研
+```
+融云PUSH 开发环境免费，上线 收费1200/月
+JPUSH 免费，受限于 共享20w次/秒
+
+```
+
+***
+####  linux 系统如何设置先等普通用户在转到root用户下
+```
+
+sudo vi /etc/sudoers
+bajian    ALL=(ALL:ALL) ALL
+:wq!
+
+
+```
+***
+####  linux 查看监听的端口
+```
+netstat -lnt
+netstat -ano
+
+-a (all)显示所有选项，默认不显示LISTEN相关
+-t (tcp)仅显示tcp相关选项
+-u (udp)仅显示udp相关选项
+-n 拒绝显示别名，能显示数字的全部转化成数字。
+-l 仅列出有在 Listen (监听) 的服務状态
+
+-p 显示建立相关链接的程序名
+-r 显示路由信息，路由表
+-e 显示扩展信息，例如uid等
+-s 按各个协议进行统计
+-c 每隔一个固定时间，执行该netstat命令。
+
+```
+
+***
+####  Linux中的pushd和popd
+```
+0、使用cd -进行目录切换 【cd -中，-就相当于变量$OLDPWD。cd -就相当于cd $OLDPWD】
+$ pwd
+/home/lfqy
+$ cd /
+$ cd -
+/home/lfqy
+1、
+同时假设当前工作目录为 c:\windows
+eg..输入命令： pushd d:\example
+
+则说明 将当前工作目录c:\windows压入栈中，并将改变工作目录路径为d:\example
+这时候, dir命令看到的是d:\example下的文件, 
+
+```
+
+***
+####  Xshell 连接本地 VM ubuntu
+```
+http://www.linuxidc.com/Linux/2016-08/134086.htm
+最重要两步是 安装【sudo apt-get install ssh】并开始ssh 【service sshd start】
+【第五步 – 更改虚拟机网络连接方式 这个是关键点：网卡设置成桥接模式】
+
+```
+***
+####  github 创建静态页面，项目展示页面
+```
+在上传的项目创建 gh-pages 分支 
+http://blog.csdn.net/irouduoduo/article/details/72614468
+
+如果是展示vue的demo page，build后，需要替换下index.html 下的资源路径：
+如:
+/static==>https://bajian.github.io/vue-slider/dist/static
+访问路径为：【可能创建后几分钟才能访问】
+https://bajian.github.io/vue-slider/dist/
+
+```
+
+***
+#### 把github 当服务器使用
+```
+http://rawgit.com/
+```
+
+***
+####  js获取最上层window对象的架构思路 （做浏览器插件很需要注意）
 ```
 window.top.location.href
 
-function isOriginComStore(){
+function isXUrl(x){
     // return window.location.href.indexOf("origin")!=-1 &&
     //  window.location.href.indexOf("\/store\/browse")==-1 && 
     //  window.location.href.indexOf("store\/")!=-1 
     console.log('test',parent.location.href,location.href,top.location.href);
-    return  (location.host.indexOf("origin.com")!==-1) ;
+    return  (location.host.indexOf(x)!==-1) ;
     // return  (location.href.indexOf("origin.com")!==-1 && (parent.location.href== location.href == window.top.location.href)) ;
 }
 ```
@@ -133,6 +402,21 @@ http://blog.csdn.net/blueheart20/article/details/44902747
 ```
 
 ***
+####  animate.css 需要在block 或者display:inline-block; 才有效
+```
+错误：
+    <span style="width:100px;height:100px;background:red;" class="animated flipInX">
+      <i slot="icon" class="fa fa-heart text-primary"></i> 
+    </span>
+正确：
+    <span style="width:100px;height:100px;background:red;display:inline-block" class="animated flipInX">
+      <i slot="icon" class="fa fa-heart text-primary"></i> 
+    </span>
+
+https://github.com/daneden/animate.css
+```
+
+***
 ####  str_replace 指定匹配次数不可行
 ```
 mixed str_replace ( mixed $search , mixed $replace , mixed $subject [, int &$count ] )  
@@ -211,7 +495,7 @@ $str=trim(file_get_contents($file_path));
 ```
 
 ***
-####  Linux批量杀死包含某个关键字的进程
+####  Linux批量杀死包含某个关键字的进程 全部进程
 ```
 ps -ef|grep goods|grep -v grep|cut -c 9-15|xargs kill -9
 
@@ -1769,6 +2053,32 @@ DB::connection()->enableQueryLog();
             print_r(
     DB::getQueryLog()
 ```
+
+***
+#### laravel orWhere 和 where 组合 问题
+```
+How do I say WHERE (a=1 OR b=1) AND (c=1 OR d=1)
+Model::where(function ($query) {
+    $query->where('a', '=', 1)
+          ->orWhere('b', '=', 1);
+})->where(function ($query) {
+    $query->where('c', '=', 1)
+          ->orWhere('d', '=', 1);
+});
+
+//correct
+    if ($keyword){
+        $query = $query->where(function($q) use($keyword){
+            $q->where('title', 'like', "%{$keyword}%")
+                ->orWhere('content', 'like', "%{$keyword}%");
+        });
+    }
+//  error      $query = $query->where('title','like',"%{$keyword}%")->orWhere('content','like',"%{$keyword}%");
+//    string(123) "select count(*) as aggregate from `articles` where `begin_at` <= ? and `end_at` >= ? and `title` like ? or `content` like ?" 这里问题可以看的很明显
+
+
+```
+
 ***
 #### mysql 多字段搜索中文 报错 Illegal mix of collations for operation 'like'
 ```
@@ -2197,11 +2507,20 @@ $fileUploadVoteRecords=FileUploadVoteRecord::where(['openid'=>$openid])->get()->
 ***
 #### laravel 缓存查询
 ```
+【eloquent里没有此方法】
 $users = DB::table('users')->remember(10)->get();
 在本例中,查询的结果将为十分钟被缓存。查询结果缓存时,不会对数据库运行,结果将从默认的缓存加载驱动程序指定您的应用程序。
 如果您使用的是支持缓存的司机,还可以添加标签来缓存:
 $users = DB::table('users')->cacheTags(array('people', 'authors'))->remember(10)->get();
 
+还是要使用
+$a = Cache::remember(env('KEY_CACHE_RECOMMEND_ACTIVITY'), env('KEY_CACHE_RECOMMEND_ACTIVITY_TIME'), function() {
+        return Article::where('is_recommend','1')
+            ->where('ispublished','1')
+            ->with('columns')->withCount('collections')
+            ->orderBy('id', 'desc')
+            ->take(10)->get();
+         });
 ```
 
 ***
@@ -2305,7 +2624,26 @@ Customer::find($customer_id)->increment('loyalty_points', 50);
 Customer::find($customer_id)->decrement('loyalty_points', 50);
 
 
+updateOrCreate
+1、Model:
+    protected $fillable = [
+        'id', 'title', 'abstract', 'content', 'cover', 'author', 'istop', 'column_id', 'jump_link', 'ispublished',
+        'view_times', 'lat', 'lng', 'location_cn', 'city', 'province', 'begin_at', 'end_at', 'limit_person_num', 'price', 'is_recommend',
+    ];
 
+2、
+$a=Article::updateOrCreate(['id'=> $article_id],$arr);
+//如果存在id 为 $article_id ，则update $arr，否则create  $arr
+public function create_activity($version,Request $request){
+        $arr = $request->all();
+        $title=$request->input('title');
+        $article_id=$request->input('article_id','0');
+        if (!$this->checkAllArgsExist($title))
+            return $this->toJson('参数不全');
+
+        $a=Article::updateOrCreate(['id'=> $article_id],$arr);
+        return $this->toJson(0,$arr,$a);
+    }
 ```
 
 ***
@@ -3909,6 +4247,7 @@ So here is an example in mysql.
 SELECT * FROM my_table UNION ALL SELECT * FROM my_table WHERE id IN (1,2)
 Then if you are using Laravel's eloquent like I am use this.
 
+$queryh = HobbyUser::select(DB::raw('count(*) * 20 as h_sum'),'user_id')
 $query = Class::whereIn('id', $array);
 Class::where('id','>=',0)->unionAll($query)->get();
 
@@ -4349,6 +4688,22 @@ function countSubstr(str,substr){
            }
            return count;//返回找到的次数
 }
+```
+
+***
+#### js replaceAll  
+```
+function replaceAll(str,target,replace){
+           var reg="/"+target+"/g";    //查找时忽略大小写
+           reg=eval(reg);
+           return str.replace(reg,replace)
+}
+
+const replaceAll=(str,target,replace)=>{
+        var reg="/"+target+"/g";    //查找时忽略大小写
+        reg=eval(reg);
+        return str.replace(reg,replace)
+    }
 ```
 
 ***
@@ -4993,11 +5348,6 @@ json字符串转json对象：jQuery.parseJSON(jsonStr);
 json对象转json字符串：JSON.stringify(jsonObj);
 ```
 
-***
-#### 把github 当服务器使用
-```
-http://rawgit.com/
-```
 
 ***
 #### js刷新当前页面
@@ -6368,14 +6718,7 @@ arr.splice(3,1) //[4]
 ***
 #### js支持类似重载的调用方法
 ```
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
 
-</body>
 <script type="text/javascript">
 	function myfun(arg1,arg2,arg3){
 		alert("in");
@@ -6386,8 +6729,6 @@ myfun("arg1");
 myfun("arg1","arg2");
 myfun("arg1","arg2","arg2");
 myfun("arg2","arg2","arg2","arg2");
-</script>
-</html>
 
 ```
 
@@ -6396,10 +6737,6 @@ myfun("arg2","arg2","arg2","arg2");
 ```
 http://blog.csdn.net/lulei9876/article/details/8494337
 
-<html>   
-<head>   
-<title>回调函数(callback)</title>   
-<script language="javascript" type="text/javascript">   
 function a(callback)   
 {      
    alert("我是parent函数a！，准备调用回调函数");   

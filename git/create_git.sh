@@ -3,12 +3,12 @@
 # Useage: ./create_git.sh repository_name
 
 
-echo "create begin!"
 CUR_DIR=$(pwd)
 
 DIR_GITSERVER=./gitserver/
 DIR_GITREP="${DIR_GITSERVER}$1.git"
 DIR_HOOKS="hooks/post-receive"
+SERVER_IP="47.88.50.69"
 DIR_REPO=$CUR_DIR/$1
 
 output_hooks () {
@@ -22,6 +22,9 @@ output_hooks () {
 	echo 'composer dump-autoload --optimize' | tee -a $DIR_HOOKS
 	echo 'echo "done!"' | tee -a $DIR_HOOKS
 }
+
+echo "create begin!"
+mkdir ${DIR_GITSERVER}
 
 if [ -z "$1" ]; then 
     echo "args1 is empty,useage: ./create_git.sh repository_name" 
@@ -42,4 +45,5 @@ if [ -n "$1" ]; then
     
 fi
 echo "create done!"
+echo "root@${SERVER_IP}:/home/hgx/gitserver/$1.git"
 

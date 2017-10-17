@@ -1,10 +1,18 @@
+     /**
+     * 此库劲量少用es6语法，方便其他地方使用
+     * @author bajian
+     * @param  
+     * @return 
+     */
+
 import request from 'superagent'
+window.request=request
+let myajax = {}
 
-//TODO FILE UPLOAD API
-const myajax = {}
-
-myajax.prefix='';//前缀，如域名等
+myajax.prefix=''//前缀，如域名等
 myajax.timeout=6e4
+myajax.param_token=''
+myajax.param_token_key='access_token'
 myajax.defaultFailCallback=function(){};
 myajax.defaultMiddleware=function(){};
 
@@ -20,7 +28,48 @@ myajax.defaultMiddleware=function(){};
  */
  myajax.get = (url,params = {},success, error = myajax.defaultFailCallback,middleware=myajax.defaultMiddleware,type='json') => {
     url=url.indexOf('http')===0?url:myajax.prefix + url;
-    request('GET', url).query(params).timeout(myajax.timeout).type(type).end((err, res = {}) => {
+     params=mergeToken(params)
+    request('GET', url).query(params).timeout(myajax.timeout).end((err, res = {}) => {
+        if (err) 
+            error(err)
+        else{
+            middleware(res.body||res.text)
+            success&&success(res.body||res.text)
+        }
+    })
+}
+
+     /**
+     * 带cookie 跨域
+     * @author bajian
+     * @param  
+     * @return 
+     */
+     myajax.cget = (url,params = {},success, error = myajax.defaultFailCallback,middleware=myajax.defaultMiddleware,type='json') => {
+        url=url.indexOf('http')===0?url:myajax.prefix + url;
+         params=mergeToken(params)
+        request('GET', url).withCredentials().query(params).timeout(myajax.timeout).end((err, res = {}) => {
+            if (err) 
+                error(err)
+            else{
+                middleware(res.body||res.text)
+                success&&success(res.body||res.text)
+            }
+        })
+    }
+
+     /**
+     * 带cookie 跨域
+     * @author bajian
+     * @param  
+     * @return 
+     */
+     myajax.cpost = (url, params = {},success, error = myajax.defaultFailCallback,middleware=myajax.defaultMiddleware,type='json') => {
+        url=url.indexOf('http')===0?url:myajax.prefix + url;
+         params=mergeToken(params)
+        params=typeof params =='object'?toQueryString(params):params
+    //.type(type)千万别加这个了，，不然会改变content-type类型，导致跨域是非简单请求，需要options
+    request('POST', url).withCredentials().send(params).timeout(myajax.timeout).end((err, res = {}) => {
         if (err) 
             error(err)
         else{
@@ -32,14 +81,92 @@ myajax.defaultMiddleware=function(){};
 
 myajax.post = (url, params = {},success, error = myajax.defaultFailCallback,middleware=myajax.defaultMiddleware,type='json') => {
     url=url.indexOf('http')===0?url:myajax.prefix + url;
-    request('POST', url).send(params).timeout(myajax.timeout).type(type).end((err, res = {}) => {
+    params=mergeToken(params)
+    params=typeof params =='object'?toQueryString(params):params
+    request('POST', url).send(params).timeout(myajax.timeout).end((err, res = {}) => {
         if (err) 
             error(err)
         else{
             middleware(res.body||res.text)
             success&&success(res.body||res.text)
         }
-        })
+    })
 }
 
-export default myajax
+     /**
+     * arr['fff']=f.files[0]
+     * myajax.file('http://www.bajian2.com/api/v1/t',arr)
+     * @author bajian
+     * @param 非空  params [name=>file,name2=>file2] 如 params['photo']=f.files[0]
+     * @return 
+     */
+     myajax.file = (url, params = {},success, error = myajax.defaultFailCallback,middleware=myajax.defaultMiddleware,type='json') => {
+        url=url.indexOf('http')===0?url:myajax.prefix + url;
+        let formData = new FormData();
+         params=mergeToken(params)
+        for(var i in params){
+            formData.append(i, params[i]);
+        }
+        request('POST', url).send(formData).timeout(myajax.timeout).end((err, res = {}) => {
+            if (err) 
+                error(err)
+            else{
+                middleware(res.body||res.text)
+                success&&success(res.body||res.text)
+            }
+        })
+    }
+
+
+     /**
+     * 
+     * @author bajian
+     * @param 非空  params [name=>file,name2=>file2] 如 params['photo']=f.files[0]
+     * @return 
+     */
+     myajax.cfile = (url, params = {},success, error = myajax.defaultFailCallback,middleware=myajax.defaultMiddleware,type='json') => {
+        url=url.indexOf('http')===0?url:myajax.prefix + url;
+        let formData = new FormData();
+         params=mergeToken(params)
+        for(var i in params){
+            formData.append(i, params[i]);
+        }
+        request('POST', url).withCredentials().send(formData).timeout(myajax.timeout).end((err, res = {}) => {
+            if (err) 
+                error(err)
+            else{
+                middleware(res.body||res.text)
+                success&&success(res.body||res.text)
+            }
+        })
+    }
+
+    function toQueryString(obj) {
+        var parts = [];
+        for (var i in obj) {
+            if (obj.hasOwnProperty(i)) {
+                parts.push(encodeURIComponent(i) + "=" + encodeURIComponent(obj[i]));
+            }
+        }
+        return parts.join("&");
+    }
+
+     /**
+      * 将token加到参数中
+      * @param params
+      */
+    function mergeToken(params) {
+        if (!myajax.param_token)
+            return params;
+        if (typeof params ==='object'){
+            params[myajax.param_token_key]=myajax.param_token
+            return params;
+        }else{
+            let p=myajax.param_token_key+'='+myajax.param_token
+            return params?(params+'&'+p):p;
+        }
+
+
+    }
+
+    export default myajax
