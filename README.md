@@ -22,6 +22,48 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 ```
 
 ***
+####  composer 执行脚本 http://docs.phpcomposer.com/articles/scripts.html
+```
+composer run-script post-update-cmd
+
+```
+
+***
+####  apache/Nginx下的PHP/Ruby执行sudo权限的系统命令
+```
+http://www.4wei.cn/archives/1001469
+
+```
+
+***
+####  laravel 监听数据库查询，打印相关query，优化性能 & with 优化
+```
+
+laravel model非常强大易用，通过简单的一两行代码我们就可以创建强大的关系结构，但是随着应用复杂度增大，系统的性能可能快速下降，这时通过监察系统对数据库查询的频率就可以对优化有一些思路:
+
+Event::listen('illuminate.query',function($sql){
+  var_dump($sql); //通过监听illuminate.query事件，就能大概搞清楚系统的瓶颈，对于relation操作往往会有一个N+1 problem可以优化
+});
+我们通过with方法一次性地取出数据记录同时取出对应的relation数据，则可以大大优化数据库查询的次数:
+
+$projects = Project::with('owner')->remember(10)->get(); //【remember laravel5.5好像不能使用了】
+上面的代码只需要执行2次数据库查询，同时放到cache中10分钟，这将大大提高系统的性能.
+```
+
+***
+####  如何获取http://xxx.com/yy?q=zz#/urlafterhashbound/mm整个url?
+```
+我们知道url中的#后面的内容是为浏览器客户端来使用的，【永远不会送往server端】，那么如果服务器端希望得到这个信息，又该如何处理呢？一个可行的方案是在url中将#后面的内容转换为querystring，这样后端就能够得到这个信息加上fullurl()函数就能拼凑出整个url
+```
+
+***
+####  console 打印彩色字体。。
+```
+console.log("%c这是一段彩色的字体","background-image:-webkit-gradient( linear, left top,right top, color-stop(0, #4096EE), color-stop(0.15, #FF1A00), color-stop(0.3, #4096EE), color-stop(0.45, #FF1A00),color-stop(0.6, #4096EE), color-stop(0.75, #FF1A00),color-stop(0.9, #4096EE), color-stop(1, #FF1A00));color:transparent;-webkit-background-clip:text;font-size:10px;");
+
+```
+
+***
 ####  WINDOWS 环境下laravel 项目目录千万不可以用中文
 ```
 否则在静态文件解析上会出问题。无法访问，要么500要么404
@@ -236,8 +278,185 @@ sudo vi /etc/sudoers
 bajian    ALL=(ALL:ALL) ALL
 :wq!
 
+```
+***
+####  有时候和别人对接接口的时候，请求过来的数据经过了GZIP压缩，乱码
+```
+mb_detect_encoding 检测出来的现实CP936，（GBK的一种）只会误导你去转码，其实并没有卵用
+
+有效的方式是GZIP解压缩
+phpGZIP解压缩函数：
+1. 使用自带的zlib库
+如果服务器已经装了zlib库，用下面的代码可以轻易解决乱码问题。
+复制代码 代码如下:
+
+$data = file_get_contents("compress.zlib://".$url);
+
+2. 使用CURL代替file_get_contents
+复制代码 代码如下:
+
+function curl_get($url, $gzip=false){
+ $curl = curl_init($url);
+ curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+ curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+ if($gzip) curl_setopt($curl, CURLOPT_ENCODING, "gzip"); // 关键在这里
+ $content = curl_exec($curl);
+ curl_close($curl);
+ return $content;
+}
+
+3. 使用gzip解压函数
+$html=file_get_contents('http://www.jb51.net/');
+$html=gzdecode($html);
+
+function gzdecode($data) { 
+  $len = strlen($data); 
+  if ($len < 18 || strcmp(substr($data,0,2),"\x1f\x8b")) { 
+    return null;  // Not GZIP format (See RFC 1952) 
+  } 
+  $method = ord(substr($data,2,1));  // Compression method 
+  $flags  = ord(substr($data,3,1));  // Flags 
+  if ($flags & 31 != $flags) { 
+    // Reserved bits are set -- NOT ALLOWED by RFC 1952 
+    return null; 
+  } 
+  // NOTE: $mtime may be negative (PHP integer limitations) 
+  $mtime = unpack("V", substr($data,4,4)); 
+  $mtime = $mtime[1]; 
+  $xfl   = substr($data,8,1); 
+  $os    = substr($data,8,1); 
+  $headerlen = 10; 
+  $extralen  = 0; 
+  $extra     = ""; 
+  if ($flags & 4) { 
+    // 2-byte length prefixed EXTRA data in header 
+    if ($len - $headerlen - 2 < 8) { 
+      return false;    // Invalid format 
+    } 
+    $extralen = unpack("v",substr($data,8,2)); 
+    $extralen = $extralen[1]; 
+    if ($len - $headerlen - 2 - $extralen < 8) { 
+      return false;    // Invalid format 
+    } 
+    $extra = substr($data,10,$extralen); 
+    $headerlen += 2 + $extralen; 
+  }
+  $filenamelen = 0; 
+  $filename = ""; 
+  if ($flags & 8) { 
+    // C-style string file NAME data in header 
+    if ($len - $headerlen - 1 < 8) { 
+      return false;    // Invalid format 
+    } 
+    $filenamelen = strpos(substr($data,8+$extralen),chr(0)); 
+    if ($filenamelen === false || $len - $headerlen - $filenamelen - 1 < 8) { 
+      return false;    // Invalid format 
+    } 
+    $filename = substr($data,$headerlen,$filenamelen); 
+    $headerlen += $filenamelen + 1; 
+  }
+  $commentlen = 0; 
+  $comment = ""; 
+  if ($flags & 16) { 
+    // C-style string COMMENT data in header 
+    if ($len - $headerlen - 1 < 8) { 
+      return false;    // Invalid format 
+    } 
+    $commentlen = strpos(substr($data,8+$extralen+$filenamelen),chr(0)); 
+    if ($commentlen === false || $len - $headerlen - $commentlen - 1 < 8) { 
+      return false;    // Invalid header format 
+    } 
+    $comment = substr($data,$headerlen,$commentlen); 
+    $headerlen += $commentlen + 1; 
+  }
+  $headercrc = ""; 
+  if ($flags & 1) { 
+    // 2-bytes (lowest order) of CRC32 on header present 
+    if ($len - $headerlen - 2 < 8) { 
+      return false;    // Invalid format 
+    } 
+    $calccrc = crc32(substr($data,0,$headerlen)) & 0xffff; 
+    $headercrc = unpack("v", substr($data,$headerlen,2)); 
+    $headercrc = $headercrc[1]; 
+    if ($headercrc != $calccrc) { 
+      return false;    // Bad header CRC 
+    } 
+    $headerlen += 2; 
+  }
+  // GZIP FOOTER - These be negative due to PHP's limitations 
+  $datacrc = unpack("V",substr($data,-8,4)); 
+  $datacrc = $datacrc[1]; 
+  $isize = unpack("V",substr($data,-4)); 
+  $isize = $isize[1];
+  // Perform the decompression: 
+  $bodylen = $len-$headerlen-8; 
+  if ($bodylen < 1) { 
+    // This should never happen - IMPLEMENTATION BUG! 
+    return null; 
+  } 
+  $body = substr($data,$headerlen,$bodylen); 
+  $data = ""; 
+  if ($bodylen > 0) { 
+    switch ($method) { 
+      case 8: 
+        // Currently the only supported compression method: 
+        $data = gzinflate($body); 
+        break; 
+      default: 
+        // Unknown compression method 
+        return false; 
+    } 
+  } else { 
+    // I'm not sure if zero-byte body content is allowed. 
+    // Allow it for now...  Do nothing... 
+  }
+  // Verifiy decompressed size and CRC32: 
+  // NOTE: This may fail with large data sizes depending on how 
+  //       PHP's integer limitations affect strlen() since $isize 
+  //       may be negative for large sizes. 
+  if ($isize != strlen($data) || crc32($data) != $datacrc) { 
+    // Bad format!  Length or CRC doesn't match! 
+    return false; 
+  } 
+  return $data; 
+}
 
 ```
+
+***
+####  七牛客户端上传图片
+```
+1、获取ak sk
+2、创建activity空间
+3、composer require qiniu/php-sdk
+4、
+    public function qiniukey($version,Request $request){
+        $bucket=$request->input('bucket','activity');
+        $auth = new QiniuAuth(env('QINIU_AK'), env('QINIU_SK'));
+        $upToken = $auth->uploadToken($bucket);
+        return $this->toJson(0,'',$upToken);
+    }
+5、客户端获取TOKEN，并携带TOKEN上传图片到七牛
+            myajax.file(api_uploadQiniuUrl,{
+                'file':f.files[0],
+                'token':this.qiniu_key,
+            },(data)=>{
+                this.multi_posting=false
+                if (data && !data.key)
+                    return alert('请求失败')
+                this.cover=window.config.QINIU_PREFIX+data.key
+                Toast.info('图片提交成功')
+
+            },(e)=>{
+              console.error(e)
+                this.multi_posting=false
+                return alert('请求失败，请稍后重试')
+            })
+上传部分参考https://developer.qiniu.com/kodo/manual/1272/form-upload
+存储区域 域名https://developer.qiniu.com/kodo/manual/1671/region-endpoint
+```
+
+
 ***
 ####  linux 查看监听的端口
 ```
@@ -2513,7 +2732,7 @@ $users = DB::table('users')->remember(10)->get();
 如果您使用的是支持缓存的司机,还可以添加标签来缓存:
 $users = DB::table('users')->cacheTags(array('people', 'authors'))->remember(10)->get();
 
-还是要使用
+eloquent还是要使用
 $a = Cache::remember(env('KEY_CACHE_RECOMMEND_ACTIVITY'), env('KEY_CACHE_RECOMMEND_ACTIVITY_TIME'), function() {
         return Article::where('is_recommend','1')
             ->where('ispublished','1')
@@ -2524,7 +2743,7 @@ $a = Cache::remember(env('KEY_CACHE_RECOMMEND_ACTIVITY'), env('KEY_CACHE_RECOMME
 ```
 
 ***
-#### laravel 加锁
+#### laravel 数据库加锁
 ```
     public function t()
     {
@@ -2681,6 +2900,21 @@ $emails = Email::select('username', DB::raw('count(*) as total')) ->groupBy('use
 
         $user=Auth::user()->with('merchant')->get();
     $user=Auth::user()->merchant;
+
+ Eager loading with nested resource
+有时，你希望一次性地获取资源对应的relation，并且可能希望嵌套的relation也能获取，比如，一本书Book属于一个author,一个author又有对应的contacts信息，你希望一次性获取一本书对应的作者以及作者对应的联系信息.可以通过以下方法一次性搞定（使用dot语法！！！）：
+$books = App\Book::with('author.contacts')->get();
+
+$c=Collection::where('id',33)->with('articles.columns')->first();
+
+Eager loading with nested resource and selected columns
+有时，你希望一次性地获取资源对应的relation，并且可能希望嵌套的relation也能获取，并且限制两层relation对应需要选择的字段(减少网络传输，提高性能)比如，一本书Book属于一个author,一个author又有对应的contacts信息，你希望一次性获取一本书对应的作者（name,id字段）以及作者对应的联系信息（address,user_id字段）.可以通过以下方法一次性搞定（使用dot语法！！！）：
+$books = App\Book::with(['author'=>function($q){
+ $q->select(['id','name']);
+}, 'author.contacts'=>function($q){
+ $q->select(['address','user_id']; // 注意user_id字段是必选的哦，因为这是user和address表的外键！
+})->get();
+
 
 many2many
 
@@ -2960,8 +3194,10 @@ $o->sayExclamationMark();//Hello World!
 #### 备忘，省得每次都查
 ```
 iptables -I INPUT -p tcp -m tcp --dport 3306 -j ACCEPT
-
+iptables -I INPUT -p tcp -m tcp --dport 8585 -j ACCEPT
 iptables -L -n
+
+端口 不允许外网ip ，阿里云--云服务器--安全组
 
 ```
 
