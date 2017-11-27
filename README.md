@@ -22,6 +22,36 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 ```
 
 ***
+####  阿里云 数据盘挂载和扩容
+```
+https://help.aliyun.com/document_detail/25452.html?spm=5176.doc25445.6.173.XKkyJu
+```
+
+***
+####  mysql 关于排序规则
+```
+数据库中的排序规则用来定义字符在进行排序和比较的时候的一种规则。常见的如下： 
+（1） utf8_general_ci 不区分大小写，utf8_general_cs 区分大小写 
+（2） utf8_bin 规定每个字符串用二进制编码存储，区分大小写，可以直接存储二进制的内容
+```
+
+***
+####  检查linux下占用cpu高的进程详细信息
+```
+1. top -c 查出对应的命令以及pid,
+
+2. cd /prox/pid
+
+3. ls -l，显示的cwd以及exe就可以看出具体是哪条命令启动了这个占用CPU巨大的任务！
+```
+
+***
+####  响应式图片srcset全新释义sizes属性w描述符
+```
+http://www.zhangxinxu.com/wordpress/2014/10/responsive-images-srcset-size-w-descriptor/?utm_source=tuicool&utm_medium=referral
+```
+
+***
 ####  document.referrer 获取来路url和当前url地址
 ```
 document.referrer
@@ -3965,6 +3995,33 @@ PHP Code Sniffer
 PHP Code Beautidfier
 rem-unit
 SublimeCodeIntel
+
+```
+
+#### sublime编译运行php
+```
+一、将PHP安装目录放如环境变量PATH
+二、添加PHP的build system
+
+1）进入如下菜单：
+
+
+2）弹出内容如下：
+
+{
+    "cmd": ["make"]
+}
+修改为：
+
+{ 
+    "cmd": ["php", "$file"],
+    "file_regex": "php$", 
+    "selector": "source.php" 
+}
+3）保存在默认的目录下即可，注意修改文件名为 php.sublime-build 。
+
+执行快捷键为Ctrl+B。
+http://blog.csdn.net/xxhsu/article/details/30757229
 
 ```
 
