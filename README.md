@@ -21,6 +21,8 @@ echo mb_strlen($str,'gbk').'<br>';//8
 echo mb_strlen($str,'gb2312').'<br>';//10  
 ```
 
+
+
 ***
 ####  阿里云 数据盘挂载和扩容
 ```
@@ -106,6 +108,19 @@ console.log("%c这是一段彩色的字体","background-image:-webkit-gradient( 
 ```
 否则在静态文件解析上会出问题。无法访问，要么500要么404
 其他php代码是可以正常访问的，所以这个bug很不好找
+```
+***
+####  理解CSS3中的background－size(对响应性图片等比例缩放)   图片 background 缩放自适应
+```
+固定宽度400px和高度200px－使用background－size:400px 200px缩放设置
+固定宽度400px和高度200px－使用background-size:100% 100%的缩放设置
+
+footer .company-code {
+    background: url("../images/company_code.png");
+    width: 130px;
+    height: 130px;
+    background-size: 130px 130px;
+}
 ```
 
 ***
@@ -3995,6 +4010,7 @@ PHP Code Sniffer
 PHP Code Beautidfier
 rem-unit
 SublimeCodeIntel
+vue-hightlight
 
 ```
 
