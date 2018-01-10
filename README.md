@@ -15,10 +15,24 @@ nodejs、vue有单独.md文件
 ```
 //测试时文件的编码方式要是UTF8  
 $str='中文a字1符';  
-echo strlen($str).'<br>';//14  
+echo strlen($str).'<br>';//14  4*3+2，中文字符3个字节
 echo mb_strlen($str,'utf8').'<br>';//6  
 echo mb_strlen($str,'gbk').'<br>';//8  
 echo mb_strlen($str,'gb2312').'<br>';//10  
+```
+
+***
+####  php 比较字符串或文章的相似度
+```
+similar_text("吉林禽业公司火灾已致112人遇难","吉林宝源丰禽业公司火灾已致112人遇难",$percent);
+var_dump($percent . '%') ;
+var_dump(number_format(($percent), 2, '.', '') . '%');
+
+similar_text(string1,string2,percent)
+参数  描述
+string1 必需。规定要比较的第一个字符串。
+string2 必需。规定要比较的第二个字符串。
+percent 可选。规定供存储百分比相似度的变量名。
 ```
 
 
@@ -88,12 +102,43 @@ Event::listen('illuminate.query',function($sql){
 
 $projects = Project::with('owner')->remember(10)->get(); //【remember laravel5.5好像不能使用了】
 上面的代码只需要执行2次数据库查询，同时放到cache中10分钟，这将大大提高系统的性能.
+
+但是能用下面的：
+$a = Cache::remember(env('KEY_CACHE_BANNER'), env('KEY_CACHE_BANNER_TIME'), function() {
+        return Article::where('istop','1')
+            ->where('ispublished','1')->orderBy('id', 'desc')
+            ->withCount('collections')->take(10)->get();
+    });
 ```
 
 ***
 ####  如何获取http://xxx.com/yy?q=zz#/urlafterhashbound/mm整个url?
 ```
 我们知道url中的#后面的内容是为浏览器客户端来使用的，【永远不会送往server端】，那么如果服务器端希望得到这个信息，又该如何处理呢？一个可行的方案是在url中将#后面的内容转换为querystring，这样后端就能够得到这个信息加上fullurl()函数就能拼凑出整个url
+```
+
+***
+####  laravel 执行migration报错 SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 1000 bytes
+```
+1、
+db 的config 'strict' => true, 改成false
+2、
+这也应该就是Laravel 5.4改用4字节长度的utf8mb4字符编码的原因之一。不过要注意的是，只有MySql 5.5.3版本以后才开始支持utf8mb4字符编码（查看版本：selection version();）。如果MySql版本过低，需要进行版本更新。
+升级MySql版本到5.5.3以上。
+手动配置迁移命令migrate生成的默认字符串长度，在AppServiceProvider中调用Schema::defaultStringLength方法来实现配置：
+    use Illuminate\Support\Facades\Schema;
+
+    /**
+* Bootstrap any application services.
+*
+* @return void
+*/
+public function boot()
+{
+   Schema::defaultStringLength(191);
+}
+
+http://blog.csdn.net/qq_15766181/article/details/71126648
 ```
 
 ***
@@ -292,7 +337,7 @@ location /hls {
             add_header 'Access-Control-Allow-Origin' '*';
 }
 
-iptables -I INPUT -p tcp -m tcp --dport 1935 -j ACCEPT
+iptables -I INPUT -p tcp -m tcp --dport 8585 -j ACCEPT
 sudo mkdir /tmp/hls
 sudo chmod -R 777 /tmp/hls
 重启nginx
@@ -2374,6 +2419,26 @@ if (!empty($search)){
         }
 
 ```
+
+
+***
+#### mysql中的get_lock锁机制解析
+```
+SELECT GET_LOCK('key_lock', 1000);
+UPDATE t_lock SET VALUE = 'uuu' ,NAME='yy' WHERE id = 1;
+SELECT RELEASE_LOCK('key_lock');
+
+http://blog.csdn.net/tangtong1/article/details/51792617
+
+php并发加锁示例
+锁的操作一般只有两步，一 获取锁(getLock)；二是释放锁(releaseLock)。但现实锁的方式有很多种，可以是文件方式实现；sql实现；Memcache实现；根据这种场景我们考虑使用策略模式。
+http://www.jb51.net/article/94878.htm
+
+
+
+```
+
+
 ***
 #### laravel 数据库锁
 ```
@@ -2539,6 +2604,30 @@ Accept-Encoding: gzip, deflate, sdch
 Accept-Language: zh-CN,zh;q=0.8
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjVkNTYzZDM5NzM4MTRjNGRlYzJjYmE1YzI4YWRlM2M0NjI0NTZkY2ZlNGRhMDRkNzQ3NDA4YmU2YmNhOTg1NTE5MjlhNjI2N2ZiNjc1Yjk3In0.eyJhdWQiOiIxNiIsImp0aSI6IjVkNTYzZDM5NzM4MTRjNGRlYzJjYmE1YzI4YWRlM2M0NjI0NTZkY2ZlNGRhMDRkNzQ3NDA4YmU2YmNhOTg1NTE5MjlhNjI2N2ZiNjc1Yjk3IiwiaWF0IjoxNDkwODY3MTQwLCJuYmYiOjE0OTA4NjcxNDAsImV4cCI6MTUyMjQwMzE0MCwic3ViIjoiMyIsInNjb3BlcyI6WyIqIl19.GogqyJJGG43QCTWsFGDHRqJVDxpn73A9Ty2uExC8NmCphqhHwned4JPxbH-QdBAwAHZ35c-om2uVR-kU6IcSPGRkAzuv2wzHHb50C1852XSDu3vUQ1ZQdUu-bS1rJPDcN_lx_pe_gJF0qHGnt7z-CrJp6X8OsrbK3rEjwoe4gSFPTqgLqwzcFFusBVz9YF3bbuCjdXvlpd3Gq7W6h48sE25z--Yx97TV-j305PicKp8YynnXV5fmiTC73talKcbIZhRtbinQDCD7s20zFVXyBYAO9D5wkY-KyBIB9EeJNWp8lYwdnzV4bqKT6sb7k0uKzHsoV2wbC4_FFolLkdTmQtpSBN6Tc_KZk3MnE-Yy9HcMaMVaPa00LZ4vyMrLTLqWLqcJsFYCcMpSdpaLP95P0v0TjOlALjKLLY0AVAhN_o-MBzb75RIqEoCKqelO2kgjhjj0Ew3EkxKb8Tw4eD5IXFTcazZQG14xC1CnUv5U6sOLfj4hpQ1HHmtuwI39-HJjJ5r3QA49QCUFs_EmZI0eVFIZMHSG8HeEMQyRoTxJEMzeKGijNvWth1SvYGwP9Rd0dlEG18_Rvjgr5KM6rhiHE4ftF_MAUVfnj4UEN-Q7FZIV6_cud3-GM5hKuRXgbyCc4ccJSi_iMYelvvWi4PZlN5P1bnI5RCPO5DmMEIsrJmU
 
+
+配置自带的passport 页面
+1、php artisan make:auth //先生成自带登录页面，然后登录http://aligenie.com/home
+2、assets/js/app.js中添加
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue')
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue')
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue')
+);
+
+3、在home.blade 中引入<div id="app">
+                            <passport-clients></passport-clients>
+                            <passport-authorized-clients></passport-authorized-clients>
+                            <passport-personal-access-tokens></passport-personal-access-tokens>
+                        </div>
 
 ```
 
@@ -3260,6 +3349,11 @@ iptables -I INPUT -p tcp -m tcp --dport 8585 -j ACCEPT
 iptables -L -n
 
 端口 不允许外网ip ，阿里云--云服务器--安全组
+
+保存设置
+/sbin/iptables-save
+或者（这个好像不行，找不到脚本）
+/etc/rc.d/init.d/iptables save #保存iptables设置到磁盘文件
 
 ```
 
@@ -5386,6 +5480,7 @@ StrokeDashArray 描述Shape类型轮廓的虚线和间隔的样式，写法为St
 
 [js判断移动端是否安装某款app的多种方法](http://www.jb51.net/article/76585.htm)
 但是，但是....还是有奇思淫巧滴，启动app需要的时间较长，js中断时间长，如果没安装，js瞬间就执行完毕。直接上代码吧！
+
 ***
 #### 获取url参数
 ```
