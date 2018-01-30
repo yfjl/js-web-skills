@@ -534,7 +534,21 @@ function gzdecode($data) {
         $upToken = $auth->uploadToken($bucket);
         return $this->toJson(0,'',$upToken);
     }
-5、客户端获取TOKEN，并携带TOKEN上传图片到七牛
+5、客户端获取TOKEN，并携带TOKEN上传图片到七牛 export const  api_uploadQiniuUrl="https://upload-z1.qiniup.com"
+获取key：
+getQiniuKey() {
+      if (!this.qiniu_key) {
+        myajax.cpost(api_uploadQiniuKey,{
+          bucket:'activity'
+              },(data)=>{
+                  if (data && data.code!==0)
+                      return Toast.error(data.msg||'请求失败')
+                    this.qiniu_key=data.data
+                    console.log('api_uploadQiniuKey ',data.data);
+              })
+      }
+      },
+上传文件：
             myajax.file(api_uploadQiniuUrl,{
                 'file':f.files[0],
                 'token':this.qiniu_key,
@@ -1204,6 +1218,10 @@ server_addr          #服务器地址，在完成一次系统调用后可以确�
 server_name        #服务器名称。
 server_port          #请求到达服务器的端口号。
 
+proxy_set_header  Host $host;
+    proxy_set_header  X-Real-IP $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+    
 ```
 
 ***
@@ -1310,7 +1328,7 @@ break;
 
 
 root /opt/htdocs/www;
-allow  208.97.167.194; 
+allow  208.97.167.194;
 allow  222.33.1.2; 
 allow  231.152.49.4;
 deny  all;
@@ -1365,11 +1383,11 @@ access_log  off;
 
 
 16.多域名转向
-server_name  www.linuxidc.comwww.linuxidc.net;
+server_name  www.linuxidc.com www.linuxidc.net;
 index index.html index.htm index.php;
 root  /opt/lampp/htdocs;
 if ($host ~ "linuxidc\.net") {
-rewrite ^(.*) http://www.linuxidc.com$1permanent;
+rewrite ^(.*) http://www.linuxidc.com$1 permanent;
 }
 
 ```
@@ -1948,7 +1966,6 @@ function quikSort($arr){
 * @param array $array 要操作的数组
 * @return array $array 返回的数组
 */
-
 function quickSort($array)
 {
         if(count($array) <= 1 ) return $array;
@@ -1990,7 +2007,6 @@ function quikSort(arr){
     r=quikSort(r)
     return l.concat([key]).concat(r)
 }
-
 /**
 * 选择排序
 * 2层循环
@@ -2002,7 +2018,6 @@ function quikSort(arr){
 * @param array $array 要比较的数组
 * @return array $array 从小到大排序后的数组
 */
-
 function selectSort($array){
         $cnt = count($array);
         for($i=0;$i<$cnt;$i++){
@@ -2364,7 +2379,7 @@ js
         })
 
         }
-
+IOS 微信端跨域cookie不可用，最好还是用token的方式
 ```
 
 ***
@@ -3351,9 +3366,10 @@ iptables -L -n
 端口 不允许外网ip ，阿里云--云服务器--安全组
 
 保存设置
-/sbin/iptables-save
-或者（这个好像不行，找不到脚本）
-/etc/rc.d/init.d/iptables save #保存iptables设置到磁盘文件
+service iptables save
+将当前规则保存至配置文件中，该操作将执行iptables初始化脚本，脚本运行/sbin/iptables-save程序并更新当前的iptables，原来的配置文件保存为iptables.save。
+2.一般我们可以指定保存的配置文件iptables-save > 配置文件名
+如果想恢复某个配置则执行iptables-restore < 配置文件名
 
 ```
 
@@ -4483,12 +4499,12 @@ function captureOne(re, str) {
 }
 var numRe  = /num=(\d+)/ig,
     wordRe = /word=(\w+)/i,
-    a1 = captureOne(numRe,  "num=1"),
-    a2 = captureOne(wordRe, "word=1"),
-    a3 = captureOne(numRe,  "NUM=2"),
-    a4 = captureOne(wordRe,  "WORD=2");
+    a1 = captureOne(numRe,  "num=1"),//1
+    a2 = captureOne(wordRe, "word=1"),//1
+    a3 = captureOne(numRe,  "NUM=2"),//null,索引到第二个，所以不存在，为null
+    a4 = captureOne(wordRe,  "WORD=2");//2
 [a1 === a2, a3 === a4]//[true, false]
-因为第一个正则有一个 g 选项 它会‘记忆’他所匹配的内容, 等匹配后他会从上次匹配的索引继续, 而第二个正则不会
+因为第一个正则有一个 g 选项 它会‘记忆’他所匹配的内容, 等匹配后他会从上次匹配的索引继续, 而第二个正则不会,
 
 
 if ('http://giftwrapped.com/picture.jpg'.match('.gif')) {
@@ -4523,6 +4539,29 @@ function bar(a) {
 })()
 
 摘自http://javascript-puzzlers.herokuapp.com/号称js8级。。。我第一次只对了19题QAQ
+
+
+不利用临时变量,交换两个变量的值
+1、数组
+a=b=[1,2]; a=a[0];b=b[1];
+
+2、异或
+a = a ^ b
+b = b ^ a
+a = a ^ b
+
+$a=3;
+$b=4;
+$a=$a^$b;
+$b=$b^$a;
+$a=$a^$b;
+var_dump($a);
+var_dump($b);
+
+3、php函数
+list($a, $b) = [$b, $a];
+
+
 ```
 
 ***
@@ -4702,13 +4741,13 @@ mysql> select concat(emp_id," ",emp_name) from emp;
 统计男女职工数目：（GROUP BY语句分类）
 mysql> select emp_sex,count(*) from emp group by emp_sex;
 
-查询班级信息，统计班级学生人生 
+查询班级信息，统计班级学生人数
 SELECT *,(SELECT COUNT(*) FROM manager_student WHERE class_id=manager_class.`id`) AS studentnum FROM manager_class 
 
 查询某学校的所有班级及每个班级的学生人数
 SELECT *,(SELECT COUNT(*) FROM manager_student WHERE class_id=manager_class.`id`) AS studentnum FROM manager_class WHERE manager_class.`school_id`=30
 
-查询某学校的所有班级及每个班级的学生人数及制定天数的出勤人数
+查询某学校的所有班级及每个班级的学生人数及指定日期的出勤人数
 SELECT *,(SELECT COUNT(DISTINCT b.`device_id`)num  FROM manager_student a  RIGHT JOIN xsk_attendance b ON a.`device_id`=b.device_id WHERE class_id=manager_class.`id` AND DATE_FORMAT(b.time,'%Y-%m-%d') ='2016-05-26')attandanceNum,(SELECT COUNT(*) FROM manager_student WHERE class_id=manager_class.`id`) AS studentnum FROM manager_class WHERE manager_class.`school_id`=30
 
 
@@ -4931,6 +4970,8 @@ b=c=[];
 []
 b.push(333); console.log(c)
 [333]
+但是delete b后，c还在
+
 
 typeof []
 
@@ -4963,7 +5004,7 @@ typeof 'A'
 
 ```
 :nth-child(n) 选择器匹配属于其父元素的第 N 个子元素，不论元素的类型。
-nth-of-type(n)可以筛选元素类型
+nth-of-type(n)可以筛选元素类型：如 p:nth-of-type(2) { color: red; }
 nth-child快速实现table相间色 :nth-child(odd) 与 :nth-child(even) 
 
 
@@ -5004,7 +5045,7 @@ webkitRelativePath: ""
 ***
 #### text-align:center
 ```
- 6、text-align:center 在块元素中用text-align来设置其中的文本对齐样式，这里设置为居中。其实text-align属性会影响到一个元素中所有内联内容的对齐样式，不仅仅是文本。还要记住，text-aligh属性只能用于块元素，如果直接用于内联元素（如<img>）就没有作用了。text-aligh属性值也可继承。例如<div>元素中的所有文本都在其他块元素中，如<h2>、<p>.但现在他们的对齐样式都改变了。这是因为这些块元素继承了<div>的text-align属性。区别是，不是<div>直接影响标题和段落（这些都是块元素）中的文本对齐样式，而是标题和段落继承了text-align属性值"center"，使它们自己的内容居中了。但是谨记并非所有的属性都是可以默认继承的，所以这并不会对所有的属性都起作用。
+ 6、text-align:center 在块元素中用text-align来设置其中的文本对齐样式，这里设置为居中。其实text-align属性会影响到一个元素中所有内联内容的对齐样式，不仅仅是文本。还要记住，text-aligh属性只能用于块元素（重点），如果直接用于内联元素（如<img>）就没有作用了。text-aligh属性值也可继承。例如<div>元素中的所有文本都在其他块元素中，如<h2>、<p>.但现在他们的对齐样式都改变了。这是因为这些块元素继承了<div>的text-align属性。区别是，不是<div>直接影响标题和段落（这些都是块元素）中的文本对齐样式，而是标题和段落继承了text-align属性值"center"，使它们自己的内容居中了。但是谨记并非所有的属性都是可以默认继承的，所以这并不会对所有的属性都起作用。
 
 
 ```
@@ -5101,10 +5142,11 @@ function countSubstr(str,substr){
            var count;
            var reg="/"+substr+"/gi";    //查找时忽略大小写
            reg=eval(reg);
-           if(str.match(reg)==null){
+           var result=str.match(reg)
+           if(result==null){
                    count=0;
            }else{
-                   count=str.match(reg).length;
+                   count=result.length;
            }
            return count;//返回找到的次数
 }
@@ -5233,22 +5275,12 @@ P（分区容错）：系统应该能持续提供服务，即使系统内部有�
 #### 函数的作用域是在定义的时候创建的，而不是在执行的时候创建的
 ```
 var aaa = "123";
-
 (function(){alert(aaa); var aaa="456";})(1);
-
-
-
 输出的结果是 ： undefined
 
 
-
-
-
 var aaa = "123";
-
 (function(){alert(aaa);})(1);
-
-
 输出的结果是
 123
 
@@ -5382,6 +5414,15 @@ for (var x in mycars)
 {
 document.write(mycars[x]+x + "<br />")
 }
+
+var arr = [1,2,3,4];
+arr.forEach(alert);
+
+[].forEach(function(value,index,array){
+ 
+　　　　//code something
+ 
+　　});
 ```
 
 ***
@@ -5464,7 +5505,7 @@ StrokeDashArray 描述Shape类型轮廓的虚线和间隔的样式，写法为St
 .anime{transition: all 1s ease;}
 ```
 
-***AL 动态添加的也可以绑定
+*** AL 动态添加的也可以绑定
 #### 
 ```
 //动态添加的也可以绑定
