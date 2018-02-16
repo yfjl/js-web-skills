@@ -271,6 +271,24 @@ Ctrl + Alt + f7 //图像界面
 
 ```
 ***
+####  js 手机号中间四位打*
+```
+ function hidePhoneNum(phone){
+    return phone.replace(/^(\d{3})\d{4}(\d+)/,"$1****$2");
+ }
+
+ var hidePhoneNum=(phone)=>{
+    return phone.replace(/^(\d{3})\d{4}(\d+)/,"$1****$2");
+ };
+
+function hidePhoneNum($phone){
+    $pattern = '/(\d{3})\d{4}(\d+)/i';
+    $replacement = '${1}****$2';
+    return preg_replace($pattern, $replacement, $phone);
+}
+```
+
+***
 ####  关于PUSH 推送 调研
 ```
 融云PUSH 开发环境免费，上线 收费1200/月
