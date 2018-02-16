@@ -15,10 +15,56 @@ nodejs、vue有单独.md文件
 ```
 //测试时文件的编码方式要是UTF8  
 $str='中文a字1符';  
-echo strlen($str).'<br>';//14  
+echo strlen($str).'<br>';//14  4*3+2，中文字符3个字节
 echo mb_strlen($str,'utf8').'<br>';//6  
 echo mb_strlen($str,'gbk').'<br>';//8  
 echo mb_strlen($str,'gb2312').'<br>';//10  
+```
+
+***
+####  php 比较字符串或文章的相似度
+```
+similar_text("吉林禽业公司火灾已致112人遇难","吉林宝源丰禽业公司火灾已致112人遇难",$percent);
+var_dump($percent . '%') ;
+var_dump(number_format(($percent), 2, '.', '') . '%');
+
+similar_text(string1,string2,percent)
+参数  描述
+string1 必需。规定要比较的第一个字符串。
+string2 必需。规定要比较的第二个字符串。
+percent 可选。规定供存储百分比相似度的变量名。
+```
+
+
+
+***
+####  阿里云 数据盘挂载和扩容
+```
+https://help.aliyun.com/document_detail/25452.html?spm=5176.doc25445.6.173.XKkyJu
+```
+
+***
+####  mysql 关于排序规则
+```
+数据库中的排序规则用来定义字符在进行排序和比较的时候的一种规则。常见的如下： 
+（1） utf8_general_ci 不区分大小写，utf8_general_cs 区分大小写 
+（2） utf8_bin 规定每个字符串用二进制编码存储，区分大小写，可以直接存储二进制的内容
+```
+
+***
+####  检查linux下占用cpu高的进程详细信息
+```
+1. top -c 查出对应的命令以及pid,
+
+2. cd /prox/pid
+
+3. ls -l，显示的cwd以及exe就可以看出具体是哪条命令启动了这个占用CPU巨大的任务！
+```
+
+***
+####  响应式图片srcset全新释义sizes属性w描述符
+```
+http://www.zhangxinxu.com/wordpress/2014/10/responsive-images-srcset-size-w-descriptor/?utm_source=tuicool&utm_medium=referral
 ```
 
 ***
@@ -56,12 +102,43 @@ Event::listen('illuminate.query',function($sql){
 
 $projects = Project::with('owner')->remember(10)->get(); //【remember laravel5.5好像不能使用了】
 上面的代码只需要执行2次数据库查询，同时放到cache中10分钟，这将大大提高系统的性能.
+
+但是能用下面的：
+$a = Cache::remember(env('KEY_CACHE_BANNER'), env('KEY_CACHE_BANNER_TIME'), function() {
+        return Article::where('istop','1')
+            ->where('ispublished','1')->orderBy('id', 'desc')
+            ->withCount('collections')->take(10)->get();
+    });
 ```
 
 ***
 ####  如何获取http://xxx.com/yy?q=zz#/urlafterhashbound/mm整个url?
 ```
 我们知道url中的#后面的内容是为浏览器客户端来使用的，【永远不会送往server端】，那么如果服务器端希望得到这个信息，又该如何处理呢？一个可行的方案是在url中将#后面的内容转换为querystring，这样后端就能够得到这个信息加上fullurl()函数就能拼凑出整个url
+```
+
+***
+####  laravel 执行migration报错 SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 1000 bytes
+```
+1、
+db 的config 'strict' => true, 改成false
+2、
+这也应该就是Laravel 5.4改用4字节长度的utf8mb4字符编码的原因之一。不过要注意的是，只有MySql 5.5.3版本以后才开始支持utf8mb4字符编码（查看版本：selection version();）。如果MySql版本过低，需要进行版本更新。
+升级MySql版本到5.5.3以上。
+手动配置迁移命令migrate生成的默认字符串长度，在AppServiceProvider中调用Schema::defaultStringLength方法来实现配置：
+    use Illuminate\Support\Facades\Schema;
+
+    /**
+* Bootstrap any application services.
+*
+* @return void
+*/
+public function boot()
+{
+   Schema::defaultStringLength(191);
+}
+
+http://blog.csdn.net/qq_15766181/article/details/71126648
 ```
 
 ***
@@ -76,6 +153,19 @@ console.log("%c这是一段彩色的字体","background-image:-webkit-gradient( 
 ```
 否则在静态文件解析上会出问题。无法访问，要么500要么404
 其他php代码是可以正常访问的，所以这个bug很不好找
+```
+***
+####  理解CSS3中的background－size(对响应性图片等比例缩放)   图片 background 缩放自适应
+```
+固定宽度400px和高度200px－使用background－size:400px 200px缩放设置
+固定宽度400px和高度200px－使用background-size:100% 100%的缩放设置
+
+footer .company-code {
+    background: url("../images/company_code.png");
+    width: 130px;
+    height: 130px;
+    background-size: 130px 130px;
+}
 ```
 
 ***
@@ -247,7 +337,7 @@ location /hls {
             add_header 'Access-Control-Allow-Origin' '*';
 }
 
-iptables -I INPUT -p tcp -m tcp --dport 1935 -j ACCEPT
+iptables -I INPUT -p tcp -m tcp --dport 8585 -j ACCEPT
 sudo mkdir /tmp/hls
 sudo chmod -R 777 /tmp/hls
 重启nginx
@@ -462,7 +552,21 @@ function gzdecode($data) {
         $upToken = $auth->uploadToken($bucket);
         return $this->toJson(0,'',$upToken);
     }
-5、客户端获取TOKEN，并携带TOKEN上传图片到七牛
+5、客户端获取TOKEN，并携带TOKEN上传图片到七牛 export const  api_uploadQiniuUrl="https://upload-z1.qiniup.com"
+获取key：
+getQiniuKey() {
+      if (!this.qiniu_key) {
+        myajax.cpost(api_uploadQiniuKey,{
+          bucket:'activity'
+              },(data)=>{
+                  if (data && data.code!==0)
+                      return Toast.error(data.msg||'请求失败')
+                    this.qiniu_key=data.data
+                    console.log('api_uploadQiniuKey ',data.data);
+              })
+      }
+      },
+上传文件：
             myajax.file(api_uploadQiniuUrl,{
                 'file':f.files[0],
                 'token':this.qiniu_key,
@@ -1132,6 +1236,10 @@ server_addr          #服务器地址，在完成一次系统调用后可以确�
 server_name        #服务器名称。
 server_port          #请求到达服务器的端口号。
 
+proxy_set_header  Host $host;
+    proxy_set_header  X-Real-IP $remote_addr;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+    
 ```
 
 ***
@@ -1238,7 +1346,7 @@ break;
 
 
 root /opt/htdocs/www;
-allow  208.97.167.194; 
+allow  208.97.167.194;
 allow  222.33.1.2; 
 allow  231.152.49.4;
 deny  all;
@@ -1293,11 +1401,11 @@ access_log  off;
 
 
 16.多域名转向
-server_name  www.linuxidc.comwww.linuxidc.net;
+server_name  www.linuxidc.com www.linuxidc.net;
 index index.html index.htm index.php;
 root  /opt/lampp/htdocs;
 if ($host ~ "linuxidc\.net") {
-rewrite ^(.*) http://www.linuxidc.com$1permanent;
+rewrite ^(.*) http://www.linuxidc.com$1 permanent;
 }
 
 ```
@@ -1876,7 +1984,6 @@ function quikSort($arr){
 * @param array $array 要操作的数组
 * @return array $array 返回的数组
 */
-
 function quickSort($array)
 {
         if(count($array) <= 1 ) return $array;
@@ -1918,7 +2025,6 @@ function quikSort(arr){
     r=quikSort(r)
     return l.concat([key]).concat(r)
 }
-
 /**
 * 选择排序
 * 2层循环
@@ -1930,7 +2036,6 @@ function quikSort(arr){
 * @param array $array 要比较的数组
 * @return array $array 从小到大排序后的数组
 */
-
 function selectSort($array){
         $cnt = count($array);
         for($i=0;$i<$cnt;$i++){
@@ -2292,7 +2397,7 @@ js
         })
 
         }
-
+IOS 微信端跨域cookie不可用，最好还是用token的方式
 ```
 
 ***
@@ -2347,6 +2452,26 @@ if (!empty($search)){
         }
 
 ```
+
+
+***
+#### mysql中的get_lock锁机制解析
+```
+SELECT GET_LOCK('key_lock', 1000);
+UPDATE t_lock SET VALUE = 'uuu' ,NAME='yy' WHERE id = 1;
+SELECT RELEASE_LOCK('key_lock');
+
+http://blog.csdn.net/tangtong1/article/details/51792617
+
+php并发加锁示例
+锁的操作一般只有两步，一 获取锁(getLock)；二是释放锁(releaseLock)。但现实锁的方式有很多种，可以是文件方式实现；sql实现；Memcache实现；根据这种场景我们考虑使用策略模式。
+http://www.jb51.net/article/94878.htm
+
+
+
+```
+
+
 ***
 #### laravel 数据库锁
 ```
@@ -2512,6 +2637,30 @@ Accept-Encoding: gzip, deflate, sdch
 Accept-Language: zh-CN,zh;q=0.8
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjVkNTYzZDM5NzM4MTRjNGRlYzJjYmE1YzI4YWRlM2M0NjI0NTZkY2ZlNGRhMDRkNzQ3NDA4YmU2YmNhOTg1NTE5MjlhNjI2N2ZiNjc1Yjk3In0.eyJhdWQiOiIxNiIsImp0aSI6IjVkNTYzZDM5NzM4MTRjNGRlYzJjYmE1YzI4YWRlM2M0NjI0NTZkY2ZlNGRhMDRkNzQ3NDA4YmU2YmNhOTg1NTE5MjlhNjI2N2ZiNjc1Yjk3IiwiaWF0IjoxNDkwODY3MTQwLCJuYmYiOjE0OTA4NjcxNDAsImV4cCI6MTUyMjQwMzE0MCwic3ViIjoiMyIsInNjb3BlcyI6WyIqIl19.GogqyJJGG43QCTWsFGDHRqJVDxpn73A9Ty2uExC8NmCphqhHwned4JPxbH-QdBAwAHZ35c-om2uVR-kU6IcSPGRkAzuv2wzHHb50C1852XSDu3vUQ1ZQdUu-bS1rJPDcN_lx_pe_gJF0qHGnt7z-CrJp6X8OsrbK3rEjwoe4gSFPTqgLqwzcFFusBVz9YF3bbuCjdXvlpd3Gq7W6h48sE25z--Yx97TV-j305PicKp8YynnXV5fmiTC73talKcbIZhRtbinQDCD7s20zFVXyBYAO9D5wkY-KyBIB9EeJNWp8lYwdnzV4bqKT6sb7k0uKzHsoV2wbC4_FFolLkdTmQtpSBN6Tc_KZk3MnE-Yy9HcMaMVaPa00LZ4vyMrLTLqWLqcJsFYCcMpSdpaLP95P0v0TjOlALjKLLY0AVAhN_o-MBzb75RIqEoCKqelO2kgjhjj0Ew3EkxKb8Tw4eD5IXFTcazZQG14xC1CnUv5U6sOLfj4hpQ1HHmtuwI39-HJjJ5r3QA49QCUFs_EmZI0eVFIZMHSG8HeEMQyRoTxJEMzeKGijNvWth1SvYGwP9Rd0dlEG18_Rvjgr5KM6rhiHE4ftF_MAUVfnj4UEN-Q7FZIV6_cud3-GM5hKuRXgbyCc4ccJSi_iMYelvvWi4PZlN5P1bnI5RCPO5DmMEIsrJmU
 
+
+配置自带的passport 页面
+1、php artisan make:auth //先生成自带登录页面，然后登录http://aligenie.com/home
+2、assets/js/app.js中添加
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue')
+);
+
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue')
+);
+
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue')
+);
+
+3、在home.blade 中引入<div id="app">
+                            <passport-clients></passport-clients>
+                            <passport-authorized-clients></passport-authorized-clients>
+                            <passport-personal-access-tokens></passport-personal-access-tokens>
+                        </div>
 
 ```
 
@@ -3233,6 +3382,12 @@ iptables -I INPUT -p tcp -m tcp --dport 8585 -j ACCEPT
 iptables -L -n
 
 端口 不允许外网ip ，阿里云--云服务器--安全组
+
+保存设置
+service iptables save
+将当前规则保存至配置文件中，该操作将执行iptables初始化脚本，脚本运行/sbin/iptables-save程序并更新当前的iptables，原来的配置文件保存为iptables.save。
+2.一般我们可以指定保存的配置文件iptables-save > 配置文件名
+如果想恢复某个配置则执行iptables-restore < 配置文件名
 
 ```
 
@@ -3983,6 +4138,34 @@ PHP Code Sniffer
 PHP Code Beautidfier
 rem-unit
 SublimeCodeIntel
+vue-hightlight
+
+```
+
+#### sublime编译运行php
+```
+一、将PHP安装目录放如环境变量PATH
+二、添加PHP的build system
+
+1）进入如下菜单：
+
+
+2）弹出内容如下：
+
+{
+    "cmd": ["make"]
+}
+修改为：
+
+{ 
+    "cmd": ["php", "$file"],
+    "file_regex": "php$", 
+    "selector": "source.php" 
+}
+3）保存在默认的目录下即可，注意修改文件名为 php.sublime-build 。
+
+执行快捷键为Ctrl+B。
+http://blog.csdn.net/xxhsu/article/details/30757229
 
 ```
 
@@ -4334,12 +4517,12 @@ function captureOne(re, str) {
 }
 var numRe  = /num=(\d+)/ig,
     wordRe = /word=(\w+)/i,
-    a1 = captureOne(numRe,  "num=1"),
-    a2 = captureOne(wordRe, "word=1"),
-    a3 = captureOne(numRe,  "NUM=2"),
-    a4 = captureOne(wordRe,  "WORD=2");
+    a1 = captureOne(numRe,  "num=1"),//1
+    a2 = captureOne(wordRe, "word=1"),//1
+    a3 = captureOne(numRe,  "NUM=2"),//null,索引到第二个，所以不存在，为null
+    a4 = captureOne(wordRe,  "WORD=2");//2
 [a1 === a2, a3 === a4]//[true, false]
-因为第一个正则有一个 g 选项 它会‘记忆’他所匹配的内容, 等匹配后他会从上次匹配的索引继续, 而第二个正则不会
+因为第一个正则有一个 g 选项 它会‘记忆’他所匹配的内容, 等匹配后他会从上次匹配的索引继续, 而第二个正则不会,
 
 
 if ('http://giftwrapped.com/picture.jpg'.match('.gif')) {
@@ -4374,6 +4557,29 @@ function bar(a) {
 })()
 
 摘自http://javascript-puzzlers.herokuapp.com/号称js8级。。。我第一次只对了19题QAQ
+
+
+不利用临时变量,交换两个变量的值
+1、数组
+a=b=[1,2]; a=a[0];b=b[1];
+
+2、异或
+a = a ^ b
+b = b ^ a
+a = a ^ b
+
+$a=3;
+$b=4;
+$a=$a^$b;
+$b=$b^$a;
+$a=$a^$b;
+var_dump($a);
+var_dump($b);
+
+3、php函数
+list($a, $b) = [$b, $a];
+
+
 ```
 
 ***
@@ -4553,13 +4759,13 @@ mysql> select concat(emp_id," ",emp_name) from emp;
 统计男女职工数目：（GROUP BY语句分类）
 mysql> select emp_sex,count(*) from emp group by emp_sex;
 
-查询班级信息，统计班级学生人生 
+查询班级信息，统计班级学生人数
 SELECT *,(SELECT COUNT(*) FROM manager_student WHERE class_id=manager_class.`id`) AS studentnum FROM manager_class 
 
 查询某学校的所有班级及每个班级的学生人数
 SELECT *,(SELECT COUNT(*) FROM manager_student WHERE class_id=manager_class.`id`) AS studentnum FROM manager_class WHERE manager_class.`school_id`=30
 
-查询某学校的所有班级及每个班级的学生人数及制定天数的出勤人数
+查询某学校的所有班级及每个班级的学生人数及指定日期的出勤人数
 SELECT *,(SELECT COUNT(DISTINCT b.`device_id`)num  FROM manager_student a  RIGHT JOIN xsk_attendance b ON a.`device_id`=b.device_id WHERE class_id=manager_class.`id` AND DATE_FORMAT(b.time,'%Y-%m-%d') ='2016-05-26')attandanceNum,(SELECT COUNT(*) FROM manager_student WHERE class_id=manager_class.`id`) AS studentnum FROM manager_class WHERE manager_class.`school_id`=30
 
 
@@ -4782,6 +4988,8 @@ b=c=[];
 []
 b.push(333); console.log(c)
 [333]
+但是delete b后，c还在
+
 
 typeof []
 
@@ -4814,7 +5022,7 @@ typeof 'A'
 
 ```
 :nth-child(n) 选择器匹配属于其父元素的第 N 个子元素，不论元素的类型。
-nth-of-type(n)可以筛选元素类型
+nth-of-type(n)可以筛选元素类型：如 p:nth-of-type(2) { color: red; }
 nth-child快速实现table相间色 :nth-child(odd) 与 :nth-child(even) 
 
 
@@ -4855,7 +5063,7 @@ webkitRelativePath: ""
 ***
 #### text-align:center
 ```
- 6、text-align:center 在块元素中用text-align来设置其中的文本对齐样式，这里设置为居中。其实text-align属性会影响到一个元素中所有内联内容的对齐样式，不仅仅是文本。还要记住，text-aligh属性只能用于块元素，如果直接用于内联元素（如<img>）就没有作用了。text-aligh属性值也可继承。例如<div>元素中的所有文本都在其他块元素中，如<h2>、<p>.但现在他们的对齐样式都改变了。这是因为这些块元素继承了<div>的text-align属性。区别是，不是<div>直接影响标题和段落（这些都是块元素）中的文本对齐样式，而是标题和段落继承了text-align属性值"center"，使它们自己的内容居中了。但是谨记并非所有的属性都是可以默认继承的，所以这并不会对所有的属性都起作用。
+ 6、text-align:center 在块元素中用text-align来设置其中的文本对齐样式，这里设置为居中。其实text-align属性会影响到一个元素中所有内联内容的对齐样式，不仅仅是文本。还要记住，text-aligh属性只能用于块元素（重点），如果直接用于内联元素（如<img>）就没有作用了。text-aligh属性值也可继承。例如<div>元素中的所有文本都在其他块元素中，如<h2>、<p>.但现在他们的对齐样式都改变了。这是因为这些块元素继承了<div>的text-align属性。区别是，不是<div>直接影响标题和段落（这些都是块元素）中的文本对齐样式，而是标题和段落继承了text-align属性值"center"，使它们自己的内容居中了。但是谨记并非所有的属性都是可以默认继承的，所以这并不会对所有的属性都起作用。
 
 
 ```
@@ -4952,10 +5160,11 @@ function countSubstr(str,substr){
            var count;
            var reg="/"+substr+"/gi";    //查找时忽略大小写
            reg=eval(reg);
-           if(str.match(reg)==null){
+           var result=str.match(reg)
+           if(result==null){
                    count=0;
            }else{
-                   count=str.match(reg).length;
+                   count=result.length;
            }
            return count;//返回找到的次数
 }
@@ -5084,22 +5293,12 @@ P（分区容错）：系统应该能持续提供服务，即使系统内部有�
 #### 函数的作用域是在定义的时候创建的，而不是在执行的时候创建的
 ```
 var aaa = "123";
-
 (function(){alert(aaa); var aaa="456";})(1);
-
-
-
 输出的结果是 ： undefined
 
 
-
-
-
 var aaa = "123";
-
 (function(){alert(aaa);})(1);
-
-
 输出的结果是
 123
 
@@ -5233,6 +5432,15 @@ for (var x in mycars)
 {
 document.write(mycars[x]+x + "<br />")
 }
+
+var arr = [1,2,3,4];
+arr.forEach(alert);
+
+[].forEach(function(value,index,array){
+ 
+　　　　//code something
+ 
+　　});
 ```
 
 ***
@@ -5315,7 +5523,7 @@ StrokeDashArray 描述Shape类型轮廓的虚线和间隔的样式，写法为St
 .anime{transition: all 1s ease;}
 ```
 
-***AL 动态添加的也可以绑定
+*** AL 动态添加的也可以绑定
 #### 
 ```
 //动态添加的也可以绑定
@@ -5331,6 +5539,7 @@ StrokeDashArray 描述Shape类型轮廓的虚线和间隔的样式，写法为St
 
 [js判断移动端是否安装某款app的多种方法](http://www.jb51.net/article/76585.htm)
 但是，但是....还是有奇思淫巧滴，启动app需要的时间较长，js中断时间长，如果没安装，js瞬间就执行完毕。直接上代码吧！
+
 ***
 #### 获取url参数
 ```
