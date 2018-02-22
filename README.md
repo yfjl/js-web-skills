@@ -5962,6 +5962,16 @@ http://www.w3chtml.com/css3/properties/transition/transition.html
 ```
 
 ***
+#### CSS3中动画属性transform、transition和animation属性的区别
+```
+http://www.jb51.net/css/496935.html
+总结：
+小部分直觉化思维的人（包括我）认为transform属性是动画属性。而恰恰相反，transform属性是静态属性，一旦写到style里面，将会直接显示作用，无任何变化过程。
+transition属性是一个简单的动画属性，非常简单非常容易用。可以说它是animation的简化版本，是给普通做简单网页特效用的
+Animation 在官方的Introduction上介绍这个属性是transition属性的扩展。但是这个简单的介绍里面包含了不简单的东西：keyframes。
+```
+
+***
 #### 
 ```
 http://www.ituring.com.cn/article/48461
@@ -6085,10 +6095,12 @@ http://www.zhangxinxu.com/wordpress/2014/10/mobilebone-js-mobile-web-app-core/
 
 按钮可以：$('#btn_login').get(0).click();或者$('#btn_login').click();
 
+trigger 事件
+
 ```
 
 ***
-#### php接收键盘输入数据
+#### php cli接收键盘输入数据
 ```
  $a=fgets(STDIN);//接收键盘数据
  echo $a;
@@ -6220,7 +6232,8 @@ toggleClass
 ***
 #### php回调函数
 ```
-http://www.nowamagic.net/librarys/veda/detail/1509
+mixed call_user_func_array ( callable $callback , array $param_arr )
+http://www.nowamagic.net/librarys/veda/detail/1509 延伸阅读
 http://myceo.blog.51cto.com/2340655/725411/
 ```
 
@@ -6321,11 +6334,13 @@ setTimeout('count()',1000);
 var ul=$('#lv_device'); ul.html('');//先清空ul
 ```
 
-***
-jq
 ```
 jQuery(document).ready(function($) {  
 });
+
+$(function(){
+  
+})
 ```
 
 ***
@@ -6338,18 +6353,14 @@ sendSMS();
 });
 
 ```
-***
 
-函数一定要加function 否则无法使用
 ***
 #### jQuery常用方法一览
 http://www.cnblogs.com/linzheng/archive/2010/10/14/1851816.html
+
 ***
-```
-checkCode.length
-```
-***
-id绝对不能相同，不然很容易造成某些不易察觉的错误
+html中 id绝对不能相同，不然很容易造成某些不易察觉的错误
+
 ***
 #### 常见jq属性操作
 ```
@@ -6365,6 +6376,7 @@ $('#recList').append(content);
 
 $('#bindPhone').removeAttr('href');
 ```
+
 ***
 #### jquery ajax 带header
 ```
@@ -6389,9 +6401,6 @@ $.ajax({
     });
 ```
 
-
-
-
 ***
 ```
 function time() {
@@ -6407,38 +6416,14 @@ function time() {
 } 
 ```
 
-***
-#### jq ajax 解析json中的数组
-
-```
-$.each(data.data, function(i, item) {
-$("#withdrawList").append(
-"<div>" + item.Account + "</div>" + 
-"<div>" + item.State    + "</div>" +
-"<div>" + item.Timestamp + "</div><hr/>");
-});
-```
-***
-
-```
-switch(n)
-{
-	case 1:
-	执行代码块 1
-	break;
-	case 2:
-	执行代码块 2
-	break;
-	default:
-	n 与 case 1 和 case 2 不同时执行的代码
-}
-```
 
 ***
 #### 表单只能输入整数
 ```
 onkeyup="value=value.replace(/[^\d]/g,'')" 
 <input type="text" name="Money" id="Money" placeholder="输入整数提现金额" onkeyup="value=value.replace(/[^\d]/g,'')"  >
+
+<input type="number" name="Money" id="Money" placeholder="输入整数提现金额2"  >
 ```
 ***
 #### jq xml解析并运用
@@ -6549,7 +6534,7 @@ https://coding.net/u/LDCN/p/LD/git/tree/master/DesomodGaren
 
 LDCN，LD，DesomodGare是我要的
 LDCN，LD，DesomodGare，1C4088BA这几个位置的内容不是固定的
-#### #解决：
+解决：
 https://coding.net/u/(.*?)/p/(.*?)/git/tree/master/(.*/trunk/)?(.*)
 
 2、
@@ -6872,12 +6857,6 @@ var volume=$('#select_volume').find('input[name="volume"]:checked').val();//效�
 
 ```
 
-***
-#### radio 设置选中
-```
-$('#male').attr("checked",true);
-
-```
 
 ***
 #### select 默认提示设置&禁止选择
@@ -7085,6 +7064,119 @@ select.options.add(varItem);
 ```
 http://www.cnblogs.com/Herist/archive/2007/09/24/903890.html
 
+判断select选项中 是否存在Value="paraValue"的Item 
+向select选项中 加入一个Item 
+从select选项中 删除一个Item 
+删除select中选中的项 
+修改select选项中 value="paraValue"的text为"paraText" 
+设置select中text="paraText"的第一个Item为选中 
+设置select中value="paraValue"的Item为选中 
+得到select的当前选中项的value 
+得到select的当前选中项的text 
+得到select的当前选中项的Index 
+清空select的项 
+js 代码
+// 1.判断select选项中 是否存在Value="paraValue"的Item        
+function jsSelectIsExitItem(objSelect, objItemValue) {        
+    var isExit = false;        
+    for (var i = 0; i < objSelect.options.length; i++) {        
+        if (objSelect.options[i].value == objItemValue) {        
+            isExit = true;        
+            break;        
+        }        
+    }        
+    return isExit;        
+}         
+   
+// 2.向select选项中 加入一个Item        
+function jsAddItemToSelect(objSelect, objItemText, objItemValue) {        
+    //判断是否存在        
+    if (jsSelectIsExitItem(objSelect, objItemValue)) {        
+        alert("该Item的Value值已经存在");        
+    } else {        
+        var varItem = new Option(objItemText, objItemValue);      
+        objSelect.options.add(varItem);     
+        alert("成功加入");     
+    }        
+}        
+   
+// 3.从select选项中 删除一个Item        
+function jsRemoveItemFromSelect(objSelect, objItemValue) {        
+    //判断是否存在        
+    if (jsSelectIsExitItem(objSelect, objItemValue)) {        
+        for (var i = 0; i < objSelect.options.length; i++) {        
+            if (objSelect.options[i].value == objItemValue) {        
+                objSelect.options.remove(i);        
+                break;        
+            }        
+        }        
+        alert("成功删除");        
+    } else {        
+        alert("该select中 不存在该项");        
+    }        
+}    
+   
+   
+// 4.删除select中选中的项    
+function jsRemoveSelectedItemFromSelect(objSelect) {        
+    var length = objSelect.options.length - 1;    
+    for(var i = length; i >= 0; i--){    
+        if(objSelect[i].selected == true){    
+            objSelect.options[i] = null;    
+        }    
+    }    
+}      
+   
+// 5.修改select选项中 value="paraValue"的text为"paraText"        
+function jsUpdateItemToSelect(objSelect, objItemText, objItemValue) {        
+    //判断是否存在        
+    if (jsSelectIsExitItem(objSelect, objItemValue)) {        
+        for (var i = 0; i < objSelect.options.length; i++) {        
+            if (objSelect.options[i].value == objItemValue) {        
+                objSelect.options[i].text = objItemText;        
+                break;        
+            }        
+        }        
+        alert("成功修改");        
+    } else {        
+        alert("该select中 不存在该项");        
+    }        
+}        
+   
+// 6.设置select中text="paraText"的第一个Item为选中        
+function jsSelectItemByValue(objSelect, objItemText) {            
+    //判断是否存在        
+    var isExit = false;        
+    for (var i = 0; i < objSelect.options.length; i++) {        
+        if (objSelect.options[i].text == objItemText) {        
+            objSelect.options[i].selected = true;        
+            isExit = true;        
+            break;        
+        }        
+    }              
+    //Show出结果        
+    if (isExit) {        
+        alert("成功选中");        
+    } else {        
+        alert("该select中 不存在该项");        
+    }        
+}        
+   
+// 7.设置select中value="paraValue"的Item为选中    
+document.all.objSelect.value = objItemValue;    
+       
+// 8.得到select的当前选中项的value    
+var currSelectValue = document.all.objSelect.value;    
+       
+// 9.得到select的当前选中项的text    
+var currSelectText = document.all.objSelect.options[document.all.objSelect.selectedIndex].text;    
+       
+// 10.得到select的当前选中项的Index    
+var currSelectIndex = document.all.objSelect.selectedIndex;    
+       
+// 11.清空select的项    
+document.all.objSelect.options.length = 0;  
+
 ```
 
 ***
@@ -7098,10 +7190,8 @@ arr.splice(3,1) //[4]
 ```
 
 ***
-#### js支持类似重载的调用方法
+#### js支持类似重载的调用方法 不定参数个数。也可以通过arguments 数组变量获取全部参数
 ```
-
-<script type="text/javascript">
 	function myfun(arg1,arg2,arg3){
 		alert("in");
 		alert(arg3);
@@ -7149,15 +7239,6 @@ function test()
    a(d);
 }   
   
-</script>   
-</head>   
-<body>   
-<h1>学习js回调函数</h1>   
-<button onClick=test()>click me</button>   
-<p>应该能看到调用了两个回调函数</p>   
-</body>   
-</html>  
-
 ```
 
 ***
