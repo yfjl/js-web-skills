@@ -1899,6 +1899,25 @@ SELECT * FROM daxiaoxie WHERE BINARY NAME='haha'
 ***
 #### PHP 面试题
 ```
+1.网页/应用访问慢突然变慢，如何定位问题#
+
+top、iostat查看cpu、内存及io占用情况
+内核、程序参数设置不合理 查看有没有报内核错误，连接数用户打开文件数这些有没有达到上限等等
+链路本身慢 是否跨运营商、用户上下行带宽不够、dns解析慢、服务器内网广播风暴什么的
+程序设计不合理 是否程序本身算法设计太差，数据库语句太过复杂或者刚上线了什么功能引起的
+其它关联的程序引起的 如果要访问数据库，检查一下是否数据库访问慢
+是否被攻击了 查看服务器是否被DDos了等等
+硬件故障 这个一般直接服务器就挂了，而不是访问慢
+
+
+有一个复合索引：INDEX(`a`, `b`, `c`)
+
+使用方式  能否用上索引
+select * from users where a = 1 and b = 2 能用上a、b
+select * from users where b = 2 and a = 1 能用上a、b（前提是有MySQL查询优化器）
+select * from users where a = 2 and c = 1 能用上a
+select * from users where b = 2 and c = 1 不能
+https://www.cnblogs.com/summer0space/p/7247778.html
 
 $test = 'aaaaaa';
     $abc = & $test;
@@ -1914,6 +1933,7 @@ $test = 'aaaaaa';
     $a6 = 'null';
     $a7 = array();
     $a8 = array(array());
+    $a9 = array('');
     echo empty($a1) ? 'true' : 'false';
     echo empty($a2) ? 'true' : 'false';
     echo empty($a3) ? 'true' : 'false';
@@ -1922,8 +1942,9 @@ $test = 'aaaaaa';
     echo empty($a6) ? 'true' : 'false';
     echo empty($a7) ? 'true' : 'false';
     echo empty($a8) ? 'true' : 'false';
+    echo empty($a9) ? 'true' : 'false';
 
-//true true true true true false true false
+//true true true true true false true false false
 
 
     $count = 5;

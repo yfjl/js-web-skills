@@ -36,3 +36,11 @@ iptables -I INPUT 8 -p tcp --dport 9091 -j ACCEPT
 必须添加在
 REJECT     all  --  0.0.0.0/0            0.0.0.0/0            reject-with icmp-host-prohibited
 前面，否则外网无法访问
+
+
+iptables如何删除一条规则
+ -- 查找所有规则
+iptables -L INPUT --line-numbers
+
+-- 删除一条规则
+iptables -D INPUT 11 （注意，这个11是行号，是iptables -L INPUT --line-numbers 所打印出来的行号）

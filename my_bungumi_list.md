@@ -2,7 +2,7 @@
 ####  补番列表 TO WATCH LIST
 Highschool DXD
 1.丹特丽安的书架
-
+赌博默示录
 3.大神和他的七位小伙伴
 
 5.Brave10

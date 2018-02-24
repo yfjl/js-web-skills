@@ -1,4 +1,16 @@
+strtr ¡ª Translate characters or replace substrings
+
+
 strtr($string, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') 
 
 echo strtr('HuAng', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') ;
 huang[Finished in 0.1s]
+
+
+<?php
+$trans = array("h" => "-", "hello" => "hi", "hi" => "hello");
+echo strtr("hi all, I said hello", $trans);
+?>
+The above example will output:
+
+hello all, I said hi

@@ -18,7 +18,7 @@ php://input 不能用于 enctype="multipart/form-data"。
 事实上，用PHP接收POST的任何数据都可以使用本方法。而不用考虑Content-Type,包括二进制文件流也可以。
 所以用方法二是最保险的方法
 
-方法3、$GLOBALS['HTTP_RAW_POST_DATA'];
+方法3、$GLOBALS['HTTP_RAW_POST_DATA'];（PHP7中废弃）
 说明：
 总是产生 $HTTP_RAW_POST_DATA  变量包含有原始的 POST 数据。
 此变量仅在碰到未识别 MIME 类型的数据时产生。

@@ -1,3 +1,4 @@
 iptables-save > /etc/iptables.up.rules
+或者 service iptables save
 删除之前保存的
 iptables -D INPUT -p tcp --dport 9090 -j ACCEPT
