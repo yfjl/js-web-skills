@@ -13,7 +13,7 @@
 $_SERVER['REMOTE_PORT'] //端口。 
 $_SERVER['SERVER_NAME'] //服务器主机的名称。 
 $_SERVER['PHP_SELF']//正在执行脚本的文件名 
-$_SERVER['argv'] //传递给该脚本的参数。 
+$_SERVER['argv'] //传递给该脚本的参数。  php t.php 555 var_dump($_SERVER['argv']); //返回数组：t.php 555
 $_SERVER['argc'] //传递给程序的命令行参数的个数。 
 $_SERVER['GATEWAY_INTERFACE']//CGI 规范的版本。 
 $_SERVER['SERVER_SOFTWARE'] //服务器标识的字串 

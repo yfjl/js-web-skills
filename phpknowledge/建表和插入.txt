@@ -17,3 +17,5 @@ create table class(
     classname varchar(32) not null default '' 
 )engine myisam charset utf8; 
 insert into class values(1,'java'),(2,'.net'),(3,'php'),(4,'c++'),(5,'ios'); 
+
+

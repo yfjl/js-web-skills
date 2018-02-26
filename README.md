@@ -4338,6 +4338,10 @@ getAttendanceByDate(B_util.refreshDate());
 ***
 #### js陷阱题 js面试题
 ```
+typeof NaN
+"number"
+
+
 <script type="text/javascript"> 
 var aColors = ["red", "green", "blue"]; 
 alert(typeof aColors[0]); //output "string" 
