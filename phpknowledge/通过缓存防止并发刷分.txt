@@ -1,2 +1,4 @@
 if (!$this->mem->get($phone.'VIP')) {
 	$this->mem->set($phone.'VIP',1,0,60);//通过缓存防止并发刷分
+
+更正用redis才行，因为redis是单线程的

@@ -694,6 +694,22 @@ alert("after error.");
 ***
 ####  面试题JS
 ```
+
+PHP中一共有八种数据类型，
+包括4中标量数据类型，即boolean（布尔类型）integer（整型），float/double（浮点型）和string（字符串型）
+两种复合数据类型，即array（数组）和object（对象）， 两种特殊的数据类型：即resource（资源）与 null （无，空白）；
+简单记忆：
+ibfs 
+roan
+
+es6 7种
+
+unbosns
+
+undefined null boolean object string number symbol
+Null类型
+null类型被看做空对象指针，前文说到null类型也是空的对象引用。只有一个值，即null值，所以，在你 用typeof 操作符去检测null类型的值时，结果是object类型。
+
 var z=10
 function foo(){
   console.log(z)
@@ -3463,6 +3479,23 @@ setTimeout(()=>{
 
 ***
 #### flex布局总结
+
+ ============================================================
+   flex：定义布局为盒模型
+   flex-v：盒模型垂直布局
+   flex-1：子元素占据剩余的空间
+   flex-align-center：子元素垂直居中
+   flex-pack-center：子元素水平居中
+   flex-pack-justify：子元素两端对齐
+   兼容性：ios 4+、android 2.3+、winphone8+
+   ============================================================ 
+.flex{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}
+.flex-v{-webkit-box-orient:vertical;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;}
+.flex-1{-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;}
+.flex-align-center{-webkit-box-align:center;-webkit-align-items:center;-ms-flex-align:center;align-items:center;}
+.flex-pack-center{-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;}
+.flex-pack-justify{-webkit-box-pack:justify;-webkit-justify-content:space-between;-ms-flex-pack:justify;justify-content:space-between;}
+
 
 >http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html?utm_source=tuicool
 ###container 属性

@@ -3,3 +3,16 @@ is_scalar：标量判断
 is_numeric：数值判断（数值字符串）
 
 标量变量是指那些包含了 integer、float、string 或 boolean的变量，而 array、object 和 resource 则不是标量。 
+
+PHP中一共有八种数据类型，
+包括4中标量数据类型，即boolean（布尔类型）integer（整型），float/double（浮点型）和string（字符串型）
+两种复合数据类型，即array（数组）和object（对象）， 两种特殊的数据类型：即resource（资源）与 null （无，空白）；
+简单记忆：
+ibfs 
+roan
+
+es6 7种
+
+unbosns
+
+undefined null boolean object string number symbol
