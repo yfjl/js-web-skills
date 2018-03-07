@@ -3372,6 +3372,13 @@ html {
 access_log /data/wwwlogs/bxjtest.snewfly.com_nginx.log combined buffer=2k;
 
 ```
+***
+#### 杀毒
+```
+https://www.cnblogs.com/IPYQ/p/6791256.html
+https://www.iyunv.com/thread-237251-1-1.html
+/opt/clamav/bin/clamscan -r --bell -i / -l /opt/clamav/logs/freshclam.log
+```
 
 ***
 #### PHP trait 
