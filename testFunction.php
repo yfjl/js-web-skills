@@ -2,7 +2,7 @@
 
 
 $foo=new Name();
-$foo->showGet();
+$foo->showGet();//2
 /**
 * 
 */

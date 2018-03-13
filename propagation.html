@@ -17,7 +17,7 @@
 
 <div id="a">
 	<div style="background-color: red;width: 200px" id="c">
-		<a id="b" href="">bajian</a>
+		<a id="b" href="#">bajian</a>
 	</div>
 </div>
 
@@ -28,7 +28,8 @@
 
 	document.getElementById('b').addEventListener('click',function(e){
 		alert('b');
-		// event.stopPropagation();//阻止冒泡
+		e.stopPropagation();//阻止冒泡
+		console.log(e)
 	});
 
 	document.getElementById('c').addEventListener('click',function(){

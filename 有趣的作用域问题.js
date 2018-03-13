@@ -1,12 +1,12 @@
 var x='11'
 var le={
 g:5,
-l:alert(x),//¸³ÖµµÄÊ±ºòÖ´ÐÐÁË 11
+l:alert(x),//èµ‹å€¼çš„æ—¶å€™æ‰§è¡Œäº† 11
 msg:function(){
-	alert(this.x)//Ö¸Ïò¶ÔÏó±¾Éí undefined
+	alert(this.x)//æŒ‡å‘å¯¹è±¡æœ¬èº« undefined
 	
 	function qg(){
-		alert(this.x)//º¯ÊýÉùÃ÷£¬Ö¸ÏòÈ«¾Ö
+		alert(this.x)//å‡½æ•°å£°æ˜Žï¼ŒæŒ‡å‘å…¨å±€
 		
 	}
 	qg()

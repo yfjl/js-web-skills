@@ -4,7 +4,7 @@ Highschool DXD
 1.丹特丽安的书架
 赌博默示录
 3.大神和他的七位小伙伴
-
+A.I.C.O. -Incarnation-
 5.Brave10
 6.献给某飞行员的恋歌
 8.赤之约束

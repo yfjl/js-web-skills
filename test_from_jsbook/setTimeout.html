@@ -33,6 +33,7 @@ var b=0
 2 begin setTimeout.html:24
 2 complete */
 //说明setTimeout只是将任务放进队列里面，并不能并行执行，只有当1执行完毕（尽管他需要执行十几秒），2才会开始执行
+//因为实际上主线程是单线程的，任务1先执行，并阻塞了任务2
 </script>
 </body>
 </html>

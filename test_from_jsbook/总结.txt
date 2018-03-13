@@ -58,7 +58,7 @@ var obj=JSON.parse('{"errcode":0,"errmsg":"操作成功","data":{"strategy":[{"name"
 
 lebel语句跳出多重循环（不建议使用）
 
-基本类型（Undefined Null Bollean Number String）(具有固定大小内存，因此保存在栈内存中)
+基本类型（Undefined Null Bollean Number String）(具有固定大小内存，因此保存在栈内存中  巧记：基站)
 引用类型（obj）(引用类型的值是对象，保存在堆内存中。包含引用类型的值的变量实际是一个指向该对象的指针)
 引用类型 复制变量值实际是同一个指针，最终指向同一个对象
 而传递参数是值传递
@@ -187,7 +187,7 @@ map:返回运行结果的数组
 	
 forEach:就是遍历数组。。无返回值
 var arr=[3,2,5];
-	var re=arr.forEach(function(item,index,array){
+arr.forEach(function(item,index,array){
 	//
 	});
 	
@@ -197,6 +197,17 @@ Tue Mar 08 2016 15:16:12 GMT+0800 (中国标准时间)
 Date.now()//获取当前时间戳13位，比(new Date).valueOf()简单
 
 console.log(new Date(2007,1,1)>new Date(2007,2,3))//false日期可以直接比较大小
+
+Math.floor(14.7)//
+14
+
+Math.ceil(14.1)//
+15
+Math.round(14.1)//
+14
+
+Math.round(14.7)//
+15
 
 正则：
 var exp=/PATTERN/FLAG;
@@ -256,6 +267,26 @@ var anotherSum=sum;
 console.log(anotherSum(1,5));//6
 sum=null;
 console.log(anotherSum(1,5));//6
+
+
+a={a:1}//
+Object {a: 1}
+
+b=a
+//Object {a: 1}
+
+a.ee=22
+22
+
+b
+//Object {a: 1, ee: 22}
+
+a=undefined
+//undefined
+
+b
+//Object {a: 1, ee: 22}
+当不为null,undefined 的时候a和b指向同一个堆内存地址
 
 函数声明：
 function sum(a,b){return a+b;}
@@ -329,7 +360,7 @@ Math.round()//四舍五入
 	Person.prototype.name='bajian';
 	key=Object.keys(Person.prototype);//["name"]
 for(var i in Person){
-	console.log(i);//bajian
+	console.log(i);//bajian ？？？
 }
 
 	function Person(){

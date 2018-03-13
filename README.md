@@ -22,6 +22,26 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 ```
 
 ***
+####  Docker 笔记
+```
+1、linux 安装
+  sudo wget -qO- https://get.docker.com/ | sh
+  sudo usermod -aG docker imooc
+  如果出现Delta RPMs disabled because /usr/bin/applydeltarpm not installed. 报错参考下面：
+  https://www.tutugreen.com/wordpress/delta-rpms-disabled/
+更简单的方法：
+  $ sudo yum install docker
+  安装之后启动 Docker 服务，并让它随系统启动自动加载。
+  $ sudo service docker start
+  $ sudo chkconfig docker on
+
+
+参考：
+https://www.imooc.com/video/15643
+
+```
+
+***
 ####  php 比较字符串或文章的相似度
 ```
 similar_text("吉林禽业公司火灾已致112人遇难","吉林宝源丰禽业公司火灾已致112人遇难",$percent);
@@ -654,6 +674,14 @@ http://rawgit.com/
 ```
 
 ***
+#### 图片裁剪中间展示 适配手机端
+```
+object-fit: cover;
+参考homepage文件夹
+http://www.zhangxinxu.com/wordpress/2015/03/css3-object-position-object-fit/
+```
+
+***
 ####  js获取最上层window对象的架构思路 （做浏览器插件很需要注意）
 ```
 window.top.location.href
@@ -694,6 +722,15 @@ alert("after error.");
 ***
 ####  面试题JS
 ```
+var aa="aa";
+alert(aa instanceof String); //false
+typeof aa; //'string'
+在这里aa只是一个以string为数据类型的值 并不是String的实例对象  
+var b=new String(aa);
+alert(b instanceof String);  //ture
+此时b就是String类的实例对象了
+
+
 
 PHP中一共有八种数据类型，
 包括4中标量数据类型，即boolean（布尔类型）integer（整型），float/double（浮点型）和string（字符串型）
@@ -1915,6 +1952,25 @@ SELECT * FROM daxiaoxie WHERE BINARY NAME='haha'
 ***
 #### PHP 面试题
 ```
+
+<?php 
+    class A{
+        public static $num=0;
+        public function __construct(){
+            self::$num++; }
+    }
+    new A();
+    new A();
+    new A();
+    echo A::$num;
+?>
+
+属性不能被定义为 final，只有类和方法才能被定义为 final。
+
+
+PHP获得实例化对象所属类名字的函数（ get_class()）
+
+
 1.网页/应用访问慢突然变慢，如何定位问题#
 
 top、iostat查看cpu、内存及io占用情况
@@ -1926,7 +1982,7 @@ top、iostat查看cpu、内存及io占用情况
 硬件故障 这个一般直接服务器就挂了，而不是访问慢
 
 
-有一个复合索引：INDEX(`a`, `b`, `c`)
+有一个复合索引/联合索引：INDEX(`a`, `b`, `c`)
 
 使用方式  能否用上索引
 select * from users where a = 1 and b = 2 能用上a、b
@@ -1934,7 +1990,9 @@ select * from users where b = 2 and a = 1 能用上a、b（前提是有MySQL查�
 select * from users where a = 2 and c = 1 能用上a
 select * from users where b = 2 and c = 1 不能
 https://www.cnblogs.com/summer0space/p/7247778.html
-
+https://www.cnblogs.com/softidea/p/5977860.html
+http://blog.csdn.net/zht666/article/details/46695697
+https://www.cnblogs.com/joyber/p/4349604.html 重点参考，记忆法 非等号的字段超过一个了，索引不来
 $test = 'aaaaaa';
     $abc = & $test;
     unset($test);
@@ -3373,11 +3431,16 @@ access_log /data/wwwlogs/bxjtest.snewfly.com_nginx.log combined buffer=2k;
 
 ```
 ***
-#### 杀毒
+#### linux服务器杀毒/肉鸡解决
 ```
 https://www.cnblogs.com/IPYQ/p/6791256.html
 https://www.iyunv.com/thread-237251-1-1.html
 /opt/clamav/bin/clamscan -r --bell -i / -l /opt/clamav/logs/freshclam.log
+
+结果并没有扫描出肉鸡脚本，最终的解决办法：
+发现服务器没有装iptables
+http://blog.csdn.net/ronmy/article/details/63297541
+安装并关闭除了自己用的几个端口以外的端口
 ```
 
 ***
@@ -3423,6 +3486,10 @@ $o->sayExclamationMark();//Hello World!
 ```
 iptables -I INPUT -p tcp -m tcp --dport 3306 -j ACCEPT
 iptables -I INPUT -p tcp -m tcp --dport 8585 -j ACCEPT
+
+比如允许IP 2.3.4.5访问则可以
+iptables -I INPUT -s 2.3.4.5 -p tcp -j ACCEPT
+
 iptables -L -n
 
 端口 不允许外网ip ，阿里云--云服务器--安全组
@@ -3433,6 +3500,11 @@ service iptables save
 2.一般我们可以指定保存的配置文件iptables-save > 配置文件名
 如果想恢复某个配置则执行iptables-restore < 配置文件名
 
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+# 这两条的意思是在INPUT表和FORWARD表中拒绝所有其他不符合上述任何一条规则的数据包。并且发送一条host prohibited的消息给被拒绝的主机。
+
+service iptables status
 ```
 
 ***

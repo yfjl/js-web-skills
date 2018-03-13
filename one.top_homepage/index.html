@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="black" name="apple-mobile-web-app-status-bar-style">
+	<meta content="telephone=no" name="format-detection">
+	<meta content="email=no" name="format-detection">
+	<!--隐藏ios上的浏览器地址栏-->
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<!-- UC默认竖屏 ，UC强制全屏 -->
+	<meta name="full-screen" content="yes">
+	<meta name="browsermode" content="application">
+	<!-- QQ强制竖屏 QQ强制全屏 -->
+	<meta name="x5-orientation" content="portrait">
+	<meta name="x5-fullscreen" content="true">
+	<meta name="x5-page-mode" content="app">
+	<title>one.top</title>
+	<!-- <link rel="stylesheet" href="index.css"> -->
+	<style type="text/css">
+		body{-webkit-text-size-adjust: 100%!important;
+			display: flex;
+			justify-content:center;
+			align-items:center;
+			position: relative;
+			margin：0 auto;
+		}
+		*{
+			padding: 0px;
+			margin: 0px;
+		}
+
+		.main{
+			height: 100%;
+			min-height: 800px;
+			width: 100%;
+		}
+
+		.main img{
+			vertical-align: center;
+			margin: 0 auto;
+			height: 100%;
+			width: 100%;
+			min-height: 800px;
+			object-fit: cover; 
+		}
+
+	</style>
+</head>
+<div id="main_container" class="main">
+	<img id="main_container_img" src="/imgs/main.png" alt="">
+</div>
+<body>
+
+	<script src="http://old.static.hzsb365.com/zepto.min.js"></script>
+	<script type="text/javascript">
+		var s=$(window).height();
+		$('#main_container').css({
+			"min-height":s+"px",
+			"height":s+"px"
+		});
+		$('#main_container_img').css({
+			"min-height":s+"px",
+			"height":s+"px"
+		});
+	</script>
+</body>
+
+</html>
