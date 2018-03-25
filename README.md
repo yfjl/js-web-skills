@@ -162,6 +162,15 @@ http://blog.csdn.net/qq_15766181/article/details/71126648
 ```
 
 ***
+####  laravel 安装指定版本
+```
+composer create-project laravel/laravel MyProject "5.5.*"
+
+phpstudy配置php指定版本 如7.1.11
+http://www.cnblogs.com/yxhblogs/p/7861323.html
+```
+
+***
 ####  console 打印彩色字体。。
 ```
 console.log("%c这是一段彩色的字体","background-image:-webkit-gradient( linear, left top,right top, color-stop(0, #4096EE), color-stop(0.15, #FF1A00), color-stop(0.3, #4096EE), color-stop(0.45, #FF1A00),color-stop(0.6, #4096EE), color-stop(0.75, #FF1A00),color-stop(0.9, #4096EE), color-stop(1, #FF1A00));color:transparent;-webkit-background-clip:text;font-size:10px;");
@@ -1952,7 +1961,60 @@ SELECT * FROM daxiaoxie WHERE BINARY NAME='haha'
 ***
 #### PHP 面试题
 ```
+文件操作：
+dirname(__FILE__);//获取当前路径 不含文件名 ，不能含有中文路径
+echo "__FILE__: ========> ".__FILE__;//当前绝对路径 含文件名
+echo "__DIR__: ========> ".__DIR__;//指向当前执行的PHP脚本所在的目录 == dirname(__FILE__);
+在实现同样功能的情况下，dirname(__FILE__)多了一层函数调用。所以， __DIR__ 比 dirname(__FILE__) 在效率上有优势。
 
+$path = "/testweb/home.php";
+//显示带有文件扩展名的文件名
+echo basename($path);//home.php
+//显示不带有文件扩展名的文件名
+echo basename($path,".php");//home
+
+unlink() //删除文件
+
+file_exists() 检查文件或目录是否存在。
+file_get_contents() 将文件读入字符串
+file_put_contents() 将字符串写入文件。
+
+filesize()  返回文件大小。
+filetype()  返回文件类型。fifo char dir block link file unknown
+md5_file($filePath) 文件的md5
+
+$ip = gethostbyname('www.csdn.net');//47.95.164.112
+// echo $ip;
+ $num_ip =  ip2long($ip);
+echo $num_ip,'<br/>';
+echo long2ip($num_ip),'<br/>';
+echo  ((47 * 256 + 95) * 256 + 164) * 256 + 112;
+
+
+以下脚本输出什么？
+$array = array (0.1 => ‘a’, 0.2 => ‘b’);
+echo count ($array);//1
+脚本输出 1（答案是 A）。因为只有整型数字和字符串可以被用来做数组的键——浮点
+数字会被转换成整型数字。所以 0.1 和 0.2 会被转换成 0，$array 中只有 0=>’b’这个元
+素。
+
+$array = array (true => ‘a’, 1 => ‘b’);//TRUE转成字符串1
+var_dump ($array);
+array(1) {
+  [1]=>
+  string(8) " ‘b’"
+}
+
+面向对象三大基本特性,五大基本原则
+三大特性是：封装,继承,多态  
+五大基本原则 
+单一职责原则SRP(Single Responsibility Principle)
+开放封闭原则OCP(Open－Close Principle) 
+里式替换原则(the Liskov Substitution Principle LSP) 
+依赖倒置原则(the Dependency Inversion Principle DIP) 
+接口分离原则(the Interface Segregation Principle ISP) 
+技法：单开依里接
+https://www.cnblogs.com/hnrainll/archive/2012/09/18/2690846.html
 <?php 
     class A{
         public static $num=0;
@@ -2591,7 +2653,9 @@ DB::commit();
 
 其次
 lockForUpdate()
-sharedLock()//执行行锁（需要引擎innodb（且使用主键）,因为myisan会变成表锁，两种类型最主要的差别就是Innodb 支持事务处理与外键和行级锁）
+sharedLock()//执行行锁（需要引擎innodb（且使用主键，没有主键的是会表锁的）,因为myisan会变成表锁，两种类型最主要的差别就是Innodb 支持事务处理与外键和行级锁）
+如果使用针对InnoDB的表使用行锁，被锁定字段不是主键，也没有针对它建立索引的话。行锁锁定的也是整张表。锁整张表会造成程序的执行效率会很低。
+
 http://blog.csdn.net/xifeijian/article/details/20316775
 
 lock for update的加锁方式无非是比lock in share mode的方式多阻塞了select...lock in share mode的查询方式，并不会阻塞快照读。
@@ -2624,6 +2688,8 @@ $pagination = $query->with('address')->paginate($perPage);
         'filter' => request()->filter,
         'per_page' => request()->per_page
     ]);
+
+    可以尝试用id 做页数，那样翻页不会出现更新的时候数据往下页挤
 ```
 
 ***
@@ -2681,7 +2747,7 @@ $value = config('app.timezone');
 config(['app.timezone' => 'America/Chicago']);
 
 
-获取ENV文件的值
+获取ENV文件的值 （只在config目录使用，不然可能存在缓存问题）
 env('APP_DEBUG', false)
 
 优化composer拆解：
@@ -2766,6 +2832,28 @@ Vue.component(
 nRRw2MfQNqe5gbohFqhgt5mJ5zqBhPeJSK87CvcB
 var_dump(Session::getId());
 
+```
+
+***
+####  Carbon和PHP date之间的各种转换
+```
+carbon本身是一个非常好用的PHP date package，但是有的时候我们还希望用到php原生的函数功能，比如format成微信开发需要的20180120112305的字符串格式
+
+$n = new \Carbon\Carbon();
+$ts =  $n->getTimestamp();
+return date('YmdHis',$ts);  // 20180104161547
+$u = User::orderBy('created_at','desc')->first();
+$ts = $u->created_at; // 被laravel自动cast为carbon object
+return date('YmdHis',$ts->getTimestamp());  // 20180104161547
+
+```
+
+***
+####   Composer错误处理 Please create a github oauth token
+```
+1. 通过：https://github.com/settings/tokens创建一个token
+
+2. composer config --global github-oauth.github.com 23bc35a888235f66032ef68c7a8023b7b28e0f6
 ```
 
 ***
@@ -3002,6 +3090,15 @@ $bAverage = round($bTotal/$total);
 $fileUploadVoteRecords=FileUploadVoteRecord::where(['openid'=>$openid])->get()->toarray();
         $fileUploadVoteRecords=array_pluck($fileUploadVoteRecords,'file_upload_id');
 ```
+
+***
+#### laravel 服务容器 个人理解
+```
+服务容器就好比一个带有DI的高级的工厂模式，而工厂一般都需要一个接口规范，比如你这个Email作为通知用户的一种手段的话
+，可以规范出一个通知的接口，而短信也可能作为一种通知的手段，这个时候，就可以用到服务容器了，再用到的地方只要用IoC去注入通知的接口
+，然后再容器里去绑定具体的实现，就可以达到解耦的效果，随时可以切换通知的手段
+```
+
 ***
 #### laravel 缓存查询
 ```
@@ -5398,6 +5495,10 @@ $data=file_get_contents('php://input');//post
 laravel :
 Input::all();或者：
 $arr = $request->all();
+
+如何访问Content-Type: application/x-www-form-urlencoded的post body内容？
+$bodyContent = $request->getContent();
+$decodedBody = json_decode($bodyContent);
 ```
 
 ***
@@ -5848,6 +5949,13 @@ http://www.cnblogs.com/silin6/p/4333999.html
 ***
 #### git操作总结
 ```
+sourcetree
+重置的话：
+选中分支，右键--重置当前分支至此次提交
+
+抛弃当前修改，
+选中分支，右键--检出--勾选 丢弃所有更改
+
 安装git
 sudo apt-get install git-core
 
@@ -5999,7 +6107,7 @@ add_header 'Access-Control-Allow-Origin' '*';
 ```
 
 ***
-#### 特殊字符过滤
+#### 特殊字符过滤 防止xss
 ```
 
   B_util.wordFilter=function(t){
@@ -6086,6 +6194,8 @@ http://www.2cto.com/database/201403/286730.html
 SELECT * FROM t_userinfo WHERE userphone IN ('13714876874','18609944488') ORDER BY FIELD(userphone ,'13714876874','18609944488')
 select * from test_in_orderby where id in (3,5,1) order by field(id,3,5,1)
 出来的顺序就是指定的顺序了
+LARAVEL 中对应: join(',',[1,2,3])可以数组转字符串
+Person::whereIn('id',$idsarray)->orderByRaw(DB::raw("FIELD(id, ${idsorderstr})"))->get();
 
 SELECT COUNT(DISTINCT name) FROM CVE WHERE name NOT IN (SELECT cveID FROM cve_sig WHERE cveID IS NOT NULL) 
 

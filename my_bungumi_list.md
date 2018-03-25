@@ -76,7 +76,7 @@ A.I.C.O. -Incarnation-
 * Fate/EXTRA Last Encore
 * 库洛魔法使 透明卡篇
 
-
+* A.I.C.O.-incarnation
 
 
 
@@ -291,7 +291,7 @@ A.I.C.O. -Incarnation-
 
 
 * 境界的彼方
-* 风平浪静的明天
+* 来自风平浪静的明天
 * 双斩少女
 * 萌萌侵略者
 * 打工勇者
