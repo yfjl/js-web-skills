@@ -22,6 +22,24 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 ```
 
 ***
+####  PHP的替代语法
+```
+https://www.cnblogs.com/passby/p/4670186.html
+
+http://codeigniter.org.cn/user_guide/general/alternative_php.html
+```
+
+***
+####  phpstorm 代码格式化快捷键
+```
+ctrl+alt+l        重新格式化代码 
+
+
+快速方法注释
+Alt+Shift+j---phpdoc 或者鼠标右键---generate--phpdoc
+```
+
+***
 ####  Docker 笔记
 ```
 1、linux 安装
