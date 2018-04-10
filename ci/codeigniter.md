@@ -62,3 +62,37 @@ $this->db->escape_like_str() 这个函数用于处理 LIKE 语句中的字符串
 
 ```
 
+
+***
+#### ci apache 配置rewrite
+```
+1、
+directory 中的AllowOverride All
+    Require all granted
+    是关键
+<VirtualHost *:80>
+    ServerAdmin ci.bajian.com
+    DocumentRoot "/Applications/XAMPP/xamppfiles/code/server/ci"
+    Options FollowSymLinks
+    <Directory /Applications/XAMPP/xamppfiles/code/server/ci>  
+        Options FollowSymLinks
+    AllowOverride All
+    Require all granted
+    </Directory>  
+
+    ServerName ci.bajian.com
+    ServerAlias ci.bajian.com
+    ErrorLog "logs/dummy-ci.bajian.com-error_log"
+    CustomLog "logs/dummy-hci.bajian.com-access_log" common
+</VirtualHost>
+
+2、
+创建htacess
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
+3、修改config中的成如下
+$config['index_page'] = '';
+```
+
