@@ -40,6 +40,13 @@ Alt+Shift+j---phpdoc 或者鼠标右键---generate--phpdoc
 ```
 
 ***
+####  MySQL server PID file could not be found!
+```
+DOCKER 内安装了ubuntu 里的mysql可能会没有权限，需要whereis my.cnf,chmod -R 777 xxxx
+
+```
+
+***
 ####  Docker 笔记
 ```
 1、linux 安装
@@ -56,6 +63,85 @@ Alt+Shift+j---phpdoc 或者鼠标右键---generate--phpdoc
 
 参考：
 https://www.imooc.com/video/15643
+
+强制删除全部images
+docker rmi --force  $(docker images -q)
+
+运行镜像成容器
+docker run -dit 2cc348500c17
+进去ubuntu内部
+docker attach 2cc348500c17
+在运行的容器中执行命令
+docker exec -it mynginx /bin/sh /root/runoob.sh
+保存镜像
+docker commit -a "bajian" -p -m "mylnmp" b67ac2d45828
+-p 暂停容器
+-a, --author=""     Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
+  -m, --message=""    Commit message
+  -p, --pause=true    Pause container during commit
+
+流程
+pull一个ubuntu镜像
+attach进去，安装lnmp
+sudo apt-get install -y Dialog
+sudo apt-get install -y supervisor
+sudo mkdir -p /var/log/supervisor
+sudo touch /var/log/supervisor/info.log
+你需要去基础镜像执行这几条命令 然后再commit一次
+
+你commit 完以后    然后找个文件夹  新建两个文件   Dockerfile  和 supervisord.conf
+Dockerfiel 写：
+FROM ubuntu:build
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ENTRYPOINT /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+FROM 后面是你刚才commit的那个镜像
+
+然后supervisord.conf里面写：
+[supervisord]
+nodaemon=true
+
+[program:mysql]
+command=sh /etc/init.d/mysql restart
+startretries=1
+priority=1
+stopasgroup=true
+killasgroup=true
+
+program 是你要启动的程序  像我这个是启动mysql  你也可以启动php
+
+[program:nginx]
+command=sh /etc/init.d/nginx restart
+startretries=1
+priority=1
+stopasgroup=true
+killasgroup=true
+
+[program:php-fpm]
+command=sh /etc/init.d/php-fpm restart
+startretries=1
+priority=1
+stopasgroup=true
+killasgroup=true
+
+
+docker build -t xxx:xxxx .
+然后build完后     你再  docker run -dit xxx:xx bash
+
+后面可以通过 Jenkins 管理镜像（每次需要build  然后再push   它能点一下  然后帮你build 和push）
+然后使用  kubernetes 部署镜像
+
+一个php项目的dockerfile实例
+FROM registry.cn-shenzhen.aliyuncs.com/xxx:3.1
+
+RUN mkdir /home/wwwroot/login_server
+
+WORKDIR /home/wwwroot/login_server
+COPY ./ /home/wwwroot/login_server
+
+RUN mkdir /home/wwwroot/login_server/runtime/logs \
+    && mkdir /home/wwwroot/login_server/runtime/debug \
+    && chmod -R 777 /home/wwwroot/login_server/runtime \
+    && chmod -R 777 /home/wwwroot/login_server/assets
 
 ```
 

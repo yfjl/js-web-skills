@@ -1,0 +1,214 @@
+18.04.13
+目标：我想尽量让他参与到比特币现金（BCH）的交易功能编写测试。
+
+1，比特币现金（BCH）基本概念的理解。BCH公用链，信息浏览器，跟比特币的区别等。资料来源：朱宁，官方网站等。
+https://www.bitcoincash.org
+https://bch.btc.com/
+2，钱包的理解。钱包内核，API的理解。实际安装core，练习用命令行来操作钱包。
+3，现有BTC发送接收处理的理解。
+4，编写BCH发送接收代码（基本上是从已有代码移植然后部分修改）。
+5，测试方法的学习。编写测试代码，进行测试。
+ 
+现在可能还没有代码，1，2是不需要代码的，可以马上开始。等有了代码后就可以进行3，4，5。
+
+Mac 路径
+/Users/gxh/Library/Application Support/Bitcoin
+bitcoind 启动
+bitcoin-cli stop 停止
+
+
+https://bitcoin.org/en/full-node#mac-os-x-yosemite-1010x
+cd ~/Library/Application\ Support/Bitcoin/
+bitcoin.conf
+GxdeiMac:Bitcoin gxh$ cat bitcoin.conf
+testnet=1
+server=1
+daemon=1
+
+rpcuser=abc
+rpcpassword=abc
+
+rpcallowip=0.0.0.0/0
+rpcport=8334
+#walletnotify=curl http://localhost:8000/notify/?txid=%s
+walletnotify=X:\Users\bajian\AppData\Roaming\Bitcoin\testnet3\trans.sh %s
+#blocknotify 回调的是一个啥最佳数据块变化，没啥用好像
+#blocknotify=X:\Users\bajian\AppData\Roaming\Bitcoin\testnet3\trans.sh %s
+#Mac 目录带空格需要加双引号
+walletnotify="/Users/gxh/Library/Application Support/Bitcoin/tran.sh" %s
+https://bitcoin.org/en/developer-reference#remote-procedure-calls-rpcs
+
+trans.sh
+
+#!/bin/sh
+
+curl -X GET "http://localhost:8000/notify/?tx=$1"  # http GET method
+
+ls -alo
+Todo
+
+bank,adapter (rpc),core
+
+用户地址--资源无限？
+和总钱包关系？
+
+
+
+RPC
+-------------------------------
+
+
+getnewaddress
+2N4CZJUs28oAURXnGMy9nRjZoqgVY434MWn
+
+
+-------------------------------
+
+getreceivedbyaddress 2Myo5PBd65Exqrseg6LLai7E71AVQDDf4V1
+1.06669920
+-------------------------------
+
+listaccounts
+{
+  "": 1.03125000,
+  "2Myo5PBd65Exqrseg6LLai7E71AVQDDf1": 0.00000000,
+  "2Myo5PBd65Exqrseg6LLai7E71AVQDDf4V1": 0.00000000,
+  "2NDdmP3n3UUA7PLy2rhcMUSRYH74mvvk6LH": 0.00000000
+}
+-------------------------------
+
+getaddressesbyaccount ""
+[
+  "muij7snj5hcAQRv6TGXqAHHD8jQ26NG18m",
+  "2Mvp1tBSeLKH2Bgf93SgjCuAQBTbhmaHWEX",
+  "2MwHJQVSbjkitbnULhBvSfuWhpg8Dkpz13u",
+  "2Myo5PBd65Exqrseg6LLai7E71AVQDDf4V1",
+  "2N4CZJUs28oAURXnGMy9nRjZoqgVY434MWn",
+  "2N99fRUcBJSZ51iWFb4gZh6NpbR9A7JNx5h",
+  "2NDdmP3n3UUA7PLy2rhcMUSRYH74mvvk6LH",
+  "2NGLTxvWXcF5oG4pSf11nM62QhSxPAS7MYU"
+]
+-------------------------------
+
+gettransaction 42d03e02d30adc7a72f9804e8d48caa3b8559180dc180d5bb60afc47e5616a11
+
+{
+  "amount": -0.08000000,
+  "fee": -0.00003435,
+  "confirmations": 0,
+  "trusted": true,
+  "txid": "42d03e02d30adc7a72f9804e8d48caa3b8559180dc180d5bb60afc47e5616a11",
+  "walletconflicts": [
+  ],
+  "time": 1523699482,
+  "timereceived": 1523699482,
+  "bip125-replaceable": "no",
+  "comment": "test comment",
+  "details": [
+    {
+      "account": "",
+      "address": "muij7snj5hcAQRv6TGXqAHHD8jQ26NG18m",
+      "category": "send",
+      "amount": -0.08000000,
+      "label": "",
+      "vout": 0,
+      "fee": -0.00003435,
+      "abandoned": false
+    }
+  ],
+  "hex": "020000000001017ccdfa09ff2a34d5139cd594d6d419b859ffdebc2ffee4bb8ffa9f57b7aeb56b000000001716001416d82a1a03f210417a6d76e5b535375b01a6e69ffeffffff0200127a00000000001976a9149bcbc1120f0654bf9d7617fa0ff5b70b0ba9cc8c88ac85af57000000000017a91489394a849087303fa134e86533ac95b8e2f8861e8702483045022100d0d80e7a6f3e2a6f38d7cdd7ee19fbadd7dbe00462c241ccf7edac601c630ea202207f4a4d59a6bd8022ce035dff7d204c484cc0abe5e0d674aedca38c9fa903123601210207ec7439d9ccb271c3c68294438f006c25c724c69be3d59f39bd78c439f6660101ba1300"
+}
+
+{"amount":0.01,"confirmations":0,"trusted":false,"txid":"558bc6014db90479f19882f136c7bc212848e7cbc3872900815710e7a8e65f4a","walletconflicts":[],"time":1523701132,"timereceived":1523701132,"bip125-replaceable":"no","details":[{"account":"","address":"2NAR6U42yW9XpEaxL8jcNMpbpHuh56SK3XG","category":"receive","amount":0.01,"label":"","vout":0}],"hex":"0100000001642e39fbd51684578da2725a160559e61f24e907256535c1ae3a23d15917fb00010000006b48304502210089d0f83a77f9379a0f0aced2f14fb92602d35ba80fd18fe4b6f367b8fdf3cb9902203fa6599e40211d6ea54eb2245bba58fd21dc0169ec5dbbc6f6b71c0db6ef7479012102fba918b1dc873a4b663d0da16813e17cec367464ec8043db14839febb2c757bdffffffff0240420f000000000017a914bc580500c384352fcbd6c81ea553448bd4d96f318728c89105000000001976a914cd74280b8e72b5806c320e7076b2b9d7118e561588ac00000000"}  
+-------------------------------
+
+dumpprivkey 2Myo5PBd65Exqrseg6LLai7E71AVQDDf4V1
+cTHreMGCmPULhuNXvD3E6c3zHhmJxFb9TKzw4KQiDFcRssX4AocG
+
+-------------------------------
+
+listtransactions
+[
+  {
+    "account": "",
+    "address": "muij7snj5hcAQRv6TGXqAHHD8jQ26NG18m",
+    "category": "send",
+    "amount": -1.00000000,
+    "label": "",
+    "vout": 1,
+    "fee": -0.00000444,
+    "confirmations": 1,
+    "blockhash": "00000000000002363b38333126eb9c0baec5281cc0a11dd9caf425efd3911ee9",
+    "blockindex": 177,
+    "blocktime": 1523696027,
+    "txid": "69208ce0c96b866c38b21eeeea34702cef7c615526eea024d6b774abb0482c74",
+    "walletconflicts": [
+    ],
+    "time": 1523695915,
+    "timereceived": 1523695915,
+    "bip125-replaceable": "no",
+    "abandoned": false
+  },
+  {
+    "account": "",
+    "address": "muij7snj5hcAQRv6TGXqAHHD8jQ26NG18m",
+    "category": "send",
+    "amount": -0.00100000,
+    "label": "",
+    "vout": 0,
+    "fee": -0.00000169,
+    "confirmations": 0,
+    "trusted": true,
+    "txid": "fde1cf9a07ac0c43d657d6c2a8aeffc4a212baa953745ed5a75aa9665683df89",
+    "walletconflicts": [
+    ],
+    "time": 1523696645,
+    "timereceived": 1523696645,
+    "bip125-replaceable": "yes",
+    "abandoned": false
+  },
+  {
+    "account": "",
+    "address": "2Myo5PBd65Exqrseg6LLai7E71AVQDDf4V1",
+    "category": "receive",
+    "amount": 0.00107420,
+    "label": "",
+    "vout": 0,
+    "confirmations": 0,
+    "trusted": false,
+    "txid": "b58bb545d2433e5be9839305e98ebea3413908959f916f858a4a141407e0fb0a",
+    "walletconflicts": [
+    ],
+    "time": 1523696983,
+    "timereceived": 1523696983,
+    "bip125-replaceable": "no"
+  }
+]
+
+-------------------------------
+
+gettransaction 89a1d6b08ea0a059d6950bafce0fbd221d3aee0c214f53033ebe4d3ff6944309
+{
+  "amount": 0.27500000,
+  "confirmations": 1,
+  "blockhash": "000000000000027e25b6414111d1370df973ade7fec47227113cb9140e7a524b",
+  "blockindex": 8,
+  "blocktime": 1523691140,
+  "txid": "89a1d6b08ea0a059d6950bafce0fbd221d3aee0c214f53033ebe4d3ff6944309",
+  "walletconflicts": [
+  ],
+  "time": 1523690859,
+  "timereceived": 1523690859,
+  "bip125-replaceable": "no",
+  "details": [
+    {
+      "account": "",
+      "address": "2Myo5PBd65Exqrseg6LLai7E71AVQDDf4V1",
+      "category": "receive",
+      "amount": 0.27500000,
+      "label": "",
+      "vout": 0
+    }
+  ],
+  "hex": "01000000000101a17739296151d662f28eb557b8ca4dd1cf62fed3653c190cab8432f1c3be4f9e01000000171600146b9474eea0a8558a9a0566a8d2ee3dbdbb72202fffffffff02e09da3010000000017a91447d6e1dabb1bbb90b4117b5bbd201fa064f4081a87058bfa710000000017a914015873af8010a81d4e3412cf35ef20944c022f9c8702483045022100e2f16d29dfb882f36ef591a2c8a557fb132e68081e4a9756f48effe185d6d1b4022047d01e9572d2f1147894bb5b3732b017c23dec3fa130fd937c6a04eb322df4610121023c9e0558178f183d24c096f5c1b5ab0604ee5d13bef5d8c4ba8a89bd84965e0f00000000"
+}
