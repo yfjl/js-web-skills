@@ -4,6 +4,13 @@
 1，比特币现金（BCH）基本概念的理解。BCH公用链，信息浏览器，跟比特币的区别等。资料来源：朱宁，官方网站等。
 https://www.bitcoincash.org
 https://bch.btc.com/
+bch钱包下载
+https://www.bitcoinabc.org/
+文档
+https://github.com/Bitcoin-ABC/bitcoin-abc/tree/master/doc
+btc钱包
+https://bitcoin.org/en/full-node
+
 2，钱包的理解。钱包内核，API的理解。实际安装core，练习用命令行来操作钱包。
 3，现有BTC发送接收处理的理解。
 4，编写BCH发送接收代码（基本上是从已有代码移植然后部分修改）。
@@ -49,9 +56,31 @@ Todo
 
 bank,adapter (rpc),core
 
-用户地址--资源无限？
-和总钱包关系？
+用户地址--资源无限？ 可以认为无限
+和总钱包关系？ 自己操作一遍钱包就知道了，有总的余额的，也有每个创建的账户的余额，没个创建的账户名下可以有多个地址
+交易所如何做快照？
+交易记录如何存储，我看有多是直接从钱包的bitcoin-cli listtransactions "313066164@qq.com" 10 0查询的
+如何考虑迭代硬分叉
 
+以上是bitcoin的，同时运行bitcoin-abc（bch）或其他分叉币，需要修改下datadir和conf的目录并在启动的时候,为了方便可以写成脚本，cli也需要同样配置
+start_bitcoin_abc.sh：
+#!/bin/bash
+# Author:  bajian <313066164@qq.com>
+
+bitcoind-abc  -datadir="/Users/gxh/Library/Application Support/Bitcoin/abc" -conf="/Users/gxh/Library/Application Support/Bitcoin/bitcoin_abc.conf"
+
+abccli.sh:
+#!/bin/bash
+# Author:  bajian <313066164@qq.com>
+
+bitcoin-abc-cli  -datadir="/Users/gxh/Library/Application Support/Bitcoin/abc" -conf="/Users/gxh/Library/Application Support/Bitcoin/bitcoin_abc.conf" $1
+使用如下：
+./abccli.sh getinfo
+
+0.17版本只能生成新版地址，下面地址可以进行转换
+https://cashaddr.bitcoincash.org/convert?address=bchtest%3Aqr8553kdlqc37kmu5hezhn3d0ypx5kyrn59uq7yhae
+
+You can convert that address using https://cashaddr.bitcoincash.org or you can start the daemon with -usecashaddr=0
 
 
 RPC
@@ -75,6 +104,58 @@ listaccounts
   "2Myo5PBd65Exqrseg6LLai7E71AVQDDf4V1": 0.00000000,
   "2NDdmP3n3UUA7PLy2rhcMUSRYH74mvvk6LH": 0.00000000
 }
+
+-------------------------------
+     * 充值查询方法
+     * 当用户打开充值页面的时候，轮询钱包充值rpc listtransactions
+     * 和数据库进行查询，新数据就写入数据库，旧数据的话如果已经处理完的跳过，没有处理完的看下完成没，更新确认数
+     * 然后展示给用户，
+
+listtransactions "313066164@qq.com" 10 0
+[
+  {
+    "account": "313066164@qq.com",
+    "address": "2NBq2fgxnXakEU8wbLtsDGUctP8Nj74Bq6t",
+    "category": "receive",
+    "amount": 0.01200000,
+    "label": "313066164@qq.com",
+    "vout": 1,
+    "confirmations": 0,
+    "trusted": false,
+    "txid": "f0f8d06f7a1866f3d848543f961e9d2e57db3c584689e3f7d21a7a6deaeddd2c",
+    "walletconflicts": [
+    ],
+    "time": 1523948008,
+    "timereceived": 1523948008,
+    "bip125-replaceable": "no"
+  }
+]
+
+     * 提币引用的方法
+     * 流程 解锁x秒--转账--上锁
+     * bitcoin-cli encryptwallet bajian
+     * bitcoin-cli backupwallet backup0417.dat
+
+         private function qianbao_tibi($url,$money,$currency){
+      require_once 'App/Common/Common/easybitcoin.php';
+      $bitcoin = new \Bitcoin($currency['rpc_user'],$currency['rpc_pwd'],$currency['rpc_url'],$currency['port_number']);
+//      $result = $bitcoin->getinfo();
+      $bitcoin->walletlock();//强制上锁
+      $bitcoin->walletpassphrase($currency['qianbao_key'],20);
+      $id=$bitcoin->sendtoaddress($url,$money);
+      $bitcoin->walletlock();
+      return $id;
+    }
+
+批量提
+sendmany "fromaccount" {"address":amount,...} ( minconf "comment" ["address",...] replaceable conf_target "estimate_mode")
+
+
+签名转币的话参考精通比特币第45页开始
+-------------------------------
+
+getaccount "2NBq2fgxnXakEU8wbLtsDGUctP8Nj74Bq6t"
+313066164@qq.com
 -------------------------------
 
 getaddressesbyaccount ""
@@ -212,3 +293,6 @@ gettransaction 89a1d6b08ea0a059d6950bafce0fbd221d3aee0c214f53033ebe4d3ff6944309
   ],
   "hex": "01000000000101a17739296151d662f28eb557b8ca4dd1cf62fed3653c190cab8432f1c3be4f9e01000000171600146b9474eea0a8558a9a0566a8d2ee3dbdbb72202fffffffff02e09da3010000000017a91447d6e1dabb1bbb90b4117b5bbd201fa064f4081a87058bfa710000000017a914015873af8010a81d4e3412cf35ef20944c022f9c8702483045022100e2f16d29dfb882f36ef591a2c8a557fb132e68081e4a9756f48effe185d6d1b4022047d01e9572d2f1147894bb5b3732b017c23dec3fa130fd937c6a04eb322df4610121023c9e0558178f183d24c096f5c1b5ab0604ee5d13bef5d8c4ba8a89bd84965e0f00000000"
 }
+
+
+

@@ -22,6 +22,13 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 ```
 
 ***
+####  npm初始化一个nodejs项目
+```
+npm init 
+老是忘记，
+```
+
+***
 ####  PHP的替代语法
 ```
 https://www.cnblogs.com/passby/p/4670186.html
@@ -49,6 +56,10 @@ DOCKER 内安装了ubuntu 里的mysql可能会没有权限，需要whereis my.cn
 ***
 ####  Docker 笔记
 ```
+https://www.awaimai.com/665.html
+apt-get install net-tools
+查看ifconfig
+
 1、linux 安装
   sudo wget -qO- https://get.docker.com/ | sh
   sudo usermod -aG docker imooc
@@ -64,21 +75,29 @@ DOCKER 内安装了ubuntu 里的mysql可能会没有权限，需要whereis my.cn
 参考：
 https://www.imooc.com/video/15643
 
+
+
 强制删除全部images
 docker rmi --force  $(docker images -q)
 
 运行镜像成容器
 docker run -dit 2cc348500c17
+docker run -idt -p 80:80 7e9984b10b5b
+（可以同时映射多个-p的 ）
 进去ubuntu内部
 docker attach 2cc348500c17
 在运行的容器中执行命令
 docker exec -it mynginx /bin/sh /root/runoob.sh
 保存镜像
-docker commit -a "bajian" -p -m "mylnmp" b67ac2d45828
--p 暂停容器
+docker commit -a "bajian" -p -m "mylnmp" b67ac2d45828  myubuntu:v1 
 -a, --author=""     Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
   -m, --message=""    Commit message
   -p, --pause=true    Pause container during commit
+
+停止镜像
+docker stop container_id
+
+
 
 流程
 pull一个ubuntu镜像
@@ -142,6 +161,14 @@ RUN mkdir /home/wwwroot/login_server/runtime/logs \
     && mkdir /home/wwwroot/login_server/runtime/debug \
     && chmod -R 777 /home/wwwroot/login_server/runtime \
     && chmod -R 777 /home/wwwroot/login_server/assets
+
+
+mysql5.7在随着docker镜像迁移后无法正常启动
+修改own：
+chown -R mysql:mysql  /data/mysql
+chown -R mysql:mysql  /usr/local/mysql
+
+export PATH=$PATH:/usr/local/mysql/bin
 
 ```
 

@@ -1,0 +1,20 @@
+入门引导
+https://blog.csdn.net/wo541075754/article/details/77619533
+官方文档
+https://github.com/ethereum/go-ethereum/wiki
+
+安装教程
+https://blog.csdn.net/chenyufeng1991/article/details/53454228
+
+其中pip install eth-testrpc
+命令报错 xxx egg_什么的，解决方案：
+换成：
+npm install -g ethereumjs-testrpc
+
+
+truffle migrate Error: No network specified
+https://blog.csdn.net/wo541075754/article/details/78761513
+
+启动方式
+geth  --identity "bajian_eth"  --datadir privChain/  --nodiscover  --rpc --rpcport "8555"  --rpccorsdomain "*"  --port "30303" --rpcapi "personal,miner,db,eth,net,web3" --syncmode "fast"   console 2>>geth.log
+
