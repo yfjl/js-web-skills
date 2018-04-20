@@ -18,3 +18,12 @@ https://blog.csdn.net/wo541075754/article/details/78761513
 启动方式
 geth  --identity "bajian_eth"  --datadir privChain/  --nodiscover  --rpc --rpcport "8555"  --rpccorsdomain "*"  --port "30303" --rpcapi "personal,miner,db,eth,net,web3" --syncmode "fast"   console 2>>geth.log
 
+
+中文译文开发文档推荐
+https://blog.csdn.net/qq_28114645/article/details/78801662
+
+目前学习到的合约调用的方法是
+web3.eth.contract(abi).at(contracts_address)
+生成实例，然后就可以查询余额，转币等
+如下方法可以查看abi
+https://etherscan.io/address/0xae66d00496aaa25418f829140bb259163c06986e#code

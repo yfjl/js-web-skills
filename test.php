@@ -1,5 +1,6 @@
 <?php
 
+// var_dump(''.null);
 
 /*function eh($errno, $errstr){
     switch ($errno) {
