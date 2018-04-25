@@ -1,6 +1,31 @@
 <?php
 
-// var_dump(''.null);
+// echo password_hash('123456');
+
+// $a=[];
+// echo 'a===',$a['aaa'];
+//不会报错
+
+// date_default_timezone_set('Pacific/Midway');
+
+// echo time();
+// echo PHP_EOL;
+// echo date('his');
+// echo PHP_EOL;
+// date_default_timezone_set('Asia/Dhaka');
+// echo PHP_EOL;
+// echo time();
+// echo PHP_EOL;
+// echo date('his');
+
+// $guid = md5($email).uniqid();//每次结尾一个数都不一样
+// var_dump($guid);
+// $guid = substr($guid,-40,40);//倒数第40个开始截取
+// var_dump($guid);
+
+// var_dump('aaaa'.uniqid());//aaaa5ade9c6f98c5b
+
+// var_dump(''.null);//“”
 
 /*function eh($errno, $errstr){
     switch ($errno) {

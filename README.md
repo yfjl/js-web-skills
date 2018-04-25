@@ -29,6 +29,13 @@ npm init
 ```
 
 ***
+####  sql 重复冲突容错写法
+```
+$sql = $this->db->get_compiled_insert(self::TBL_EMAIL_CODE).' ON DUPLICATE KEY UPDATE code = VALUES(code),time = VALUES(time)';
+
+```
+
+***
 ####  PHP的替代语法
 ```
 https://www.cnblogs.com/passby/p/4670186.html

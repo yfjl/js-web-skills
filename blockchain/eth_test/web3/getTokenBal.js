@@ -10,7 +10,7 @@ For an explanation of this code, navigate to the wiki https://github.com/ThatOth
 var Web3 = require('web3');
 
 // Show web3 where it needs to look for the Ethereum node
-web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8666'));
+web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8555'));
 
 // Write to the console the script will run shortly
 console.log('Getting contract tokens balance.....');
