@@ -82,8 +82,6 @@ apt-get install net-tools
 参考：
 https://www.imooc.com/video/15643
 
-
-
 强制删除全部images
 docker rmi --force  $(docker images -q)
 
@@ -103,6 +101,15 @@ docker commit -a "bajian" -p -m "mylnmp" b67ac2d45828  myubuntu:v1
 
 停止镜像
 docker stop container_id
+
+常见错误及解决
+
+conflict: unable to delete 48b5124b2768 (must be forced) - image is referenced in multiple repositories
+docker rmi -f 48b5124b2768
+
+Unable to delete id_xxx, image has dependent child images
+查看id_xxx的child images: 
+docker inspect –format=’{{.Id}} {{.Parent}}’ $(docker images –filter since=id_xxx -q)
 
 
 
@@ -2763,6 +2770,14 @@ php并发加锁示例
 http://www.jb51.net/article/94878.htm
 
 
+
+```
+
+***
+#### insert ignore into
+```
+INSERT IGNORE 与INSERT INTO的区别就是INSERT IGNORE会忽略数据库中已经存在 的数据，如果数据库没有数据，就插入新的数据，如果有数据的话就跳过这条数据。这样就可以保留数据库中已经存在数据，达到在间隙中插入数据的目的。
+eg: insert ignore into table(name)  select  name from table2 
 
 ```
 

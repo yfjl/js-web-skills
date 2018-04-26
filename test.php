@@ -1,5 +1,27 @@
 <?php
 
+
+
+// class ClassName
+// {
+
+//     function getName(){
+//         echo __FUNCTION__;
+//     }
+// }
+
+// (new ClassName())->getName();//getName[Finished in 0.1s]
+
+// function getMyName(){
+//     echo 'myname',__FUNCTION__;
+// }
+
+// getMyName();//mynamegetMyName[Finished in 0.1s]
+
+
+// date_default_timezone_set('PRC');//People's Republic of China 中华人民共和国
+// echo date('his');
+
 // echo password_hash('123456');
 
 // $a=[];

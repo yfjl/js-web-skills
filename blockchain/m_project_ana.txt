@@ -1,0 +1,14 @@
+
+m_app mysql 
+
+currency 没有表只有ID？
+
+account table in，out 是什么
+
+fee level ?
+
+mc_send 是什么
+
+account/get_fee_rate 接口为什么不需要传type
+
+
