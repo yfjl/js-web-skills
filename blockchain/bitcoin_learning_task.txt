@@ -18,6 +18,19 @@ https://bitcoin.org/en/full-node
  
 现在可能还没有代码，1，2是不需要代码的，可以马上开始。等有了代码后就可以进行3，4，5。
 
+
+
+
+* * * * * curl coin-agent-1/tasks/transfer_in_check/run
+* * * * * curl coin-agent-1/btc/task/run_send
+* * * * * curl coin-agent-1/btc/task/run_sync_confirmation
+*/5 * * * * sh /data/m_coin_btc/task/php_task_daemon.sh "tasks backup run"
+
+
+
+》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》
+
+
 Mac 路径
 /Users/gxh/Library/Application Support/Bitcoin
 bitcoind 启动
@@ -149,7 +162,7 @@ listtransactions "313066164@qq.com" 10 0
 
 批量提
 sendmany "fromaccount" {"address":amount,...} ( minconf "comment" ["address",...] replaceable conf_target "estimate_mode")
-
+（坑：send many的地址不能有重复，重复的需要循环单独发）
 
 签名转币的话参考精通比特币第45页开始
 -------------------------------

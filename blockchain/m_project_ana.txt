@@ -11,4 +11,5 @@ mc_send 是什么
 
 account/get_fee_rate 接口为什么不需要传type
 
-
+task  ===》php /data/m_application/src/index.php task send & 
+这边的幂等没有实现，如果在http发送过程中重启脚本的话会重复发
