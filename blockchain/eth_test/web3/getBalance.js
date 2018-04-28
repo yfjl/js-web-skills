@@ -14,7 +14,7 @@ web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8666'));
 console.log('Getting Ethereum address info.....');
 
 // Define the address to search witin.
-var addr = ('0x0974c48bc880af8f57212cf9d7bf04dc9ff8e70a');
+var addr = ('0x0455988d04ca7b063030a9a04caf00a7f4655e9e');
 
 // Show the address in the console.
 console.log('Address:', addr);

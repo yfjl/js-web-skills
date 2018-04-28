@@ -10,21 +10,21 @@ For an explanation of this code, navigate to the wiki https://github.com/ThatOth
 var Web3 = require('web3');
 
 // Show web3 where it needs to look for the Ethereum node
-web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8555'));
+web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8666'));
 
 // Write to the console the script will run shortly
 console.log('Getting contract tokens balance.....');
 
 // Define the address to search witin, one with tokens from the contract preferably
 // var addr = ('0x549b95a2dc0456cf7dfdce3bff4845093c188966');
-var addr = ('0x2c30194BD2e7B6b8ff1467C5AF1650f53cd231be');
+var addr = ('0x0455988d04ca7b063030a9a04caf00a7f4655e9e');
 
 // Get the address, log it in the console
 console.log("Address: " + addr);
 
 // Token contract address, used call the token balance of the address in question
 // var contractAddr = ('0x2573217e3bb64e2339bb2a4a97d4d7eee0c05146');
-var contractAddr = ('0xab949343E6C369C6B17C7ae302c1dEbD4B7B61c3');
+var contractAddr = ('0x2573217e3bb64e2339bb2a4a97d4d7eee0c05146');
 
 // Get the address ready for the call, substring removes the '0x', as its not required
 var tknAddress = (addr).substring(2);

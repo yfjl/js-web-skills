@@ -27,3 +27,22 @@ web3.eth.contract(abi).at(contracts_address)
 生成实例，然后就可以查询余额，转币等
 如下方法可以查看abi
 https://etherscan.io/address/0xae66d00496aaa25418f829140bb259163c06986e#code
+
+//js-web-skills/blockchain/eth_test/web3 内含web3.js相关操作api
+
+
+geth参数大全
+https://blog.csdn.net/xilibi2003/article/details/78662000
+
+常用命令
+
+eth.syncing
+{
+  currentBlock: 2966162,
+  highestBlock: 3129529,
+  knownStates: 6913290,
+  pulledStates: 6911179,
+  startingBlock: 2954270
+}
+
+
