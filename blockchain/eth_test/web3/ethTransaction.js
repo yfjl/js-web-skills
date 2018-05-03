@@ -8,11 +8,13 @@ Alternatively you should use a test net with test ether first before running thi
 For an explanation of this code, navigate to the wiki https://github.com/ThatOtherZach/Web3-by-Example/wiki/Send-Ether-Transaction
 */
 
+var url_private_geth='http://127.0.0.1:8555';
+
 // Add the web3 node module
 var Web3 = require('web3');
 
-// Show web3 where it needs to look for the Ethereum node.
-web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8666'));
+// Show web3 where it needs to look for the Ethereum node
+web3 = new Web3(new Web3.providers.HttpProvider(url_private_geth));
 
 // An extra module is required for this, use npm to install before running
 var Tx = require('ethereumjs-tx');
@@ -21,7 +23,7 @@ var Tx = require('ethereumjs-tx');
 var privateKey = new Buffer('YOUR-PRIVATE-KEY-HERE', 'hex');
 
  // The reciviing address of the transaction
-var receivingAddr = ('0x9Ff24857b990a8d036D0973d9a0825A76C2c8723');
+var receivingAddr = ('0x8cad3bd6095afd426c3a8b6e6981df1ee343ad3d');
 
 // Value to be sent, converted to wei and then into a hex value
 var txValue = web3.utils.numberToHex(web3.utils.toWei('0.1', 'ether'));
