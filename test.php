@@ -1,7 +1,9 @@
 <?php
 
+// echo md5('bch_coinbest');
 
 
+// var_dump(json_decode('hahaha'));
 // class ClassName
 // {
 

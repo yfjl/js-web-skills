@@ -18,6 +18,9 @@ https://bitcoin.org/en/full-node
  
 现在可能还没有代码，1，2是不需要代码的，可以马上开始。等有了代码后就可以进行3，4，5。
 
+bch 和 btc比较大的区别就是地址不太一样
+https://cashaddr.bitcoincash.org
+Otherwise there is a converted built into Electron Cash, or you may launch the ABC software with -usercashaddr=0 and find the key again.
 
 
 
