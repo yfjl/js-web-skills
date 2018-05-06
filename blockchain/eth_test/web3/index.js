@@ -1,6 +1,6 @@
 Web3 = require('web3');
 
-
+// for (var i = 0; i < 500; i++) { personal.newAccount('a2259303');}
 if (typeof web3 !== 'undefined') {
   web3 = new Web3(web3.currentProvider);
 } else {
