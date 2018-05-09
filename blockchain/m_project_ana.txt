@@ -13,3 +13,11 @@ account/get_fee_rate 接口为什么不需要传type
 
 task  ===》php /data/m_application/src/index.php task send & 
 这边的幂等没有实现，如果在http发送过程中重启脚本的话会重复发
+
+
+记录下添加币种和多币种表需要改动的地方
+m_application-account-get_fee_rate ,币种交易手续费可能不是单独的，而是交易对之间的
+m_application-Auth-create_accounts 涉及 m_application-M_account-user_accounts、create get_init_fee_rate,不写死
+
+m_application-coin_config_helper.php 改成数据库表，这个helper的方法比较多，注意查找引用到的地方，简便的方法是直接将_coinConfig_all()方法改成数据库获取，然后组成原有格式返回。后期可缓存，注意修改的时候更新缓存
+

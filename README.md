@@ -92,7 +92,7 @@ https://www.imooc.com/video/15643
 docker rmi --force  $(docker images -q)
 
 运行镜像成容器
-docker run -dit 2cc348500c17
+docker run -dit ubuntu-full-simply
 docker run -idt -p 80:80 7e9984b10b5b
 （可以同时映射多个-p的 ）
 进去ubuntu内部
@@ -117,6 +117,17 @@ Unable to delete id_xxx, image has dependent child images
 查看id_xxx的child images: 
 docker inspect –format=’{{.Id}} {{.Parent}}’ $(docker images –filter since=id_xxx -q)
 
+docker镜像文件导入与导出
+sudo docker save -o quay.io-calico-node-1.tar quay.io/calico/node 
+会在当前目录下生成导出文件xxx.tar，然后将此文件下载到本地
+
+在开发环境导入上述打包的镜像
+docker load -i quay.io-calico-node-1.tar
+然后修改别名 docker tag xxxx id
+
+拷贝文件
+docker cp be0e2a0baf4f:/root/go/src/cashaddr-converter/ /Applications/XAMPP/xamppfiles/code/server/cashaddr-converter/
+docker cp diraa/ xxxx:dirbbb/
 
 
 流程

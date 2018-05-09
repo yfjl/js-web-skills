@@ -28,8 +28,24 @@ Otherwise there is a converted built into Electron Cash, or you may launch the A
 * * * * * curl coin-agent-1/btc/task/run_send
 * * * * * curl coin-agent-1/btc/task/run_sync_confirmation
 */5 * * * * sh /data/m_coin_btc/task/php_task_daemon.sh "tasks backup run"
+（特别注意有个坑，通过cli执行PHP是不经过nginx的，fastcgi_param设置的dev等变量是不会生效的）
+钱包功能逻辑：
+run_send：（30s 一次）
+sync_tx_out 从m_app获取提币记录，并插入本地钱包tx表，再查一次本地tx表将等待发送的tx改成正在发送的，并返回tx数组，并打包转币
+sync_tx_out_to_app 查tx表，将转出状态的失败或生成txid的记录取出来发给m_app记账，并处理m_app记账结果
 
+run_sync_confirmation：（30s 一次）
+将等待同步状态的tx查出来并和钱包确认数对比，将有变化的更新并通知m_app,根据m_app处理完成的停止更新
 
+transfer_in_check/run：（30s 一次）
+listtransactions (每一次查询是从旧到最新的排序，所以要倒叙一下数组，从最新的开始录入，录入到和上一次相同的txid旧说明没有新的了，后面都是已经录入过的)
+然后查询将新录入的且没有发给m_app处理的，发给m_app并对返回进行记录
+listtransactions * 5 0
+1525767734
+1525767875
+listtransactions * 5 20
+1525767443
+1525767729
 
 》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》〉》
 
