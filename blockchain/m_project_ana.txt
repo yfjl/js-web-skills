@@ -7,7 +7,7 @@ account table in，out 是什么
 
 fee level ?
 
-mc_send 是什么
+mc_send 是什么 多币种multi coins
 
 account/get_fee_rate 接口为什么不需要传type
 
@@ -21,3 +21,17 @@ m_application-Auth-create_accounts 涉及 m_application-M_account-user_accounts�
 
 m_application-coin_config_helper.php 改成数据库表，这个helper的方法比较多，注意查找引用到的地方，简便的方法是直接将_coinConfig_all()方法改成数据库获取，然后组成原有格式返回。后期可缓存，注意修改的时候更新缓存
 
+
+
+添加新币种流程：以BCH为例子
+钱包+m_coin_bch
+
+添加bch user_fee和account的migration
+修改account相关bch代码和测试用例
+m_app common——helper is_virtual_currency（）
+
+m_app m_funsource add coin相关
+coin_addr_validate_helper
+
+
+m_account---lock_and_get_account_id_and_balance

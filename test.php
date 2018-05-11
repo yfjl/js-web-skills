@@ -1,5 +1,33 @@
 <?php
 
+
+curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1070", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":1,\"origin_volume\":0.1,\"price\":6800,\"product_code\":\"BTC_JPY\"}","sign":""}' http://m_app/order/create
+curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1070", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":1,\"origin_volume\":0.1,\"price\":6800,\"product_code\":\"BCH_JPY\"}","sign":""}' http://m_app/order/create
+
+curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1069", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":2,\"origin_volume\":0.1,\"price\":66789,\"product_code\":\"BCH_JPY\"}","sign":""}' http://m_app/order/create
+ 
+
+ curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1070", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20212, "signed_data":"{\"currency\": \"3\" }"}' http://m_app/fund/deposit_coin
+ curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1069", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20212, "signed_data":"{\"currency\": \"3\" }"}' http://m_app/fund/deposit_coin
+/* 下午2:31:51 docker_local m_app */ ALTER TABLE `tbl_mc_user_address` DROP INDEX `unique_address`;
+/* 下午2:38:09 docker_local m_app */ ALTER TABLE `tbl_mc_user_address` ADD UNIQUE INDEX `unique_address` (`addressId`);
+
+curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1058", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":2,\"origin_volume\":0.1,\"price\":66789,\"product_code\":\"BCH_JPY\"}","sign":""}' http://m_app/order/create
+
+// $data['product_code']='BCH_JPY';
+// switch (strtoupper($data['product_code']))
+//             {
+//                 case 'BTC_JPY':
+//                     echo 'btc';
+//                     break;
+//                 case 'BCH_JPY':
+//                     echo 'bch';
+//                     break;
+//                 default:
+
+//                     return;
+//             }
+
 // echo md5('bch_coinbest');
 
 

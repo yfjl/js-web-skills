@@ -50,10 +50,25 @@ http://codeigniter.org.cn/user_guide/general/alternative_php.html
 ```
 
 ***
+####  php 编译扩展 安装扩展
+```
+https://www.jianshu.com/p/f1a100ee9e3f
+https://zhuanlan.zhihu.com/p/27210889
+
+主要步骤：(最好下载合适的php版本自带的ext)
+进入php7.1.17/ext/gmp 目录下面运行phpize
+然后./configure  --with-php-config = /usr/local/php/bin/php-config
+然后 sudo make && sudo make install
+成功生成gmp.so后，修改php.ini添加 extension = gmp.so
+
+已经写成脚本参见：自己编写的shell/gmp_install.sh
+```
+
+***
 ####  phpstorm 代码格式化快捷键
 ```
 ctrl+alt+l        重新格式化代码 
-
+mac：Ctrl+option+l
 
 快速方法注释
 Alt+Shift+j---phpdoc 或者鼠标右键---generate--phpdoc
