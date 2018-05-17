@@ -21,8 +21,106 @@ https://bitcoin.org/en/full-node
 bch 和 btc比较大的区别就是地址不太一样
 https://cashaddr.bitcoincash.org
 Otherwise there is a converted built into Electron Cash, or you may launch the ABC software with -usercashaddr=0 and find the key again.
+脚本转换：
+https://github.com/schancel/cashaddr-converter/
+
+修改了两个文件：
+
+Makefile
+cmd/svc/main.go
 
 
+在centos下编译 cashaddr_converter
+
+1. 安装 golang
+
+   wget https://dl.google.com/go/go1.10.linux-amd64.tar.gz
+   tar -C /usr/local/ -xvf go1.10.linux-amd64.tar.gz
+
+2. 安装依赖管理工具 dep
+
+   https://github.com/golang/dep
+
+3. 假设代码存放于： /root/golang/src/cashaddr-converter
+
+   export GOPATH=/root/golang
+   dep ensure
+   make
+
+Makefile:
+.PHONY: default
+default: bch_cashaddr_converter
+
+bch_cashaddr_converter:
+  go build ./cmd/svc/main.go
+  cp -f main bch_cashaddr_converter
+
+cmd/svc/main.go:
+package main
+
+import (
+ "os"
+ "flag"
+ "fmt"
+ "encoding/json"
+
+ "github.com/schancel/cashaddr-converter/address"
+ "github.com/schancel/cashaddr-converter/cmd/common"
+)
+
+var sval = flag.String("address", "null", "address value for test")
+
+func main() {
+ flag.Parse()
+ if *sval == "null" {
+  fmt.Println("-address is null");
+  return;
+ }
+
+ addr, err := address.NewFromString(*sval)
+ if err != nil {
+  fmt.Println(err.Error());
+  return
+ }
+
+ out, err := common.GetAllFormats(addr)
+ if err != nil {
+  fmt.Println(err.Error());
+  return
+ }
+
+
+ encoder := json.NewEncoder(os.Stdout)
+ encoder.SetIndent("", "  ")
+ encoder.Encode(out)
+}
+
+编译生成文件 main，可再执行：  strip main 剔除调试信息使文件更小。再把main重命名为： bch_cashaddr_converter
+[root@mtest cashaddr-converter]# ./bch_cashaddr_converter -address "1JH4u2GaQTu7pWXMiGBeXr6oAbWmVVkpMS"
+{
+  "cashaddr": "bitcoincash:qz7cgzl5mavucstffsr8qf8mp2v60zncqv7tn3nler",
+  "legacy": "1JH4u2GaQTu7pWXMiGBeXr6oAbWmVVkpMS",
+  "copay": "CZjxU4ceHWseieRnQ1Wa7MipnijBRU5v5c",
+  "hash": "0xBD840BF4DF59CC41694C067024FB0A99A78A7803"
+}
+
+php 里写个简单的 helper 来调用它就可以了：
+function convertBCHAddress($address)
+{
+    $result = shell_exec('/data/www/bch_addr_converter -address '.$address);
+    $result = json_decode($result, true);
+    if(!$result || !isset($result['cashaddr']))
+    {
+        log_message('error', 'common/convertBCHAddress address = '.$address.' result = '.$result);
+        $data['code'] = BK_ERROR_CODE_INVALID_BITCOIN_ADDRESS;
+        return $data;
+    }
+    $data['code'] = BK_ERROR_CODE_SUCCESS;
+    $data['data']['cashaddr'] = $result['cashaddr'];
+    $data['data']['legacy'] = $result['legacy'];
+    return $data;
+}
+我已经编译成脚本存放在：address_converter文件夹，可以直接调用
 
 * * * * * curl coin-agent-1/tasks/transfer_in_check/run
 * * * * * curl coin-agent-1/btc/task/run_send

@@ -1,18 +1,66 @@
 <?php
 
 
-curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1070", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":1,\"origin_volume\":0.1,\"price\":6800,\"product_code\":\"BTC_JPY\"}","sign":""}' http://m_app/order/create
-curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1070", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":1,\"origin_volume\":0.1,\"price\":6800,\"product_code\":\"BCH_JPY\"}","sign":""}' http://m_app/order/create
+// function testCallback($no_cache_callback =null)
+// {
+//    echo 'in testcb ';
+//    if (is_callable($no_cache_callback)) {
+//        return  call_user_func($no_cache_callback);
+//    }
+//    return 'my tets ';
+// }
+// $arg='aaa';
+// echo testCallback(function() use($arg){
+//     return 'in_call_back_func ' . $arg;
+// });
 
-curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1069", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":2,\"origin_volume\":0.1,\"price\":66789,\"product_code\":\"BCH_JPY\"}","sign":""}' http://m_app/order/create
+// echo testCallback();
+
+
+
+// define('ARRAY_MARKET_PRODUCT_CODE', [
+//     0 => '',
+//     1 => "BTC_JPY",
+//     2 => "ETH_JPY",
+//     3 => "BCH_JPY",
+//     4 => "DASH_JPY",
+//     ]);
+//     var_dump(ARRAY_MARKET_PRODUCT_CODE['3']);
+
+// var_dump(explode('_', 'DASH_JPY'));
+
+// define('BTC_JPY', 'value');
+
+// echo constant('BTC'.'_JPY1');
+// echo 111;
+
+// $a=[
+// 0=>'b',
+// 1=>'b1',
+// 2=>'b2',
+// 3=>'b3',
+// 4=>'b4',
+// 6=>'b6',
+// ];
+// var_dump($a[6]);
+
+// $str='{"code":0,"data":{"btc":{"jpy":1000000,"usd":10000,"cny":60000,"ratio":20000,"high":1500000,"low":900000},"bch":{"jpy":200000,"usd":2000,"cny":12000,"ratio":10000,"high":230000,"low":190000}}}';
+
+// $re=json_decode($str,true);
+// var_dump($re['data']['bch']);
+
+// curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1070", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":1,\"origin_volume\":0.1,\"price\":6800,\"product_code\":\"BTC_JPY\"}","sign":""}' http://m_app/order/create
+// curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1070", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":1,\"origin_volume\":0.1,\"price\":6800,\"product_code\":\"BCH_JPY\"}","sign":""}' http://m_app/order/create
+
+// curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1069", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":2,\"origin_volume\":0.1,\"price\":66789,\"product_code\":\"BCH_JPY\"}","sign":""}' http://m_app/order/create
  
 
- curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1070", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20212, "signed_data":"{\"currency\": \"3\" }"}' http://m_app/fund/deposit_coin
- curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1069", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20212, "signed_data":"{\"currency\": \"3\" }"}' http://m_app/fund/deposit_coin
-/* 下午2:31:51 docker_local m_app */ ALTER TABLE `tbl_mc_user_address` DROP INDEX `unique_address`;
-/* 下午2:38:09 docker_local m_app */ ALTER TABLE `tbl_mc_user_address` ADD UNIQUE INDEX `unique_address` (`addressId`);
+//  curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1070", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20212, "signed_data":"{\"currency\": \"3\" }"}' http://m_app/fund/deposit_coin
+//  curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1069", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20212, "signed_data":"{\"currency\": \"3\" }"}' http://m_app/fund/deposit_coin
+// /* 下午2:31:51 docker_local m_app */ ALTER TABLE `tbl_mc_user_address` DROP INDEX `unique_address`;
+// /* 下午2:38:09 docker_local m_app */ ALTER TABLE `tbl_mc_user_address` ADD UNIQUE INDEX `unique_address` (`addressId`);
 
-curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1058", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":2,\"origin_volume\":0.1,\"price\":66789,\"product_code\":\"BCH_JPY\"}","sign":""}' http://m_app/order/create
+// curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1058", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":2,\"origin_volume\":0.1,\"price\":66789,\"product_code\":\"BCH_JPY\"}","sign":""}' http://m_app/order/create
 
 // $data['product_code']='BCH_JPY';
 // switch (strtoupper($data['product_code']))

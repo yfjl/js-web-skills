@@ -4,7 +4,9 @@ A simple script that defines an address, gets the balance of it and then convert
 For an explanation of this code, navigate to the wiki https://github.com/ThatOtherZach/Web3-by-Example/wiki/Get-Balance
 */
 
-var url_private_geth='http://127.0.0.1:8555';
+
+var url_private_geth='http://127.0.0.1:8545';
+// var url_main_geth='http://127.0.0.1:8777';
 
 // Add the web3 node module
 var Web3 = require('web3');
@@ -16,6 +18,7 @@ web3 = new Web3(new Web3.providers.HttpProvider(url_private_geth));
 console.log('Getting Ethereum address info.....');
 
 var private_addr='0x1a1394afe7778b134f9dc17e4904febfae29db5d';
+// var private_addr='0x9A554Fa41BC407589B1B6d39eA38ee19750c56aE';
 // Define the address to search witin.
 var addr = (private_addr);
 

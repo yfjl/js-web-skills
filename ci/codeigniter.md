@@ -41,7 +41,39 @@ CodeIgniter 总是先加载全局配置文件（例如，application/config/ 目
 $this->config->load('config', TRUE, TRUE);//第三个参数用于抑制错误信息，当配置文件不存在时，不会报错:
 //$this->config->load('config', TRUE);//当配置文件不存在时，会报错:
 echo $this->config->item('time_reference', 'config');
+```
 
+***
+#### cache 不存在情况回调
+```
+
+    /**
+     * @author bajian
+     * @param $key
+     * @param null $no_cache_callback
+     * @return mixed false 失败 或者 成功 ：string/object等
+     */
+    protected function get_cache($key, $no_cache_callback = null)
+    {
+        $this->load->driver('cache',
+            array('adapter' => 'redis', 'backup' => 'file', 'key_prefix' => 'bv_')
+        );
+
+        $result=$this->cache->get($key);
+        if (false == $result && $no_cache_callback && is_callable($no_cache_callback)){
+            $result=call_user_func($no_cache_callback);
+        }
+        return $result;
+    }
+    使用方法：
+    $ticker = $this->get_cache($cache_key, function () use ($to_jpy_product_code, $cache_key) {
+            $result = common_http_get(BV_HOST_QUOTE . '/ticker?product_code=' . $to_jpy_product_code);
+            if ($result && $result['code'] == BV_CODE_SUCCESS) {
+                $this->cache->save($cache_key, $result['data']['ticker'], 60);
+                return $result['data']['ticker'];
+            }
+            return false;
+        });
 
 ```
 
