@@ -46,7 +46,8 @@ eth.syncing
 }
 
 踩坑：
-
+"1000000000","bajian_token","8","BBB"
+0xBDB1844C801181cb19CB1A1f7e6d7B89F77105ED
 
 创建代币的合约 "888888888","bajian_token","8","BJT"
 我的私链合约,888888800000000

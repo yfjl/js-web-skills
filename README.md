@@ -22,6 +22,13 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 ```
 
 ***
+####  唯一索引 多列约束
+```
+UNIQUE KEY `unique_service_reason` (`serviceType`,`serviceId`,`direction`,`reason`),
+只有这四个项都相同才冲突
+```
+
+***
 ####  npm初始化一个nodejs项目
 ```
 npm init 
@@ -4173,7 +4180,7 @@ $("div").text($("form").serialize());
 #### ssh登录远程服务器
 ```
 ssh root@123.57.82.164
- q09307206
+ q0930720099
 ```
 
 

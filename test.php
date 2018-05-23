@@ -1,6 +1,25 @@
 <?php
 
 
+// echo round( -0.0001, 8);
+// scp -r root@activity.bhx-tech.com:/home/hgx/gitserver/ /home/hgx/gitserver/
+// scp -r root@activity.bhx-tech.com:/home/hgx/ico/ /home/hgx/ico/
+
+// echo json_encode(array("client"=>1, "id"=>'999', "data"=>'2,1129,152,1,688800000000,10000000,0'));
+// client=1&id=999&data=2,1129,152,1,688800000000,10000000,0
+// echo microtime(1);
+
+//     public function test(){
+//         $start=microtime(1);
+//         for ( $i=0;$i<=1000;$i++){
+//             $request = array("client"=>self::CLIENT_ID, "id"=>$i, "data"=>'2,1129,'.$i.',1,688800000000,10000000,0');
+//             common_http_post(self::URL.'/add', json_encode($request)) ;
+// //            var_dump(common_http_post(self::URL.'/add', json_encode($request))) ;
+//         }
+//         $end=microtime(1);
+//         echo $end - $start;
+//     }
+
 // function testCallback($no_cache_callback =null)
 // {
 //    echo 'in testcb ';

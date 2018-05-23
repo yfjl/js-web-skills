@@ -1,4 +1,4 @@
 blockchain/**/node_modules
 .idea/
-
+blockchain/eth_test/web3/.idea/*
 mac/*

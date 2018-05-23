@@ -34,4 +34,7 @@ m_app m_funsource add coin相关
 coin_addr_validate_helper
 
 
+m_app m_order
+m_app task
+
 m_account---lock_and_get_account_id_and_balance

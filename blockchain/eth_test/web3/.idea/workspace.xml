@@ -23,8 +23,8 @@
       <file leaf-file-name="index_testnet.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index_testnet.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="415">
-              <caret line="41" column="38" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="38" />
+            <state relative-caret-position="2038">
+              <caret line="130" lean-forward="true" selection-start-line="130" selection-end-line="130" />
             </state>
           </provider>
         </entry>
@@ -42,7 +42,7 @@
         <entry file="file://$PROJECT_DIR$/contract-function.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="3762">
-              <caret line="204" column="81" lean-forward="true" selection-start-line="204" selection-start-column="81" selection-end-line="204" selection-end-column="81" />
+              <caret line="204" column="81" selection-start-line="204" selection-start-column="81" selection-end-line="204" selection-end-column="81" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -62,7 +62,7 @@
       <file leaf-file-name="ethTransaction.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ethTransaction.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="481">
+            <state relative-caret-position="627">
               <caret line="33" column="9" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="9" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -74,7 +74,7 @@
       <file leaf-file-name="getBalance.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/getBalance.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="114">
+            <state relative-caret-position="38">
               <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -169,18 +169,16 @@
   <component name="NodeModulesDirectoryManager">
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="403" />
-    <option name="y" value="130" />
-    <option name="width" value="2080" />
-    <option name="height" value="1169" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="2560" />
+    <option name="height" value="1337" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -192,6 +190,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -253,14 +252,16 @@
       <workItem from="1525244325228" duration="7217000" />
       <workItem from="1526348863561" duration="3925000" />
       <workItem from="1526367953444" duration="756000" />
+      <workItem from="1526537266123" duration="400000" />
+      <workItem from="1526543188044" duration="1043000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="29780000" />
+    <option name="totallyTimeSpent" value="31223000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="10" y="24" width="2560" height="1337" extended-state="6" />
+    <frame x="0" y="23" width="2560" height="1337" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -270,7 +271,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.28064516" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13820492" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13979349" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -623,7 +624,7 @@
     <entry file="file://$PROJECT_DIR$/contract-function.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3762">
-          <caret line="204" column="81" lean-forward="true" selection-start-line="204" selection-start-column="81" selection-end-line="204" selection-end-column="81" />
+          <caret line="204" column="81" selection-start-line="204" selection-start-column="81" selection-end-line="204" selection-end-column="81" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
@@ -642,7 +643,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/getBalance.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
+        <state relative-caret-position="38">
           <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -652,7 +653,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ethTransaction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
+        <state relative-caret-position="627">
           <caret line="33" column="9" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="9" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -662,8 +663,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index_testnet.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="41" column="38" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="38" />
+        <state relative-caret-position="2038">
+          <caret line="130" lean-forward="true" selection-start-line="130" selection-end-line="130" />
         </state>
       </provider>
     </entry>
