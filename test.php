@@ -1,5 +1,44 @@
 <?php
 
+// var_dump([
+//         0 => 'ORDER_STATE_CANCEL',
+//         100 => 'ORDER_STATE_WAIT',
+//         200 => 'ORDER_STATE_DONE',
+//     ][100]);
+
+// if (![]) {
+//     echo 111;
+// }
+// var_dump(0=='');
+
+
+// var_dump(date('Y-m-d H:i:s',strtotime('20171001')));//2017-10-01 00:00:00
+// var_dump(date('Y-m-d H:i:s',strtotime('2017-10-01')));//2017-10-01 00:00:00
+
+// var_dump(strval(1));
+
+// var_dump(json_decode('100'));
+
+//只挑出一层循环
+// foreach ([1,2,3] as $key => $value) {
+//     echo 'in first ' .$key .PHP_EOL;
+
+//     foreach ([1,2,3] as $key ) {
+//         echo 'in second '.$key.PHP_EOL;
+
+//         if ($key == 2) {
+//             break;
+//         }
+        
+//     }
+
+// }
+
+
+
+// foreach (['$variable','qqqq'] as $value) {
+//     echo $value;
+// }
 
 // echo round( -0.0001, 8);
 // scp -r root@activity.bhx-tech.com:/home/hgx/gitserver/ /home/hgx/gitserver/

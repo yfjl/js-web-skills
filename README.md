@@ -29,6 +29,42 @@ UNIQUE KEY `unique_service_reason` (`serviceType`,`serviceId`,`direction`,`reaso
 ```
 
 ***
+####  多重循环下的break
+```
+php 一个break只跳出一层循环，跳多层循环可以用goto
+js也类似
+当执行多重循环的时候
+
+break的情况
+outer:
+for(var i=0;i<10;i++){
+ inter:
+  for(var j=0;j<10;j++){
+    if(i>5){
+    console.log(i); ----6 
+     break outer;
+    }
+  } 
+ }
+
+ continue的情况
+
+var num=0;
+outer:
+for(var i=0;i<10;i++){
+ inter:
+  for(var j=0;j<10;j++){
+    if(i>5){
+    console.log(i); ----6,7,8,9 
+     continue outer;
+    }
+    num++;  
+  } 
+ }
+ console.log(num);     --- 60
+```
+
+***
 ####  npm初始化一个nodejs项目
 ```
 npm init 
@@ -1412,6 +1448,16 @@ awk '/\/api\/v1\/user\/login/ {print $1"\t"$7}' sslapi.goupianyi888.com_nginx.lo
 awk '!a[$0]++' a.log > d.log //a[$0]以每行内容为index的一个hash表，初值为空；由于执行了++，它的初值变成了0，而！0=1,1为真；如果行内容重复，它的值增加后进行！否运算变成假。
 扩展到 !a[$1]++ 或者 !a[$2]++等等可以指定第几列去重复
 
+awk '"xxxx" {print $1"\t"$7}' www.xx.club_nginx.log-20180529
+awk '"xxxx" {print $0}' www.xxx.club_nginx.log-20180529
+
+awk '"xxxx" {print $1}' www.xxx.club_nginx.log-20180529 > a.log
+awk '!a[$0]++' a.log > d.log 
+ wc -l d.log //计算行数wc https://www.cnblogs.com/newcaoguo/p/5896491.html
+
+cat www.xxxx.club_nginx.log-20180529|awk -F: '{if($12=="xxxx"){print $0}}'
+
+awk '$12==12{print}' www.xxx.club_nginx.log
 ```
 
 ***
@@ -4561,6 +4607,36 @@ tar -jxvf a.tar.bz2
     }
 ref:http://blog.163.com/tfz_0611_go/blog/static/20849708420146172398214/
 ```
+
+***
+#### 解决 PHPExcel 导出csv Mac显示不出中文 
+```
+echo chr(239).chr(187).chr(191);// 加上bom头，系统自动默认为UTF-8编码
+
+
+    private function exportFile($objPHPExcel,$filename='export.csv',$type='CSV')
+    {
+        header("Content-type:application/vnd.ms-excel;charset=utf-8");
+//        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Cache-Control: max-age=0');
+
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+
+        echo chr(239).chr(187).chr(191);// 加上bom头，系统自动默认为UTF-8编码
+
+        if ($type != 'CSV')
+            $type=$type!='xls'?'Excel2007':'Excel5';
+        $objWriter = IOFactory::createWriter($objPHPExcel, $type);
+        $objWriter->save('php://output');
+        exit;
+    }
+
+```
+
 ***
 #### PHPExcel 设置宽度  
 ```
