@@ -27,7 +27,38 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 UNIQUE KEY `unique_service_reason` (`serviceType`,`serviceId`,`direction`,`reason`),
 只有这四个项都相同才冲突
 ```
+***
+####  linux 脚本 发送smtp邮件
+```
+使用三方smtp发送测试
 
+编辑配置文件
+
+vi /etc/mail.rc
+
+添加如下内容
+
+set from=hgxwe@163.com smtp=192.168.1.122 smtp-auth-user=lztest smtp-auth-password=xxxxxxxxxxx smtp-auth=login
+
+# set from=发件地址
+
+# smtp=smtp地址 
+
+# smtp-auth-user=账号 
+
+# smtp-auth-password=密码
+
+# smtp-auth=验证方式
+
+使用如下命令发送
+
+echo "mailtestinLZourgameaccount" | mail -s "test0325" xxx@ourgame.com
+
+# echo为正文内容   -s 标题
+
+
+
+```
 ***
 ####  多重循环下的break
 ```
