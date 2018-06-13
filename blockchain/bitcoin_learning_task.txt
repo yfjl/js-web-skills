@@ -161,7 +161,7 @@ GxdeiMac:Bitcoin gxh$ cat bitcoin.conf
 testnet=1
 server=1
 daemon=1
-
+prune=1000 #表示命令钱包区块只保留1G大小，多了会删掉一些区块
 rpcuser=abc
 rpcpassword=abc
 

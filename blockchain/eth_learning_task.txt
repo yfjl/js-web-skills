@@ -28,7 +28,17 @@ web3.eth.contract(abi).at(contracts_address)
 如下方法可以查看abi
 https://etherscan.io/address/0xae66d00496aaa25418f829140bb259163c06986e#code
 
+https://lab.miguelmota.com/ethereum-input-data-decoder/example/ -- 在线解析input数据
+https://github.com/ConsenSys/abi-decoder -- 一个解析input数据的js库
+
+tx解析代币transfer：
+https://www.jianshu.com/p/a885224e10c2
 //js-web-skills/blockchain/eth_test/web3 内含web3.js相关操作api
+
+私链代币合约地址记录
+0x2566ae3a970accc755e02a75db501cd3424633de
+0x88a2bd4b83b998f2da124095b9951b9ef5aaacd1
+转账token 的txid 0x5b5a7a6aa51eb534d440438a16e7db5d2b6eaeb4ca01af20a39a82f4e35401b4，fullhash=0xc228107feeeea768a650c08f7689d5b981a6e2ac11cdb363ea85a1caafe8be89 recipient=0x88a2bd4b83b998F2dA124095b9951b9ef5AaaCD1（"0xd263ba525f1b7cc851716b495484f49dfba33d93","2000000000000000000000000"）
 
 
 geth参数大全

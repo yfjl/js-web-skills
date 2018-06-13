@@ -1,5 +1,25 @@
 <?php
 
+
+// $arr = [
+//     '1'=>'aaaa',
+//     '15'=>'bbb'
+// ];
+
+// var_dump($arr[15]);
+
+// curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1406", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":1,\"origin_volume\":0.001,\"price\":0,\"product_code\":\"BTC_JPY\",\"order_type\":\"MARKET\"}","sign":""}' http://m_app/order/create
+  
+
+// curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1404", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":2,\"origin_volume\":0.1,\"price\":6800}","sign":""}' http://m_app/order/create
+// curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1384", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20001,"signed_data":"{\"command_id\":1,\"origin_volume\":0.1,\"price\":6800}","sign":""}' http://m_app/order/create
+
+
+// curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1384", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20002,"signed_data":"{\"order_id\":5}","sign":""}' http://m_app/order/cancel
+// curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1383", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":20002,"signed_data":"{\"order_id\":1}","sign":""}' http://m_app/order/cancel
+ 
+// * * * * * sh /data/m_application/task/php_task_daemon.sh "task send BTC_JPY"
+
 // var_dump([
 //         0 => 'ORDER_STATE_CANCEL',
 //         100 => 'ORDER_STATE_WAIT',

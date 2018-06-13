@@ -156,6 +156,12 @@ DOCKER 内安装了ubuntu 里的mysql可能会没有权限，需要whereis my.cn
 ```
 
 ***
+####  Linux 查找大文件
+```
+ find xxx目录 -type f -size +500M
+```
+
+***
 ####  Docker 笔记
 ```
 https://www.awaimai.com/665.html
@@ -184,6 +190,7 @@ docker rmi --force  $(docker images -q)
 docker run -dit ubuntu-full-simply
 docker run -idt -p 80:80 7e9984b10b5b
 （可以同时映射多个-p的 ）
+mysql 存储 映射到本机 -v db-m-main:/usr/local/mysql/var/
 进去ubuntu内部
 docker attach 2cc348500c17
 在运行的容器中执行命令
@@ -283,7 +290,7 @@ RUN mkdir /home/wwwroot/login_server/runtime/logs \
     && chmod -R 777 /home/wwwroot/login_server/assets
 
 
-mysql5.7在随着docker镜像迁移后无法正常启动
+one in stein mysql5.7在随着docker镜像迁移后无法正常启动
 修改own：
 chown -R mysql:mysql  /data/mysql
 chown -R mysql:mysql  /usr/local/mysql
