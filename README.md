@@ -27,6 +27,14 @@ echo mb_strlen($str,'gb2312').'<br>';//10
 UNIQUE KEY `unique_service_reason` (`serviceType`,`serviceId`,`direction`,`reason`),
 只有这四个项都相同才冲突
 ```
+
+***
+####  websocket 可以解决跨域问题
+```
+websocket不受同源策略影响，只要服务器端支持，就能实现。
+
+```
+
 ***
 ####  linux 脚本 发送smtp邮件
 ```
@@ -159,6 +167,16 @@ DOCKER 内安装了ubuntu 里的mysql可能会没有权限，需要whereis my.cn
 ####  Linux 查找大文件
 ```
  find xxx目录 -type f -size +500M
+```
+
+
+***
+####  Git .gitignore 设置为全局global gitignore_global
+```
+https://www.cnblogs.com/Cherry-B/p/4583505.html
+最主要是这句
+git config --global core.excludesfile ~/.gitignore_global
+
 ```
 
 ***

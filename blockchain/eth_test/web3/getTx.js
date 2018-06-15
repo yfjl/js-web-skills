@@ -8,14 +8,15 @@ For an explanation of this code, navigate to the wiki https://github.com/ThatOth
 var Web3 = require('web3');
 
 // Show web3 where it needs to look for the Ethereum node.
-web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8666'));
+web3 = new Web3(new Web3.providers.HttpProvider('http://127.0.0.1:8545'));
 
 // Define a normal transaction hash to use
-var ethTx = ('TRANSACION-HASH-HERE');
+var ethTx = ('0x5b5a7a6aa51eb534d440438a16e7db5d2b6eaeb4ca01af20a39a82f4e35401b4');
 
 // Use web3 getTransaction to get the json transaction object, then we log only the values we want
 web3.eth.getTransaction(ethTx, function(err, result) { 
 	if (!err) {
+		console.log('result: ' ,result); // Log the from address
 		console.log('From Address: ' + result.from); // Log the from address
 		console.log('To Address: ' + result.to); // Log the to address
 		console.log('Ether Transacted: ' + (web3.utils.fromWei(result.value, 'ether'))); // Get the value, convert from Wei to Ether and log it
