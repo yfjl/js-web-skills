@@ -1,0 +1,24 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+127.0.0.1  localhost
+
+#sever
+127.0.0.1  c_web
+127.0.0.1  c_app
+127.0.0.1  c_btc
+127.0.0.1  c_admin
+
+#btc adaptor server
+127.0.0.1  coin-agent-1
+#bch adaptor server
+127.0.0.1  coin-agent-3
+
+#database
+127.0.0.1  c_app_db
+127.0.0.1  c_admin_db
+127.0.0.1  c_btc_db
+127.0.0.1  c_redis
+
+#test server
+127.0.0.1  mock-agent

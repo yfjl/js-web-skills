@@ -1,5 +1,44 @@
 <?php
 
+
+
+// docker cp 2f9:/usr/local/nginx/conf/vhost/ /Applications/XAMPP/xamppfiles/code/server/m_project/c_dev_builder/images/coinbest/base/files/upload/
+
+// docker cp 2f9:/etc/my.cnf /Applications/XAMPP/xamppfiles/code/server/m_project/c_dev_builder/images/coinbest/base/files/upload/
+
+// docker cp 2f9:/usr/local/php/etc/php.ini /Applications/XAMPP/xamppfiles/code/server/m_project/c_dev_builder/images/coinbest/base/files/upload/
+
+// docker cp 8513749e7f2e:/usr/local/php/lib/php/extensions/no-debug-non-zts-20170718/redis.so /Applications/XAMPP/xamppfiles/code/server/m_project/c_dev_builder/images/coinbest/cmain/files/upload/
+
+
+// #!/bin/bash
+// \cp -f /root/upload/my.cnf /etc/
+// \cp -f /root/upload/nginx.conf /usr/local/nginx/conf/nginx.conf
+// \cp -f /root/upload/vhost/* /usr/local/nginx/conf/vhost/
+// \cp -f /root/upload/php.ini /usr/local/php/etc/php.ini
+// \cp -f /root/upload/redis.conf /etc/redis.conf
+// \cp -f /root/upload/filebeat/filebeat.yml /etc/filebeat/
+
+// #To avoid someone forget to add blank line at the end of crontab
+// sed -i -e '${G}' /root/upload/crontab
+// crontab /root/upload/crontab
+
+// /root/upload/importdb
+
+// chmod a+x /root/upload/entry
+
+
+// baselnmp image:
+// Ubuntu 16.04 64位
+// mysql 5.7 user root , password root
+// php 7.2.6
+// nginx 1.14.0
+// redis 3.0.6
+// nodejs 8.11.3
+// mocha 3
+
+
+
 // curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1534", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":22011,"signed_data":"{\"offset\":0,\"limit\":10,\"status\":\"[100,200]\"}"}' http://m_app/order/get_orders
 
 // curl  -H "Content-Type: application/json" -H 'BV-Header: {"user_id":"1534", "trace_id":"1", "platform":0}' -X POST -d '{"message_id":22011,"signed_data":"{\"user_type\":1,\"offset\":0,\"limit\":10,\"status\":\"[100,200]\"}"}' http://m_app/order/get_orders

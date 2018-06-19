@@ -1,0 +1,25 @@
+#!/bin/bash
+
+cp -f /root/upload/my.cnf /etc/
+cp -f /root/upload/nginx.conf /usr/local/nginx/conf/nginx.conf
+cp -f /root/upload/vhost/* /usr/local/nginx/conf/vhost/
+cp -f /root/upload/ssl/* /usr/local/nginx/conf/
+cp -f /root/upload/php.ini /usr/local/php/etc/php.ini
+cp -f /root/upload/redis.conf /etc/redis/redis.conf
+# \cp -f /root/upload/filebeat/filebeat.yml /etc/filebeat/
+cp -f /root/upload/hosts /etc/hosts
+cp -f /root/upload/redis.so /usr/local/php/lib/php/extensions/no-debug-non-zts-20170718/redis.so
+
+#To avoid someone forget to add blank line at the end of crontab
+sed -i -e '${G}' /root/upload/crontab
+crontab /root/upload/crontab
+
+#start service
+/usr/bin/redis-server /etc/redis/redis.conf &
+
+lnmp start
+
+/etc/init.d/cron start
+
+tail -f /dev/null
+

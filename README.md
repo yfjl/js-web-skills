@@ -209,6 +209,12 @@ docker run -dit ubuntu-full-simply
 docker run -idt -p 80:80 7e9984b10b5b
 （可以同时映射多个-p的 ）
 mysql 存储 映射到本机 -v db-m-main:/usr/local/mysql/var/
+
+如果一run就Exited (1)的话可以 docker logs -f container_id查看日志
+
+exec user process caused "exec format error"
+基本就是shell脚本的格式问题，比如最开头不是#!/bin/bash
+
 进去ubuntu内部
 docker attach 2cc348500c17
 在运行的容器中执行命令
@@ -218,7 +224,7 @@ docker commit -a "bajian" -p -m "mylnmp" b67ac2d45828  myubuntu:v1
 -a, --author=""     Author (e.g., "John Hannibal Smith <hannibal@a-team.com>")
   -m, --message=""    Commit message
   -p, --pause=true    Pause container during commit
-
+docker commit -a "bajian" -p -m "baselnmp" 2f93d0765188  baselnmp:v1 
 停止镜像
 docker stop container_id
 
@@ -314,6 +320,16 @@ chown -R mysql:mysql  /data/mysql
 chown -R mysql:mysql  /usr/local/mysql
 
 export PATH=$PATH:/usr/local/mysql/bin
+
+
+Dockerfile创建镜像 
+通过Docker Build 创建镜像。 
+命令读取指定路径下（包括子目录）所有的Dockefile，并且把目录下所有内容发送到服务端，由服务端创建镜像。另外可以通过创建.dockerignore文件（每一行添加一个匹配模式）让docker忽略指定目录或者文件
+
+格式为Docker Build [选项] 路径 
+需要制定标签信息，可以使用-t选项 
+例如：Dockerfile路径为 /tmp/docker_build/，生成镜像的标签为build_repo/my_images 
+$dudo docker build -t build_repo/my_images /tmp/docker_build/
 
 ```
 
