@@ -3751,12 +3751,16 @@ echo $posts[0]->comments_count;
 
 @-webkit-keyframes mlsh {
 0% {
-  opacity:1; transform-origin:50% 50%; transform: scale(1,1);
+  opacity:1; transform-origin:50% 50%; transform: scale(1,1);-webkit-transform: translateY(0px);
   }
 100% {
-  transform-origin:50% 50%; transform: scale(1,1); opacity:1; box-shadow:0px 0px 20px #999; z-index:2;
+  transform-origin:50% 50%; transform: scale(1,1); opacity:1; box-shadow:0px 0px 20px #999; z-index:2;-webkit-transform: translateY(-2px);
   }
 }
+
+    box-shadow: 0 0 30px rgba(0,0,0,.1);
+    -webkit-transform: translateY(-2px);
+    transform: translateY(-2px);
 ```
 
 ***
