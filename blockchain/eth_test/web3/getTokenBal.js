@@ -5,7 +5,8 @@ This script will only get the tokens from the contract we specify, be sure your 
 
 For an explanation of this code, navigate to the wiki https://github.com/ThatOtherZach/Web3-by-Example/wiki/Get-Token-Balance
 */
-var url_private_geth='http://127.0.0.1:8555';
+// var url_private_geth='http://127.0.0.1:8555';
+var url_private_geth='https://mainnet.infura.io/gsp3CCkZS6MxsrUYKe1W';
 
 // Add the web3 node module
 var Web3 = require('web3');
@@ -18,14 +19,14 @@ console.log('Getting contract tokens balance.....');
 
 // Define the address to search witin, one with tokens from the contract preferably
 // var addr = ('0x549b95a2dc0456cf7dfdce3bff4845093c188966');
-var addr = ('0x1a1394afe7778b134f9dc17e4904febfae29db5d');
+var addr = ('0xfe9e8709d3215310075d67e3ed32a380ccf451c8');
 
 // Get the address, log it in the console
 console.log("Address: " + addr);
 
 // Token contract address, used call the token balance of the address in question
 // var contractAddr = ('0x2573217e3bb64e2339bb2a4a97d4d7eee0c05146');
-var contractAddr = ('0xa8db29ea795decaf3d7ff3811781c6d81acb04ea');
+var contractAddr = ('0x5732046a883704404f284ce41ffadd5b007fd668');//blz
 
 // Get the address ready for the call, substring removes the '0x', as its not required
 var tknAddress = (addr).substring(2);

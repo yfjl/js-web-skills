@@ -1201,8 +1201,10 @@ $str=trim(file_get_contents($file_path));
 ####  Linux批量杀死包含某个关键字的进程 全部进程
 ```
 ps -ef|grep goods|grep -v grep|cut -c 9-15|xargs kill -9
+或下面这个
+kill `ps aux | grep "goods" | grep -v grep | awk '{print $2}'`
 
-批量杀死包含关键字“./amplxe-gui”的进程。
+批量杀死包含关键字“goods”的进程。
 
 "ps -ef" ——查看所有进程
 
@@ -1217,6 +1219,11 @@ ps -ef|grep goods|grep -v grep|cut -c 9-15|xargs kill -9
 
 
 "xargs kill -9" ——xargs 命令是用来把前面命令的输出结果（PID）作为"kill -9"命令的参数，并执行该命令。"kill -9"会强行杀掉指定进程。
+
+计算进程数 
+ps -ef | grep "php /" | grep -v grep | wc -l
+
+
 ```
 
 ***

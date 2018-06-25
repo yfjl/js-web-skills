@@ -213,6 +213,27 @@ https://cashaddr.bitcoincash.org/convert?address=bchtest%3Aqr8553kdlqc37kmu5hezh
 You can convert that address using https://cashaddr.bitcoincash.org or you can start the daemon with -usecashaddr=0
 
 
+(同步)查看全网交易信息
+You can view foreign transactions using bitcoind.
+
+Set txindex=1 in your bitcoin.conf file.
+restart bitcoind with -reindex (you need to re-build your entire index)
+After you've indexed a few blocks you can use something like this:
+
+$ bitcoind getblockcount
+122735
+
+$ bitcoind getblockhash 67543
+0000000004e213266ccd388df12896412c1a70e647b48004f7d6894b9d6f63b9
+
+$ bitcoind getblock 0000000004e213266ccd388df12896412c1a70e647b48004f7d6894b9d6f63b9
+// JSON containing tx "a93a668d9332e21d51380c7251bbf5ad47295ca9795e0ad6f2fe8d63b76af9aa"
+
+$ bitcoind getrawtransaction a93a668d9332e21d51380c7251bbf5ad47295ca9795e0ad6f2fe8d63b76af9aa 1
+https://bitcore.io/guides/full-node/
+https://stackoverflow.com/questions/8734694/see-foreign-bitcoin-transactions
+
+
 RPC
 -------------------------------
 

@@ -1,6 +1,10 @@
 <?php
 
+// if (0) {
+//     echo 111;
+// }
 
+// var_dump(0 =="");
 
 // docker cp 2f9:/usr/local/nginx/conf/vhost/ /Applications/XAMPP/xamppfiles/code/server/m_project/c_dev_builder/images/coinbest/base/files/upload/
 
