@@ -1,5 +1,37 @@
 <?php
 
+// define('ENVIRONMENT', 'production');
+// define('BV_DEV',false);
+
+//echo bcmul('199991412.187488360000000000', 100000000,18);
+// echo '199991412.187488360000000000' +0 ;
+
+// echo bcdiv('19999244946538411', 100000000,18);
+
+// var_dump('-'. bcsub('19999824338242226', 100000000));
+// var_dump('-'. bcdiv('19999824338242226', 100000000,16));
+
+//$num = '123';
+//echo $num[2];//3，只能对字符串这么用
+
+// $ bitcoin-cli createrawtransaction '[{"txid" : "9ca8f969bd3ef5ec2a8685660fdbf7a8bd365524c2e1fc66c309acbae2c14ae3", "vout" : 0}]' '{"1LnfTndy3qzXGN19Jwscj1T8LR3MVe3JDb": 0.025, "1hvzSofGwT8cjb8JU7nBsCSfEVQX5u9CL": 0.0245}'
+
+// $a = 0.1;
+// $b = 0.7;
+// var_dump(($a + $b) == 0.8);//false
+
+// ini_set("precision", "64");
+//当然, 为了保险起见, 我们应该使用字符串来保存大整数, 并且采用比如bcmath这样的数学函数库来进行计算.
+
+// $i = -2;
+// echo -$i;//2
+// echo '-'.$i;//--2,用于数据库加减是可以的
+
+// echo bcadd(199997143.615002400000000000,0,64);
+//echo bcadd('199997143.615002400000000000','0.000000000000001',64);
+
+// var_dump(199994640.348830980000000000+(-5710.337222940000000000));
+
 // if (0) {
 //     echo 111;
 // }

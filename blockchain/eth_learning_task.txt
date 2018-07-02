@@ -35,6 +35,9 @@ tx解析代币transfer：
 https://www.jianshu.com/p/a885224e10c2
 //js-web-skills/blockchain/eth_test/web3 内含web3.js相关操作api
 
+以太坊ERC20 Token标准完整说明
+https://blog.csdn.net/diandianxiyu_geek/article/details/78082551?utm_source=gold_browser_extension
+
 私链代币合约地址记录
 0x2566ae3a970accc755e02a75db501cd3424633de
 0x88a2bd4b83b998f2da124095b9951b9ef5aaacd1
@@ -44,6 +47,9 @@ https://www.jianshu.com/p/a885224e10c2
 var blockNum = web3.eth.blockNumber;
 var confirmations = blockNum - 243;//当前区块号-交易所在区块号，即为交易确认数
 2、交易时间，交易数据中没有时间，只能以交易数据所在区块的时间
+
+为什么以太坊用12个确认数安全
+https://stackoverflow.com/questions/49065176/how-many-confirmations-should-i-have-on-ethereum
 
 在线钱包api
 https://infura.io/setup?key=gsp3CCkZS6MxsrUYKe1W
@@ -70,6 +76,9 @@ eth.syncing
 创建代币的合约 "888888888","bajian_token","8","BJT"
 我的私链合约,888888800000000
 0xa8db29ea795decaf3d7ff3811781c6d81acb04ea
+
+标准的erc20代币合约
+https://github.com/ConsenSys/Tokens
 
 pragma solidity ^0.4.16;
 contract Token{

@@ -24,6 +24,7 @@ Otherwise there is a converted built into Electron Cash, or you may launch the A
 脚本转换：
 https://github.com/schancel/cashaddr-converter/
 
+btc 出块间隔10分钟，eth出块间隔15秒，eos出块间隔3秒（21节点）
 修改了两个文件：
 
 Makefile
@@ -580,5 +581,114 @@ gettransaction 89a1d6b08ea0a059d6950bafce0fbd221d3aee0c214f53033ebe4d3ff6944309
   "313066164@qq.com": 0.06300000
 }
 
+////////////////////// 冷钱包。///////////////////
+
+签名交易发送（冷钱包运用）【热钱包生成raw trasnaction ，冷钱包进行 signrawtransaction 签名 ，热钱包再进行 sendrawtransaction 】
+https://stackoverflow.com/questions/38152663/bitcoin-how-to-build-raw-transaction
+
+
+中文教程：
+http://www.btc38.com/altcoin/btc/2847.html
+【作为输入的txid可以为多个，记得写上自己的找零地址】
+【在手动创建交易时，务必注意输入、输出的值，非常容易犯错的是忘记构造找零输出（如非必要勿手动构造交易）。曾经有人构造交易时忘记找零，发生了支付 200 BTC 的矿工费的人间惨剧，所幸的是收录该笔交易的Block由著名挖矿团队“烤猫（Friedcat）”挖得，该团队非常厚道的退回了多余费用。】
+
+Step 1)
+listunspent
+
+Format:
+
+$ bitcoin-cli listunspent [misconf=1] [max_number_confirmation=99999999] '''["<wallet_address>"]'''
+Lets check Michael's list of unspent using his address.
+
+Execute:
+
+$ bitcoin-cli listunspent 1 99999999 '''["mkrzDhhZtzQm8zgckSs4fMNrvtNJ66zaFe"]'''
+Result:
+
+[{
+    "txid": "12b8e7ede4992f4d30f93idj3085746951d945e39f40becebd7c290af8c2e7ad",
+    "vout": 1,
+    "address": "mkrzDhhZtzQm8zgckSs4fMNrvtNJ66zaFe",
+    "account": "micz",
+    "scriptPubKey": "76a9143aa28e1740a6a5a2190975b6e7f1ad67aaec9a3988ac",
+    "amount": 0.05000000,
+    "confirmations": 94,
+    "spendable": true
+}, {
+    "txid": "8443bc63b65d569ff9ekwm37sy3b67b9c7c6f8f386c3cdf372b260961b64ec9fc",
+    "vout": 1,
+    "address": "mkrzDhhZtzQm8zgckSs4fMNrvtNJ66zaFe",
+    "account": "micz",
+    "scriptPubKey": "76a9143aa28e1740a6a5a2190975b6e7f1ad67aaec9a3988ac",
+    "amount": 0.01000000,
+    "confirmations": 93,
+    "spendable": true
+}]
+What we see here is the results that assigned 50 and 10 mBTC to our address mkrz…. To spend this output, we will create a new transaction.
+
+Step 2)
+createrawtransaction
+
+We need to choose some blocks with sufficient amount from the result of listunspent. Since we only need to send 0.02500000 mBTC I think the first block has enough amount to make the transaction.
+
+Format:
+
+$ bitcoin-cli createrawtransaction
+    '[{
+        "txid" : "<txid_of_selected_block>",
+        "vout" : <vout>
+    }]'
+    '{"<recipient_address>": <amount_to_send>, "<sender_address>": <amount_change>}'
+To pay the fee, we will reduce the change output by 0.5 millibits as you can see below.
+
+Execute:
+
+$ bitcoin-cli createrawtransaction
+    '[{
+        "txid" : "12b8e7ede4992f4d30f93idj3085746951d945e39f40becebd7c290af8c2e7ad",
+        "vout" : 0
+    }]'
+    '{"mxh3H416KCRoBDiweSESew5YJyAk1nxLrN": 0.025, "mkrzDhhZtzQm8zgckSs4fMNrvtNJ66zaFe": 0.0245}'
+Result
+
+0100000001e34ac1e2baac09c366fce1c2245536bda8f7db0f6685862aecf53ebd69f9a89c0000000000ffffffff02a0252600000000001976a914d90d36e98f62968d2bc9bbd68107564a156a9bcf88ac50622500000000001976a91407bdb518fa2e6089fd810235cf1100c9c13d1fd288ac00000000
+The createrawtransaction command produces a raw hex string that encodes the transaction details we supplied. If you want to decode the hex just use decoderawtransaction command.
+
+Step 3)
+signrawtransaction
+
+signs the transaction in the serialized transaction format using private keys stored in the wallet or provided in the call.
+
+Format:
+
+$ bitcoin-cli signrawtransaction <hex_createrawtransaction>
+Execute:
+
+$ bitcoin-cli signrawtransaction 0100000001e34ac1e2baac09c366fce1c2245536bda8f7db0f6685862aecf53ebd69f9a89c0000000000ffffffff02a0252600000000001976a914d90d36e98f62968d2bc9bbd68107564a156a9bcf88ac50622500000000001976a91407bdb518fa2e6089fd810235cf1100c9c13d1fd288ac00000000
+Result:
+
+{
+   "hex" : "0100000001e34ac1e2baac09c366fce1c2245536bda8f7db0f6685862aecf53ebd69f9a89c000000006a47304402203e8a16522da80cef66bacfbc0c800c6d52c4a26d1d86a54e0a1b76d661f020c9022010397f00149f2a8fb2bc5bca52f2d7a7f87e3897a273ef54b277e4af52051a06012103c9700559f690c4a9182faa8bed88ad8a0c563777ac1d3f00fd44ea6c71dc5127ffffffff02a0252600000000001976a914d90d36e98f62968d2bc9bbd68107564a156a9bcf88ac50622500000000001976a91407bdb518fa2e6089fd810235cf1100c9c13d1fd288ac00000000",
+   "complete" : true
+}
+Now the signrawtransaction command returns another hex-encoded raw transaction.
+
+Step 4)
+sendrawtransaction
+
+RPC validates a transaction and broadcasts it to the peer-to-peer network.
+
+Format:
+
+$ bitcoin-cli sendrawtransaction <hex_signrawtransaction>
+Execute:
+
+$ bitcoin-cli sendrawtransaction 0100000001e34ac1e2baac09c366fce1c2245536bda8f7db0f6685862aecf53ebd69f9a89c000000006a47304402203e8a16522da80cef66bacfbc0c800c6d52c4a26d1d86a54e0a1b76d661f020c9022010397f00149f2a8fb2bc5bca52f2d7a7f87e3897a273ef54b277e4af52051a06012103c9700559f690c4a9182faa8bed88ad8a0c563777ac1d3f00fd44ea6c71dc5127ffffffff02a0252600000000001976a914d90d36e98f62968d2bc9bbd68107564a156a9bcf88ac50622500000000001976a91407bdb518fa2e6089fd810235cf1100c9c13d1fd288ac00000000
+Result:
+
+ae74538baa914f3799081ba78429d5d84f36a0127438e9f721dff584ac17b346
+The command sendrawtransaction returns a transaction hash (TXID) as it submits the transaction on the network. To check the transaction hash, you can go to blockchain.info or testnet.blockchain.info for Testnet network.
+
+////////////////////// 冷钱包 end。///////////////////
 
 

@@ -1198,6 +1198,43 @@ $str=trim(file_get_contents($file_path));
 ```
 
 ***
+####  js随机范围数
+```
+一、min ≤ r ≤ max
+function RandomNumBoth(Min,Max){
+      var Range = Max - Min;
+      var Rand = Math.random();
+      var num = Min + Math.round(Rand * Range); //四舍五入
+      return num;
+}
+
+```
+
+***
+####  php/js 高精度浮点型问题
+```
+ini_set("precision", "64"); 如果是浮点型仍然会出现精度错误问题
+
+http://www.laruence.com/2011/12/19/2399.html
+http://www.php.cn/php-weizijiaocheng-390252.html
+为了保险起见, 我们应该使用字符串来保存大整数, 并且采用比如bcmath这样的数学函数库来进行计算.
+$a = 0.1;
+$b = 0.7;
+var_dump(($a + $b) == 0.8);//false
+
+$a = 0.1;
+$b = 0.7;
+var_dump(bcadd($a,$b,2) == 0.8); // true
+
+mysql内：直接用字符串做运算，如'-'.$locked,支持'--3'的加法运算的
+php 字符串之间运算：
+echo bcadd('199997143.615002400000000000','0.000000000000001',64);//返回仍然是字符串类型，所以不会丢失精度
+
+js参考：https://www.cnblogs.com/xinggood/p/6639022.html
+
+```
+
+***
 ####  Linux批量杀死包含某个关键字的进程 全部进程
 ```
 ps -ef|grep goods|grep -v grep|cut -c 9-15|xargs kill -9
